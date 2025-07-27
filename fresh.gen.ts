@@ -9,6 +9,7 @@ import * as $index from "./routes/index.tsx";
 import * as $products_index from "./routes/products/index.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Navbar_index from "./islands/Navbar/index.tsx";
+import * as $cart_index from "./islands/cart/index.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -22,6 +23,7 @@ const manifest = {
   islands: {
     "./islands/Counter.tsx": $Counter,
     "./islands/Navbar/index.tsx": $Navbar_index,
+    "./islands/cart/index.tsx": $cart_index,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

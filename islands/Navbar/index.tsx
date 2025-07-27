@@ -1,8 +1,9 @@
 import { Dispatch, StateUpdater, useState } from "preact/hooks";
+import CartItems from "../cart/index.tsx";
 
 const Cart = (
   showSidebar: boolean,
-  setShowSidebar: Dispatch<StateUpdater<boolean>>,
+  setShowSidebar: Dispatch<StateUpdater<boolean>>
 ) => (
   <div onClick={() => setShowSidebar(true)} className="dropdown dropdown-end">
     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -58,24 +59,30 @@ const Navbar = () => {
     justifyContent: "flex-start",
     alignItems: "flex-start",
   };
+
   return (
     <>
       <div className="navbar bg-base-100 justify-between shadow-sm border-gray-600 border-b">
         <div style={sideBarsStyles}>
           <p class="p-4 border-b border-gray-600 w-screen mb-3">Cart(1)</p>
-          <p>Here will be our products</p>
+          <div>
+            <CartItems />
+          </div>
         </div>
         <div className="flex items-center ">
-          <a href="/" className="btn btn-ghost text-xl">Ecommerce example</a>
+          <a href="/" className="btn btn-ghost text-xl">
+            Ecommerce example
+          </a>
           <div>
-            <a href="/products" className="ml-6 mt-4">Products</a>
+            <a href="/products" className="ml-6 mt-4">
+              Products
+            </a>
           </div>
         </div>
 
         <div className="flex-none">
           {Cart(showSidebar, setShowSidebar)}
-          {
-            /* <div className="dropdown dropdown-end">
+          {/* <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
             role="button"
@@ -105,16 +112,14 @@ const Navbar = () => {
               <a>Logout</a>
             </li>
           </ul>
-        </div> */
-          }
+        </div> */}
         </div>
       </div>
       {showSidebar && (
         <div
           onClick={() => setShowSidebar(false)}
           class="fixed inset-0 bg-black opacity-20  z-50"
-        >
-        </div>
+        ></div>
       )}
     </>
   );
