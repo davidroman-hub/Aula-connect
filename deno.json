@@ -30,6 +30,7 @@
   },
   "compilerOptions": {
     "jsx": "react-jsx",
+    "checkJs": true,
     "jsxImportSource": "preact"
   }
 }

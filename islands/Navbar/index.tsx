@@ -25,6 +25,7 @@ const Cart = (
         <span className="badge badge-sm indicator-item">8</span>
       </div>
     </div>
+
     {/* <div
       tabIndex={0}
       className="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow"

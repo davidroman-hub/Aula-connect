@@ -59,11 +59,11 @@ const CartItems = () => {
             $519.96
           </span>
         </div>
-
-        <button class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg font-medium transition duration-200">
-          Proceed to Checkout
-        </button>
-
+        <div class="mt-4 text-center text-sm text-gray-500">
+          <a href='/checkout' class="w-full mt-10 bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg font-medium transition duration-200">
+            Proceed to Checkout
+          </a>
+        </div>
         <div class="mt-4 text-center text-sm text-gray-500">
           <p>
             or{" "}
