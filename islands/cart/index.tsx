@@ -19,53 +19,58 @@ const CartItems = () => {
   let sum = 0;
   sumTotal.forEach((el) => sum += el);
 
+  const deleteItem = (productId: any) => {
+    const updateCartProduct = cartProducts.filter((p: CardCart) =>
+      p.id !== productId
+    );
+    setCartProducts(updateCartProduct);
+    localStorage.setItem("cartProducts", JSON.stringify(updateCartProduct));
+  };
+
   return (
     <>
       {cartProducts && cartProducts.length > 0 &&
         cartProducts.map((product: CardCart) => {
           return (
-            <>
-              <div class="p-4  bg-gray-200 mb-5 flex gap-4 relative ">
-                <div class="w-14 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                  <img
-                    src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                    alt="Wireless Headphones"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <div class="flex-grow">
-                  <h3 class="font-semibold text-gray-800">
-                    {product.title}
-                  </h3>
-                  <p class="text-gray-600 text-sm mt-1">{product.category}</p>
-                  <div class="flex items-center justify-between mt-2">
-                    <div class="flex items-center border border-gray-300 rounded-md overflow-hidden">
-                      <button class="quantity-btn px-3 py-1 text-gray-600" //onclick="updateQuantity('item1', -1)"
-                      >
-                        <i class="fas fa-minus"></i>
-                      </button>
-                      <span
-                        id="item1-quantity"
-                        class="px-3 py-1 text-center w-8"
-                      >
-                        1
-                      </span>
-                      <button class="quantity-btn px-3 py-1 text-gray-600" //onclick="updateQuantity('item1', 1)"
-                      >
-                        <i class="fas fa-plus"></i>
-                      </button>
-                    </div>
-                    <span class="font-bold text-indigo-600">
-                      {`$ ${product.price}`}
-                    </span>
-                  </div>
-                </div>
-                <button class="" //onclick="removeItem('item1')"
-                >
-                  <i class="fas fa-trash"></i>
-                </button>
+            <div class="p-4  bg-gray-200 mb-5 flex gap-4 relative ">
+              <div class="w-14 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                <img
+                  src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+                  alt="Wireless Headphones"
+                  class="w-full h-full object-cover"
+                />
               </div>
-            </>
+              <div class="flex-grow">
+                <h3 class="font-semibold text-gray-800">
+                  {product.title}
+                </h3>
+                <p class="text-gray-600 text-sm mt-1">{product.category}</p>
+                <div class="flex items-center justify-between mt-2">
+                  <div class="flex items-center border border-gray-300 rounded-md overflow-hidden">
+                    <button class="quantity-btn px-3 py-1 text-gray-600" //onclick="updateQuantity('item1', -1)"
+                    >
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <span
+                      id="item1-quantity"
+                      class="px-3 py-1 text-center w-8"
+                    >
+                      1
+                    </span>
+                    <button class="quantity-btn px-3 py-1 text-gray-600" //onclick="updateQuantity('item1', 1)"
+                    >
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                  <span class="font-bold text-indigo-600">
+                    {`$ ${product.price}`}
+                  </span>
+                </div>
+              </div>
+              <button class="" onClick={() => deleteItem(product.id)}>
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
           );
         })}
 
