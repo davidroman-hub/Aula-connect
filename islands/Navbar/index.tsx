@@ -1,9 +1,10 @@
-import { Dispatch, StateUpdater, useState } from "preact/hooks";
+import { Dispatch, StateUpdater, useEffect, useState } from "preact/hooks";
 import CartItems from "../cart/index.tsx";
 
 const Cart = (
   showSidebar: boolean,
-  setShowSidebar: Dispatch<StateUpdater<boolean>>
+  setShowSidebar: Dispatch<StateUpdater<boolean>>,
+  cartProductsLength: number,
 ) => (
   <div onClick={() => setShowSidebar(true)} className="dropdown dropdown-end">
     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -22,11 +23,14 @@ const Cart = (
             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
           />
         </svg>
-        <span className="badge badge-sm indicator-item">8</span>
+        <span className="badge badge-sm indicator-item">
+          {cartProductsLength}
+        </span>
       </div>
     </div>
 
-    {/* <div
+    {
+      /* <div
       tabIndex={0}
       className="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow"
     >
@@ -37,12 +41,24 @@ const Cart = (
           <button className="btn btn-primary btn-block">View cart</button>
         </div>
       </div>
-    </div> */}
+    </div> */
+    }
   </div>
 );
 
 const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [cartProductsLength, setCartProductsLength] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const cartProducts = JSON.parse(
+        localStorage.getItem("cartProducts") || "[]",
+      );
+      setCartProductsLength(cartProducts.length);
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   const sideBarsStyles = {
     width: "370px",
@@ -65,7 +81,9 @@ const Navbar = () => {
     <>
       <div className="navbar bg-base-100 justify-between shadow-sm border-gray-600 border-b">
         <div style={sideBarsStyles}>
-          <p class="p-4 border-b border-gray-600 w-screen mb-3">Cart(1)</p>
+          <p class="p-4 border-b border-gray-600 w-screen mb-3">
+            Cart({cartProductsLength})
+          </p>
           <div>
             <CartItems />
           </div>
@@ -82,8 +100,9 @@ const Navbar = () => {
         </div>
 
         <div className="flex-none">
-          {Cart(showSidebar, setShowSidebar)}
-          {/* <div className="dropdown dropdown-end">
+          {Cart(showSidebar, setShowSidebar, cartProductsLength)}
+          {
+            /* <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
             role="button"
@@ -113,14 +132,16 @@ const Navbar = () => {
               <a>Logout</a>
             </li>
           </ul>
-        </div> */}
+        </div> */
+          }
         </div>
       </div>
       {showSidebar && (
         <div
           onClick={() => setShowSidebar(false)}
           class="fixed inset-0 bg-black opacity-20  z-50"
-        ></div>
+        >
+        </div>
       )}
     </>
   );
