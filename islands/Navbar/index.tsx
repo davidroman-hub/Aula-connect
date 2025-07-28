@@ -28,21 +28,6 @@ const Cart = (
         </span>
       </div>
     </div>
-
-    {
-      /* <div
-      tabIndex={0}
-      className="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow"
-    >
-      <div className="card-body">
-        <span className="text-lg font-bold">8 Items</span>
-        <span className="text-info">Subtotal: $999</span>
-        <div className="card-actions">
-          <button className="btn btn-primary btn-block">View cart</button>
-        </div>
-      </div>
-    </div> */
-    }
   </div>
 );
 
@@ -95,6 +80,11 @@ const Navbar = () => {
           <div>
             <a href="/products" className="ml-6 mt-4">
               Products
+            </a>
+          </div>
+          <div>
+            <a href="/orders" className="ml-6 mt-4">
+              Orders
             </a>
           </div>
         </div>

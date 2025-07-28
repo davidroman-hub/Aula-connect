@@ -30,4 +30,21 @@ export const handler: Handlers = {
       });
     }
   },
+
+  async GET(req, ctx) {
+    try {
+      const orders = await orderCollection.find({}).toArray();
+
+      return new Response(JSON.stringify(orders), {
+        status: STATUS_CODE.OK,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error: any) {
+      return new Response(error?.message ?? "Internal Server Error", {
+        status: STATUS_CODE.InternalServerError,
+      });
+    }
+  },
 };
