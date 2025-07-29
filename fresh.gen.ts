@@ -15,6 +15,7 @@ import * as $Navbar_index from "./islands/Navbar/index.tsx";
 import * as $ShowProducts_index from "./islands/ShowProducts/index.tsx";
 import * as $cart_index from "./islands/cart/index.tsx";
 import * as $checkout_index_1 from "./islands/checkout/index.tsx";
+import * as $modal_index from "./islands/modal/index.tsx";
 import * as $showOrders_showOrders from "./islands/showOrders/showOrders.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -35,6 +36,7 @@ const manifest = {
     "./islands/ShowProducts/index.tsx": $ShowProducts_index,
     "./islands/cart/index.tsx": $cart_index,
     "./islands/checkout/index.tsx": $checkout_index_1,
+    "./islands/modal/index.tsx": $modal_index,
     "./islands/showOrders/showOrders.tsx": $showOrders_showOrders,
   },
   baseUrl: import.meta.url,
