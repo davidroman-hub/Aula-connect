@@ -5,6 +5,7 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
+import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
 import * as $checkout_index from "./routes/checkout/index.tsx";
 import * as $index from "./routes/index.tsx";
@@ -27,6 +28,7 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/api/joke.ts": $api_joke,
+    "./routes/api/jwt/token.tsx": $api_jwt_token,
     "./routes/api/orders/create.tsx": $api_orders_create,
     "./routes/checkout/index.tsx": $checkout_index,
     "./routes/index.tsx": $index,

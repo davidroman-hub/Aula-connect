@@ -1,5 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import palette from "../../assets/colors.ts";
+import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -19,6 +20,25 @@ const LoginPage = () => {
     }
   }, []);
 
+  const jwtToken = async () => {
+    try {
+      const respo = await axiod.post("/api/jwt/token", {
+        username: email,
+        password: password,
+      });
+      if (respo.status === 200) {
+        const { token } = respo.data;
+        localStorage.setItem("jwtToken", token);
+        alert("Login successful!");
+      } else {
+        alert("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
+
   const validateForm = () => {
     const newErrors = { email: "", password: "" };
     if (!email) newErrors.email = "Email is required";
@@ -37,7 +57,7 @@ const LoginPage = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-
+    jwtToken();
     if (!validateForm()) {
       setShake(true);
       setTimeout(() => setShake(false), 500);
@@ -92,7 +112,7 @@ const LoginPage = () => {
               </div>
               <input
                 id="email"
-                type="email"
+                type="text"
                 value={email}
                 onChange={(e: any) => setEmail(e.target.value)}
                 className={`block w-full pl-10 pr-3 py-2 border placeholder-gray-500  ${
