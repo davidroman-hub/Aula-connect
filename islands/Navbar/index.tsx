@@ -36,6 +36,7 @@ const Cart = (
 const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [cartProductsLength, setCartProductsLength] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -66,83 +67,161 @@ const Navbar = () => {
     alignItems: "flex-start",
   };
 
+  // const mobileMenu = document.querySelector(".md\\:flex.space-x-8");
+  // const mobileMenuButton = document.querySelector(".md\\:hidden.text-gray-700");
+  // if (mobileMenuButton && mobileMenu) {
+  //   const openMobileMenu = () => {
+  //     mobileMenu.classList.toggle("hidden");
+  //     mobileMenu.classList.toggle("flex");
+  //     mobileMenu.classList.toggle("flex-col");
+  //     mobileMenu.classList.toggle("absolute");
+  //     mobileMenu.classList.toggle("top-16");
+  //     mobileMenu.classList.toggle("left-0");
+  //     mobileMenu.classList.toggle("right-0");
+  //     mobileMenu.classList.toggle("bg-white");
+  //     mobileMenu.classList.toggle("p-4");
+  //     mobileMenu.classList.toggle("shadow-md");
+  //     mobileMenu.classList.toggle("space-y-4");
+  //     mobileMenu.classList.toggle("space-x-0");
+  //   };
+  // }
   return (
-    <>
-      <div className="navbar bg-base-100 justify-between shadow-sm border-gray-600 border-b">
-        <div style={sideBarsStyles}>
-          <p class="p-4 border-b border-gray-600 w-screen mb-3">
-            Cart({cartProductsLength})
-          </p>
-          <div>
-            <CartItems />
+    // <>
+    //   <div className="navbar bg-base-100 justify-between shadow-sm border-gray-600 border-b">
+    //     <div style={sideBarsStyles}>
+    //       <p class="p-4 border-b border-gray-600 w-screen mb-3">
+    //         Cart({cartProductsLength})
+    //       </p>
+    //       <div>
+    //         <CartItems />
+    //       </div>
+    //     </div>
+    //     <div className="flex items-center ">
+    //       <a href="/" className="btn btn-ghost text-xl">
+    //         Ecommerce example
+    //       </a>
+    //       <div>
+    //         <a href="/products" className="ml-6 mt-4">
+    //           Products
+    //         </a>
+    //       </div>
+    //       <div>
+    //         <a href="/orders" className="ml-6 mt-4">
+    //           Orders
+    //         </a>
+    //       </div>
+
+    //       <div>
+    //         <h1 class="text-4xl font-bold">{t("login.title")}</h1>
+    //         <ChangeToSpanish />
+    //       </div>
+    //     </div>
+
+    //     <div className="flex-none">
+    //       {Cart(showSidebar, setShowSidebar, cartProductsLength)}
+    //     </div>
+    //   </div>
+    //   {showSidebar && (
+    //     <div
+    //       onClick={() => setShowSidebar(false)}
+    //       class="fixed inset-0 bg-black opacity-20  z-50"
+    //     >
+    //     </div>
+    //   )}
+    // </>
+
+    <nav className="bg-white shadow-md sticky top-0 z-50">
+      <div class="flex items-center justify-between max-w-7xl mx-auto px-4 py-4">
+        <div className="flex items-center space-x-2">
+          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+            {/* <FaCode className="text-white text-xl" /> */}
           </div>
+          <span className="text-xl font-bold text-primaryDarker">
+            CodeMaster
+          </span>
         </div>
-        <div className="flex items-center ">
-          <a href="/" className="btn btn-ghost text-xl">
-            Ecommerce example
+
+        <div
+          className={isMobileMenuOpen
+            ? "flex flex-col absolute top-16 left-0 right-0 bg-white p-4 shadow-md space-y-4 space-x-0"
+            : "hidden md:flex space-x-8"}
+        >
+          <a href="#" className="text-gray-700 hover:text-primary font-medium">
+            Home
           </a>
-          <div>
-            <a href="/products" className="ml-6 mt-4">
-              Products
-            </a>
-          </div>
-          <div>
-            <a href="/orders" className="ml-6 mt-4">
-              Orders
-            </a>
-          </div>
-
-          <div>
-            <h1 class="text-4xl font-bold">{t("login.title")}</h1>
-            <ChangeToSpanish />
-          </div>
+          <a href="#" className="text-gray-700 hover:text-primary font-medium">
+            Courses
+          </a>
+          <a href="#" className="text-gray-700 hover:text-primary font-medium">
+            Paths
+          </a>
+          <a href="#" className="text-gray-700 hover:text-primary font-medium">
+            Community
+          </a>
+          <a href="#" className="text-gray-700 hover:text-primary font-medium">
+            Pricing
+          </a>
         </div>
 
-        <div className="flex-none">
-          {Cart(showSidebar, setShowSidebar, cartProductsLength)}
-          {
-            /* <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
+        <div className="flex items-center space-x-4">
+          <button className="hidden md:block text-primaryDark font-medium hover:text-primary">
+            Login
+          </button>
+          <button className="bg-primary hover:bg-primaryDark text-white px-4 py-2 rounded-full font-medium transition duration-300">
+            Sign Up Free
+          </button>
+          <button
+            onClick={() =>
+              setIsMobileMenuOpen(isMobileMenuOpen ? !isMobileMenuOpen : true)}
+            className="md:hidden text-gray-700"
           >
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
-            </div>
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
-            </li>
-            <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <a>Logout</a>
-            </li>
-          </ul>
-        </div> */
-          }
+            <i class="fas fa-bars text-xl"></i>
+          </button>
         </div>
       </div>
-      {showSidebar && (
-        <div
-          onClick={() => setShowSidebar(false)}
-          class="fixed inset-0 bg-black opacity-20  z-50"
-        >
-        </div>
-      )}
-    </>
+    </nav>
+    // <div class="font-sans bg-gray-50">
+    //   <nav class="bg-white shadow-md sticky top-0 z-50">
+    //     <div class="flex items-center justify-between max-w-7xl mx-auto px-4 py-4">
+    //       <div class="flex items-center space-x-2">
+    //         <div class="w-10 h-10 rounded-full flex items-center justify-center">
+    //           <i class="fas fa-code text-white text-xl"></i>
+    //         </div>
+    //         <span class="text-xl font-bold text-primaryDarker">CodeMaster</span>
+    //       </div>
+
+    //       <div class="hidden md:flex space-x-8">
+    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
+    //           Home
+    //         </a>
+    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
+    //           Courses
+    //         </a>
+    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
+    //           Paths
+    //         </a>
+    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
+    //           Community
+    //         </a>
+    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
+    //           Pricing
+    //         </a>
+    //       </div>
+
+    //       <div class="flex items-center space-x-4">
+    //         <button class="hidden md:block text-primaryDark font-medium hover:text-primary">
+    //           Login
+    //         </button>
+    //         <button class="bg-primary hover:bg-primaryDark text-white px-4 py-2 rounded-full font-medium transition duration-300">
+    //           Sign Up Free
+    //         </button>
+    //         <button class="md:hidden text-gray-700">
+    //           <i class="fas fa-bars text-xl"></i>
+    //         </button>
+    //       </div>
+    //     </div>
+    //   </nav>
+    // </div>
   );
 };
 

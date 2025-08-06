@@ -16,9 +16,11 @@ export default function App({ Component }: PageProps) {
         </script>
       </head>
       <body>
-        <button data-toggle-theme="dark,light" data-act-class="ACTIVECLASS">
+        {
+          /* <button data-toggle-theme="dark,light" data-act-class="ACTIVECLASS">
           s
-        </button>
+        </button> */
+        }
         <Navbar />
         <Component />
       </body>
