@@ -2,6 +2,7 @@ import { Dispatch, StateUpdater, useEffect, useState } from "preact/hooks";
 import CartItems from "../cart/index.tsx";
 import { i18n } from "../../i18next.ts";
 import ChangeToSpanish from "../changeLanguage/index.tsx";
+import palette from "../../assets/colors.ts";
 
 const Cart = (
   showSidebar: boolean,
@@ -67,24 +68,6 @@ const Navbar = () => {
     alignItems: "flex-start",
   };
 
-  // const mobileMenu = document.querySelector(".md\\:flex.space-x-8");
-  // const mobileMenuButton = document.querySelector(".md\\:hidden.text-gray-700");
-  // if (mobileMenuButton && mobileMenu) {
-  //   const openMobileMenu = () => {
-  //     mobileMenu.classList.toggle("hidden");
-  //     mobileMenu.classList.toggle("flex");
-  //     mobileMenu.classList.toggle("flex-col");
-  //     mobileMenu.classList.toggle("absolute");
-  //     mobileMenu.classList.toggle("top-16");
-  //     mobileMenu.classList.toggle("left-0");
-  //     mobileMenu.classList.toggle("right-0");
-  //     mobileMenu.classList.toggle("bg-white");
-  //     mobileMenu.classList.toggle("p-4");
-  //     mobileMenu.classList.toggle("shadow-md");
-  //     mobileMenu.classList.toggle("space-y-4");
-  //     mobileMenu.classList.toggle("space-x-0");
-  //   };
-  // }
   return (
     // <>
     //   <div className="navbar bg-base-100 justify-between shadow-sm border-gray-600 border-b">
@@ -133,12 +116,20 @@ const Navbar = () => {
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div class="flex items-center justify-between max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center space-x-2">
-          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-            {/* <FaCode className="text-white text-xl" /> */}
+          <div
+            style={{ background: palette.backgroundSoft }}
+            className="w-15 h-15 rounded-full flex items-center justify-center"
+          >
+            <img
+              src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1754490890/learningplat/logo_qkfxhw.png"
+              alt="logo"
+            />
           </div>
-          <span className="text-xl font-bold text-primaryDarker">
+          {
+            /* <span className="text-xl font-bold text-primaryDarker">
             CodeMaster
-          </span>
+          </span> */
+          }
         </div>
 
         <div
@@ -146,7 +137,7 @@ const Navbar = () => {
             ? "flex flex-col absolute top-16 left-0 right-0 bg-white p-4 shadow-md space-y-4 space-x-0"
             : "hidden md:flex space-x-8"}
         >
-          <a href="#" className="text-gray-700 hover:text-primary font-medium">
+          <a href="/" className="text-gray-700 hover:text-primary font-medium">
             Home
           </a>
           <a href="#" className="text-gray-700 hover:text-primary font-medium">
@@ -164,12 +155,14 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          <button className="hidden md:block text-primaryDark font-medium hover:text-primary">
-            Login
-          </button>
-          <button className="bg-primary hover:bg-primaryDark text-white px-4 py-2 rounded-full font-medium transition duration-300">
-            Sign Up Free
-          </button>
+          <div
+            style={{ background: palette.backgroundSoft }}
+            className="hover:bg-primaryDark text-white px-4 py-2 rounded-full font-medium transition duration-300"
+          >
+            <a href="/login">
+              Login
+            </a>
+          </div>
           <button
             onClick={() =>
               setIsMobileMenuOpen(isMobileMenuOpen ? !isMobileMenuOpen : true)}

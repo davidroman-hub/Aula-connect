@@ -91,7 +91,7 @@ const LoginPage = () => {
         }`}
       >
         <div
-          style={{ backgroundColor: palette.primary }}
+          style={{ backgroundColor: palette.backgroundSoft }}
           className="gradient-bg p-6 text-center"
         >
           <h1 className="text-3xl font-bold text-black">Welcome Back</h1>
