@@ -144,14 +144,14 @@ const Navbar = () => {
             Courses
           </a>
           <a href="#" className="text-gray-700 hover:text-primary font-medium">
-            Paths
-          </a>
-          <a href="#" className="text-gray-700 hover:text-primary font-medium">
-            Community
-          </a>
-          <a href="#" className="text-gray-700 hover:text-primary font-medium">
             Pricing
           </a>
+          <a href="#" className="text-gray-700 hover:text-primary font-medium">
+            Work with me!
+          </a>
+          <button data-toggle-theme="dark,light" data-act-class="ACTIVECLASS">
+            s
+          </button>
         </div>
 
         <div className="flex items-center space-x-4">
@@ -173,48 +173,6 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-    // <div class="font-sans bg-gray-50">
-    //   <nav class="bg-white shadow-md sticky top-0 z-50">
-    //     <div class="flex items-center justify-between max-w-7xl mx-auto px-4 py-4">
-    //       <div class="flex items-center space-x-2">
-    //         <div class="w-10 h-10 rounded-full flex items-center justify-center">
-    //           <i class="fas fa-code text-white text-xl"></i>
-    //         </div>
-    //         <span class="text-xl font-bold text-primaryDarker">CodeMaster</span>
-    //       </div>
-
-    //       <div class="hidden md:flex space-x-8">
-    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
-    //           Home
-    //         </a>
-    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
-    //           Courses
-    //         </a>
-    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
-    //           Paths
-    //         </a>
-    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
-    //           Community
-    //         </a>
-    //         <a href="#" class="text-gray-700 hover:text-primary font-medium">
-    //           Pricing
-    //         </a>
-    //       </div>
-
-    //       <div class="flex items-center space-x-4">
-    //         <button class="hidden md:block text-primaryDark font-medium hover:text-primary">
-    //           Login
-    //         </button>
-    //         <button class="bg-primary hover:bg-primaryDark text-white px-4 py-2 rounded-full font-medium transition duration-300">
-    //           Sign Up Free
-    //         </button>
-    //         <button class="md:hidden text-gray-700">
-    //           <i class="fas fa-bars text-xl"></i>
-    //         </button>
-    //       </div>
-    //     </div>
-    //   </nav>
-    // </div>
   );
 };
 

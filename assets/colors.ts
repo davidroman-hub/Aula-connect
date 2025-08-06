@@ -7,6 +7,7 @@ const palette = {
   backgroundSoft: "#F77DA9",
   backgroundSuperSoft: "#FCD5E3",
   white: "#ffff",
+  darkThemeBackground: "#1D232A",
 };
 
 export default palette;
