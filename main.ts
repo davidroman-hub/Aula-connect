@@ -12,8 +12,6 @@ import config from "./fresh.config.ts";
 
 import { createMongoDbConnection } from "./lib/mongo.ts";
 
-//deno task start
-
-await createMongoDbConnection()
+await createMongoDbConnection();
 
 await start(manifest, config);

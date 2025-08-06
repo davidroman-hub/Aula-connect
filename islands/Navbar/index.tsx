@@ -1,5 +1,7 @@
 import { Dispatch, StateUpdater, useEffect, useState } from "preact/hooks";
 import CartItems from "../cart/index.tsx";
+import { i18n } from "../../i18next.ts";
+import ChangeToSpanish from "../changeLanguage/index.tsx";
 
 const Cart = (
   showSidebar: boolean,
@@ -45,6 +47,8 @@ const Navbar = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  const { t } = i18n;
+
   const sideBarsStyles = {
     width: "370px",
     position: "fixed",
@@ -86,6 +90,11 @@ const Navbar = () => {
             <a href="/orders" className="ml-6 mt-4">
               Orders
             </a>
+          </div>
+
+          <div>
+            <h1 class="text-4xl font-bold">{t("login.title")}</h1>
+            <ChangeToSpanish />
           </div>
         </div>
 
