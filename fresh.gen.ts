@@ -12,6 +12,7 @@ import * as $index from "./routes/index.tsx";
 import * as $login_index from "./routes/login/index.tsx";
 import * as $orders_index from "./routes/orders/index.tsx";
 import * as $products_index from "./routes/products/index.tsx";
+import * as $work_with_me_index from "./routes/work-with-me/index.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Navbar_index from "./islands/Navbar/index.tsx";
 import * as $ShowProducts_index from "./islands/ShowProducts/index.tsx";
@@ -26,6 +27,7 @@ import * as $main_index from "./islands/main/index.tsx";
 import * as $main_learnWithMe from "./islands/main/learnWithMe.tsx";
 import * as $main_testimonials from "./islands/main/testimonials.tsx";
 import * as $modal_index from "./islands/modal/index.tsx";
+import * as $portafolio_index from "./islands/portafolio/index.tsx";
 import * as $showOrders_showOrders from "./islands/showOrders/showOrders.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -41,6 +43,7 @@ const manifest = {
     "./routes/login/index.tsx": $login_index,
     "./routes/orders/index.tsx": $orders_index,
     "./routes/products/index.tsx": $products_index,
+    "./routes/work-with-me/index.tsx": $work_with_me_index,
   },
   islands: {
     "./islands/Counter.tsx": $Counter,
@@ -57,6 +60,7 @@ const manifest = {
     "./islands/main/learnWithMe.tsx": $main_learnWithMe,
     "./islands/main/testimonials.tsx": $main_testimonials,
     "./islands/modal/index.tsx": $modal_index,
+    "./islands/portafolio/index.tsx": $portafolio_index,
     "./islands/showOrders/showOrders.tsx": $showOrders_showOrders,
   },
   baseUrl: import.meta.url,

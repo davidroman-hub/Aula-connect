@@ -17,6 +17,7 @@
   },
   "exclude": ["**/_fresh/*"],
   "imports": {
+    "@preact-icons/ai": "jsr:@preact-icons/ai@^1.0.13",
     "mongo/": "https://deno.land/x/mongo@v0.32.0/",
     "$fresh/": "https://deno.land/x/fresh@1.7.3/",
     "@pakornv/fresh-plugin-tailwindcss": "jsr:@pakornv/fresh-plugin-tailwindcss@^1.0.3",

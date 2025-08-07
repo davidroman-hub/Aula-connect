@@ -143,10 +143,19 @@ const Navbar = () => {
           <a href="#" className="text-gray-700 hover:text-primary font-medium">
             Pricing
           </a>
-          <a href="#" className="text-gray-700 hover:text-primary font-medium">
+          <a
+            href="/work-with-me"
+            className="text-gray-700 hover:text-primary font-medium"
+          >
             Work with me!
           </a>
-          <button data-toggle-theme="dark,light" data-act-class="ACTIVECLASS">
+          <button
+            onClick={() => {
+              window.location.reload();
+            }}
+            data-toggle-theme="dark,light"
+            data-act-class="ACTIVECLASS"
+          >
             s
           </button>
         </div>

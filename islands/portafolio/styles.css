@@ -1,13 +1,3 @@
-@import "tailwindcss";
-
-@plugin "daisyui" {
-  themes: light --default, dark --prefersdark, cupcake;
-}
-
-/* * {
-  color: #3c3a40;
-} */
-
 .gradient-text {
   background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
   -webkit-background-clip: text;
