@@ -1,3 +1,5 @@
+import { manageTheme, palette } from "../../assets/colors.ts";
+
 const Courses = () => {
   const courses = [
     {
@@ -33,7 +35,7 @@ const Courses = () => {
   ];
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className={`py-16 ${manageTheme()}`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-primaryDarker mb-4">
@@ -51,7 +53,12 @@ const Courses = () => {
               key={index}
               className="bg-white rounded-xl shadow-md overflow-hidden course-card transition duration-300"
             >
-              <div className="h-48 bg-gradient-to-r from-primary to-primaryDark flex items-center justify-center">
+              <div
+                style={{
+                  background: palette.linearGradient,
+                }}
+                className="h-48 from-primary to-primaryDark flex items-center justify-center"
+              >
                 {course.icon}
               </div>
               <div className="p-6">
@@ -59,21 +66,14 @@ const Courses = () => {
                   <h3 className="text-xl font-bold text-gray-800">
                     {course.title}
                   </h3>
-                  <span className="bg-primary bg-opacity-10 text-primary text-xs font-bold px-2 py-1 rounded">
+                  <span
+                    className={`bg-[#F77DA9] bg-opacity-10 text-[#ffff]  text-xs font-bold px-2 py-1 rounded`}
+                  >
                     {course.level}
                   </span>
                 </div>
                 <p className="text-gray-600 mb-4">{course.description}</p>
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center">
-                    <span className="font-medium">{course.rating}</span>
-                    <span className="text-gray-500 ml-1">
-                      ({course.reviews})
-                    </span>
-                  </div>
-                  <div className="text-primaryDark font-bold">
-                    {course.price}
-                  </div>
                 </div>
               </div>
             </div>

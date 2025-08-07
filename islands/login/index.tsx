@@ -1,6 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
-import palette from "../../assets/colors.ts";
+
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
+import { palette } from "../../assets/colors.ts";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");

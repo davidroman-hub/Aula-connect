@@ -2,7 +2,7 @@ import { Dispatch, StateUpdater, useEffect, useState } from "preact/hooks";
 import CartItems from "../cart/index.tsx";
 import { i18n } from "../../i18next.ts";
 import ChangeToSpanish from "../changeLanguage/index.tsx";
-import palette from "../../assets/colors.ts";
+import { palette } from "../../assets/colors.ts";
 
 const Cart = (
   showSidebar: boolean,
