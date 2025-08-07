@@ -1,3 +1,5 @@
+import { palette } from "../../assets/colors.ts";
+
 const LearnWithMe = () => {
   return (
     <section className={`py-16 bg-[#C1275A] `}>
@@ -15,8 +17,11 @@ const LearnWithMe = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* <!-- Feature 1 --> */}
           <div className="feature-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-            <div className="w-16 h-16 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mb-4">
-              <i className="fas fa-laptop-code feature-icon text-primary text-2xl">
+            <div
+              style={{ background: palette.backgroundSoft }}
+              className="w-16 h-16 rounded-full bg-opacity-10 flex items-center justify-center mb-4"
+            >
+              <i className="fas fa-laptop-code feature-icon text-[#C1275A]  text-2xl">
               </i>
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">
@@ -30,8 +35,11 @@ const LearnWithMe = () => {
 
           {/* <!-- Feature 2 --> */}
           <div className="feature-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-            <div className="w-16 h-16 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mb-4">
-              <i className="fas fa-project-diagram feature-icon text-primary text-2xl">
+            <div
+              style={{ background: palette.backgroundSoft }}
+              className="w-16 h-16 rounded-full  bg-opacity-10 flex items-center justify-center mb-4"
+            >
+              <i className="fas fa-project-diagram feature-icon text-[#C1275A]  text-2xl">
               </i>
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">
@@ -45,8 +53,11 @@ const LearnWithMe = () => {
 
           {/* <!-- Feature 3 --> */}
           <div className="feature-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-            <div className="w-16 h-16 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mb-4">
-              <i className="fas fa-users feature-icon text-primary text-2xl">
+            <div
+              style={{ background: palette.backgroundSoft }}
+              className="w-16 h-16 rounded-full bg-opacity-10 flex items-center justify-center mb-4"
+            >
+              <i className="fas fa-users feature-icon text-[#C1275A] text-2xl">
               </i>
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">
@@ -60,8 +71,11 @@ const LearnWithMe = () => {
 
           {/* <!-- Feature 4 --> */}
           <div className="feature-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300">
-            <div className="w-16 h-16 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mb-4">
-              <i className="fas fa-certificate feature-icon text-primary text-2xl">
+            <div
+              style={{ background: palette.backgroundSoft }}
+              className="w-16 h-16 rounded-full bg-opacity-10 flex items-center justify-center mb-4"
+            >
+              <i className="fas fa-certificate feature-icon text-[#C1275A] text-2xl">
               </i>
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">

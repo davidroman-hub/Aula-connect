@@ -81,7 +81,7 @@ const Courses = () => {
         </div>
 
         <div className="text-center mt-12">
-          <button className="border-2 border-primary text-primary px-8 py-3 rounded-full font-bold hover:bg-primary hover:text-white transition duration-300">
+          <button className="border-2 border-[#C1275A] text-[#C1275A] px-8 py-3 rounded-full font-bold hover:bg-[#C1275A] hover:text-white transition duration-300">
             View All Courses
           </button>
         </div>

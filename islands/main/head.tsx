@@ -19,7 +19,7 @@ const Head = () => {
               web developer. Learn HTML, CSS, JavaScript, React and more.
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <button className="bg-white text-primaryDark px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition duration-300">
+              <button className="bg-white text-[#F77DA9] px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition duration-300">
                 Start Learning Free
               </button>
               <button className="border-2 border-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-primaryDark transition duration-300">
