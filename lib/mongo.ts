@@ -1,10 +1,10 @@
 import { Database, MongoClient } from "mongo/mod.ts";
 import "jsr:@std/dotenv/load";
 
-//const uri = Deno.env.get("MONGO_URI");
-const uri =
-  "mongodb+srv://t:t@t.sjppuzc.mongodb.net/?retryWrites=true&authMechanism=SCRAM-SHA-1&w=majority&appName=t";
-const DB = Deno.env.get("MONGO_DB_NAME");
+const uri = Deno.env.get("MONGO");
+// const uri =
+//   "mongodb+srv://t:t@t.sjppuzc.mongodb.net/?retryWrites=true&authMechanism=SCRAM-SHA-1&w=majority&appName=t";
+const DB = "t";
 
 let db: Database;
 
