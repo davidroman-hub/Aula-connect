@@ -10,6 +10,7 @@ async function createMongoDbConnection() {
   try {
     const client = new MongoClient();
     await client.connect(uri as string);
+    console.log(`Mongo db URI/.... DB : ${uri}`);
     console.log(`Mongo db connection established/.... DB : ${DB}`);
     return client.database(DB);
   } catch (error) {
