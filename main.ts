@@ -5,7 +5,7 @@
 /// <reference lib="deno.ns" />
 
 import "$std/dotenv/load.ts";
-
+const uri = Deno.env.get("MONGO");
 import { start } from "$fresh/server.ts";
 import manifest from "./fresh.gen.ts";
 import config from "./fresh.config.ts";
@@ -13,7 +13,7 @@ import config from "./fresh.config.ts";
 import { createMongoDbConnection } from "./lib/mongo.ts";
 
 //deno task start
-
-await createMongoDbConnection()
+console.log("Starting Fresh server...", uri, "siii david");
+await createMongoDbConnection();
 
 await start(manifest, config);
