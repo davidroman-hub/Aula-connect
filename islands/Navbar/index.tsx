@@ -38,6 +38,8 @@ const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [cartProductsLength, setCartProductsLength] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isAuth = localStorage.getItem("auth") || "false";
+  const user = localStorage.getItem("user") || "user";
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -125,11 +127,6 @@ const Navbar = () => {
               alt="logo"
             />
           </div>
-          {
-            /* <span className="text-xl font-bold text-primaryDarker">
-            CodeMaster
-          </span> */
-          }
         </div>
 
         <div
@@ -155,14 +152,25 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          <div
-            style={{ background: palette.backgroundSoft }}
-            className="hover:bg-primaryDark text-white px-4 py-2 rounded-full font-medium transition duration-300"
-          >
-            <a href="/login">
-              Login
-            </a>
-          </div>
+          {isAuth === "false"
+            ? (
+              <div
+                style={{ background: palette.backgroundSoft }}
+                className="hover:bg-primaryDark text-white px-4 py-2 rounded-full font-medium transition duration-300"
+              >
+                <a href="/login">
+                  Login
+                </a>
+              </div>
+            )
+            : (
+              <button
+                style={{ background: palette.backgroundSoft }}
+                className="uppercase hover:bg-primaryDark text-white px-4 py-2 rounded-full font-medium transition duration-300"
+              >
+                {user.substring(0, 1)}
+              </button>
+            )}
           <button
             onClick={() =>
               setIsMobileMenuOpen(isMobileMenuOpen ? !isMobileMenuOpen : true)}

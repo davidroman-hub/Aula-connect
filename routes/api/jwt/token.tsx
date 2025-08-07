@@ -1,21 +1,6 @@
 import { Handlers, STATUS_CODE } from "$fresh/server.ts";
 import { createJWT } from "../../../lib/JWT.ts";
 import { Users } from "../../../models/User.ts";
-import { compare } from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
-
-// export const handler: Handlers = {
-//   async POST(req) {
-//     const body = await req.json();
-//     // Aquí validarías el usuario y contraseña...
-//     if (body.username === "admin" && body.password === "1234") {
-//       const token = await createJWT(body.username);
-//       return new Response(JSON.stringify({ token }), {
-//         headers: { "Content-Type": "application/json" },
-//       });
-//     }
-//     return new Response("Unauthorized", { status: 401 });
-//   },
-// };
 
 export const handler: Handlers = {
   async POST(req) {

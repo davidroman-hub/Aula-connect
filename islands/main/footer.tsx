@@ -9,16 +9,14 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                <i className="fas fa-code text-white text-xl"></i>
-              </div>
-              <span
-                style={{ color: palette.white }}
-                className="text-xl font-bold"
-              >
-                CodeMaster
-              </span>
+            <div
+              style={{ background: palette.backgroundSoft }}
+              className="w-10 h-10 rounded-full flex items-center justify-center"
+            >
+              <img
+                src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1754490890/learningplat/logo_qkfxhw.png"
+                alt="logo"
+              />
             </div>
             <p className="text-gray-300 mb-4">
               The best platform to learn web development and advance your

@@ -2,9 +2,10 @@ import { useEffect, useState } from "preact/hooks";
 
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { palette } from "../../assets/colors.ts";
+import { red } from "$std/fmt/colors.ts";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({ email: "", password: "" });
@@ -16,21 +17,23 @@ const LoginPage = () => {
     // Check for saved credentials
     const savedEmail = localStorage.getItem("rememberedEmail");
     if (savedEmail) {
-      setEmail(savedEmail);
+      setUsername(savedEmail);
       setRememberMe(true);
     }
   }, []);
 
-  const jwtToken = async () => {
+  const login = async () => {
     try {
       const respo = await axiod.post("/api/jwt/token", {
-        username: email,
+        username: username,
         password: password,
       });
       if (respo.status === 200) {
         const { token } = respo.data;
         localStorage.setItem("jwtToken", token);
-        alert("Login successful!");
+        localStorage.setItem("auth", "true");
+        localStorage.setItem("user", username);
+        window.location.href = "/";
       } else {
         alert("Login failed. Please check your credentials.");
       }
@@ -42,8 +45,8 @@ const LoginPage = () => {
 
   const validateForm = () => {
     const newErrors = { email: "", password: "" };
-    if (!email) newErrors.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!username) newErrors.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username)) {
       newErrors.email = "Please enter a valid email";
     }
 
@@ -58,7 +61,7 @@ const LoginPage = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    jwtToken();
+    login();
     if (!validateForm()) {
       setShake(true);
       setTimeout(() => setShake(false), 500);
@@ -69,9 +72,9 @@ const LoginPage = () => {
 
     // Simulate API call
     setTimeout(() => {
-      console.log("Login attempt with:", { email, password, rememberMe });
+      console.log("Login attempt with:", { username, password, rememberMe });
       if (rememberMe) {
-        localStorage.setItem("rememberedEmail", email);
+        localStorage.setItem("rememberedEmail", username);
       } else {
         localStorage.removeItem("rememberedEmail");
       }
@@ -114,8 +117,8 @@ const LoginPage = () => {
               <input
                 id="email"
                 type="text"
-                value={email}
-                onChange={(e: any) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e: any) => setUsername(e.target.value)}
                 className={`block w-full pl-10 pr-3 py-2 border placeholder-gray-500  ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 } rounded-lg input-focus transition-all duration-200`}
