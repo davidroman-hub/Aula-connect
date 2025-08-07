@@ -1,7 +1,7 @@
 import { Database, MongoClient } from "mongo/mod.ts";
 import "jsr:@std/dotenv/load";
 
-const uri = Deno.env.get("MONGO_URI");
+const uri = Deno.env.get("MONGO");
 const DB = "t";
 
 let db: Database;
