@@ -15,6 +15,7 @@ async function createMongoDbConnection() {
     return client.database(DB);
   } catch (error) {
     console.log("error");
+    console.log(`Mongo db URI/.... DB : ${uri}`);
     throw new Error(error as any);
   }
 }
