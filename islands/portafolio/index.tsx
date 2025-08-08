@@ -1,4 +1,47 @@
 import { useEffect, useState } from "preact/hooks";
+import { palette } from "../../assets/colors.ts";
+
+//  .gradient-text {
+//         background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+//         -webkit-background-clip: text;
+//         background-clip: text;
+//         color: transparent;
+//     }
+//     .card-hover-effect {
+//         transition: all 0.3s ease;
+//     }
+//     .card-hover-effect:hover {
+//         transform: translateY(-5px);
+//         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+//     }
+//     .skill-pill {
+//         transition: all 0.2s ease;
+//     }
+//     .skill-pill:hover {
+//         transform: scale(1.05);
+//     }
+//     .nav-link {
+//         position: relative;
+//     }
+//     .nav-link::after {
+//         content: '';
+//         position: absolute;
+//         width: 0;
+//         height: 2px;
+//         bottom: -2px;
+//         left: 0;
+//         background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+//         transition: width 0.3s ease;
+//     }
+//     .nav-link:hover::after {
+//         width: 100%;
+//     }
+//     .project-image {
+//         transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+//     }
+//     .project-card:hover .project-image {
+//         transform: scale(1.03);
+//     }
 
 const Portfolio = () => {
   const [activeSection, setActiveSection] = useState("home");
@@ -145,6 +188,71 @@ const Portfolio = () => {
       color: "text-orange-600",
     },
   ];
+
+  const education = [
+    {
+      degree: "Engineering in Aquaculture",
+      description: "Instituto Tecnologico de Boca del Rio, 2012-2017",
+    },
+    {
+      degree: "Full Stack Web Development ",
+      description: "Mexico city, 2019-2020",
+    },
+  ];
+
+  const experience = [{
+    title: "Front end Developer",
+    company: "Inarix Paris, France",
+    duration: "2020-Present",
+    description:
+      `Pioneered the development of the Inarix portal, playing a central role in creating
+      an innovative platform for this leading French agritech company. I designed and
+      developed the portal from A to Z, ensuring a smooth user experience and highlevel technical execution, using modern technologies such as React, TypeScript,
+      Redux, MUI and Mapbox.
+      • Throughout the process, I rigorously followed the mockups designed in
+      Figma, ensuring visual consistency and user interface ergonomics.
+      • I implemented advanced features such as sample visualization, user
+      management and interactive silo mapping, while ensuring the application's
+      reliability and performance through a comprehensive test suite with Jest and
+      Cypress.`,
+    link: "https://inarix.com/",
+  }, {
+    title: "Fullstack Developer Freelance",
+    company: "Independent, France",
+    duration: "2019-2020",
+    description:
+      `• Complete creation of web pages for individuals, including component development, web design, and E-commerce application creation, utilizing the MERN Stack (MongoDB, Express.js, React, and Node.js) for full-stack JavaScript development. Tasks include front-end UI design with React, RESTful API development with Express and Node.js, and data management using MongoDB.`,
+
+    link: "",
+  }, {
+    title: "Production Manager",
+    company: "Rol-man S.A. de C.V., Mexico",
+    duration: "2013-2019",
+    description:
+      `• Complete administration of a fish and seafood sales company, including raw
+        material management, sales, staff training, payment management, and
+        supervision of 6 employees.
+        • Contact with suppliers and internal relations.
+      • Order management for different clients.`,
+    link: "",
+  }, {
+    title: "Production Manager",
+    company: "CIBAC Mexico, CDMX",
+    duration: "2018-2018",
+    description:
+      `• Responsible for the production of live food for feeding 'Ambystoma
+        mexicanum' at the juvenile stage.
+      • Studies on the reproduction of 'Ambystoma mexicanum'`,
+    link: "",
+  }, {
+    title: "Project Manager",
+    company: "Sagarpa, Veracruz, Mexico",
+    duration: "2017-2018",
+    description:
+      `Consultation and review of documents for semi-intensive aquaculture
+       projects in the state of Veracruz.`,
+    link: "",
+  }];
 
   return (
     <div
@@ -327,6 +435,7 @@ const Portfolio = () => {
       {/* Hero Section */}
       <section
         id="home"
+        style={{ backgroundColor: palette.darkThemeBackground }}
         className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16"
       >
         <div className="absolute inset-0 overflow-hidden">
@@ -341,10 +450,10 @@ const Portfolio = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-12 md:mb-0">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Hi, I'm <span className="gradient-text">Alex</span>
+              Hi, I'm <span className="gradient-text">David</span>
             </h1>
-            <h2 className="text-2xl md:text-4xl font-semibold mb-6 text-blue-400">
-              MERN Stack Developer
+            <h2 className="text-2xl md:text-4xl font-semibold mb-6 text-[#F43374]">
+              Web Developer
             </h2>
             <p
               className={`text-lg mb-8 max-w-lg ${
@@ -363,8 +472,11 @@ const Portfolio = () => {
                 View My Work
               </button>
               <button
-                onClick={() => scrollToSection("contact")}
-                className={`px-6 py-3 rounded-lg font-medium border ${
+                onClick={() => {
+                  console.log("Contact Me Clicked");
+                  scrollToSection("contact");
+                }}
+                className={`z-2 px-6 py-3 rounded-lg font-medium border ${
                   darkMode
                     ? "border-gray-700 hover:bg-gray-800"
                     : "border-gray-300 hover:bg-gray-100"
@@ -380,15 +492,15 @@ const Portfolio = () => {
               </div>
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 opacity-10 blur-xl animate-spin-slow">
               </div>
-              <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-blue-500/30 animate-float">
+              <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-[#8F1E45] animate-float">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                  src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1754651138/learningplat/david_acqkkq.png"
                   alt="Developer"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
               <div className="absolute -bottom-5 -right-5 bg-gray-800 p-4 rounded-lg shadow-xl animate-float-reverse">
-                <div className="text-2xl font-bold gradient-text">3+ Years</div>
+                <div className="text-2xl font-bold gradient-text">6+ Years</div>
                 <div className="text-sm text-gray-400">Experience</div>
               </div>
             </div>
@@ -441,9 +553,12 @@ const Portfolio = () => {
                   darkMode ? "text-gray-300" : "text-gray-600"
                 }`}
               >
-                I'm a passionate Full Stack Developer specializing in the MERN
-                stack (MongoDB, Express.js, React, Node.js). With over 3 years
-                of professional experience, I've helped startups and established
+                I'm a passionate Web Developer specializing in the Front end
+                stack(React Js, Figma, Redux, Tailwind, bootstrap, Mapbox, MUI
+                components,and more...), but also in the back end stack
+                (MongoDB, Express.js, Node.js) & Finally the best of two worlds
+                the server render (Deno Fresh). With over 6 years of
+                professional experience, I've helped startups and established
                 companies build robust, scalable web applications.
               </p>
               <p
@@ -462,56 +577,83 @@ const Portfolio = () => {
                   <h4 className="font-semibold text-blue-400 mb-2">
                     Education
                   </h4>
-                  <p
-                    className={`${
-                      darkMode ? "text-gray-300" : "text-gray-600"
-                    }`}
-                  >
-                    B.Sc. in Computer Science
-                  </p>
-                  <p
-                    className={`text-sm ${
-                      darkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    Stanford University, 2018
-                  </p>
+
+                  {education.map((edu, index) => (
+                    <div key={index}>
+                      <p
+                        className={`${
+                          darkMode ? "text-gray-300" : "text-gray-600"
+                        }`}
+                      >
+                        {edu.degree}
+                      </p>
+                      <p
+                        className={`text-sm ${
+                          darkMode ? "text-gray-400" : "text-gray-500"
+                        }`}
+                      >
+                        {edu.description}
+                      </p>
+                    </div>
+                  ))}
                 </div>
                 <div>
                   <h4 className="font-semibold text-blue-400 mb-2">
                     Experience
                   </h4>
-                  <p
-                    className={`${
-                      darkMode ? "text-gray-300" : "text-gray-600"
-                    }`}
-                  >
-                    Senior MERN Developer
-                  </p>
-                  <p
-                    className={`text-sm ${
-                      darkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    TechSolutions Inc., 2020-Present
-                  </p>
+
+                  {experience.map((exp, index) => (
+                    <div key={index} className="mb-4">
+                      <p
+                        className={`${
+                          darkMode ? "text-gray-300" : "text-gray-600"
+                        } font-semibold`}
+                      >
+                        {exp.title}
+                      </p>
+                      <p
+                        className={`text-sm ${
+                          darkMode ? "text-gray-400" : "text-gray-500"
+                        }`}
+                      >
+                        {exp.company}, {exp.duration}
+                      </p>
+                      <p
+                        className={`mt-2 text-sm ${
+                          darkMode ? "text-gray-300" : "text-gray-600"
+                        }`}
+                      >
+                        {exp.description}
+                      </p>
+
+                      <a
+                        href={exp.link}
+                        target="_blank"
+                        className="text-blue-400 hover:underline mt-2 inline-block"
+                      >
+                        {exp.link}
+                      </a>
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="flex flex-wrap gap-4">
                 <a
-                  href="#"
+                  target="_blank"
+                  href="https://github.com/davidroman-hub/"
                   className="flex items-center px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
                 >
-                  <i className="fab fa-github mr-2"></i> GitHub
+                  <i className="fab fa-github mr-2" /> GitHub
                 </a>
                 <a
-                  href="#"
+                  target="_blank"
+                  href="https://www.linkedin.com/in/jobdavidroman/"
                   className="flex items-center px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  <i className="fab fa-linkedin mr-2"></i> LinkedIn
+                  <i className="fab fa-linkedin mr-2" /> LinkedIn
                 </a>
                 <a
-                  href="#"
+                  href="../assets/davidRomanF.pdf"
                   className="flex items-center px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
                 >
                   <i className="fas fa-file-alt mr-2"></i> Resume
@@ -523,11 +665,11 @@ const Portfolio = () => {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 bg-gray-800">
+      <section id="skills" className="py-20 bg-[#8F1E45]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="gradient-text">My Skills</span>
+              <span className="gradient-text2">My Skills</span>
             </h2>
             <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mb-6">
             </div>

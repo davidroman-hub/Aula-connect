@@ -9,7 +9,25 @@
 } */
 
 .gradient-text {
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+  background: linear-gradient(
+    90deg,
+    rgba(244, 51, 116, 1) 0%,
+    rgba(143, 30, 69, 1) 50%,
+    rgba(237, 221, 83, 1) 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-text2 {
+  background: linear-gradient(
+    90deg,
+    rgba(244, 51, 116, 1) 0%,
+    rgba(143, 30, 69, 110) 160%,
+    rgba(237, 221, 83, 1) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -38,7 +56,12 @@
   height: 2px;
   bottom: -2px;
   left: 0;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(
+    90deg,
+    rgba(244, 51, 116, 1) 0%,
+    rgba(143, 30, 69, 1) 50%,
+    rgba(237, 221, 83, 1) 100%
+  );
   transition: width 0.3s ease;
 }
 .nav-link:hover::after {

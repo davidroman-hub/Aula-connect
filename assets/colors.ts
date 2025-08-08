@@ -13,6 +13,8 @@ export const palette = {
   bottomBackground: "bottom",
   linearGradient:
     "linear-gradient(90deg, rgba(244, 51, 116, 1) 0%, rgba(143, 30, 69, 1) 50%, rgba(237, 221, 83, 1) 100%)",
+  linearGradient2:
+    "linear-gradient(90deg,rgba(244, 51, 116, 1) 0%, rgba(143, 30, 69, 110) 160%,  rgba(237, 221, 83, 1) 100%)",
 };
 
 export const manageTheme = () => {
