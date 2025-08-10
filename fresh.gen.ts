@@ -5,17 +5,29 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
+import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
 import * as $checkout_index from "./routes/checkout/index.tsx";
 import * as $index from "./routes/index.tsx";
+import * as $login_index from "./routes/login/index.tsx";
 import * as $orders_index from "./routes/orders/index.tsx";
 import * as $products_index from "./routes/products/index.tsx";
+import * as $work_with_me_index from "./routes/work-with-me/index.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Navbar_index from "./islands/Navbar/index.tsx";
 import * as $ShowProducts_index from "./islands/ShowProducts/index.tsx";
 import * as $cart_index from "./islands/cart/index.tsx";
+import * as $changeLanguage_index from "./islands/changeLanguage/index.tsx";
 import * as $checkout_index_1 from "./islands/checkout/index.tsx";
+import * as $login_index_1 from "./islands/login/index.tsx";
+import * as $main_courses from "./islands/main/courses.tsx";
+import * as $main_footer from "./islands/main/footer.tsx";
+import * as $main_head from "./islands/main/head.tsx";
+import * as $main_index from "./islands/main/index.tsx";
+import * as $main_learnWithMe from "./islands/main/learnWithMe.tsx";
+import * as $main_testimonials from "./islands/main/testimonials.tsx";
 import * as $modal_index from "./islands/modal/index.tsx";
+import * as $portafolio_index from "./islands/portafolio/index.tsx";
 import * as $showOrders_showOrders from "./islands/showOrders/showOrders.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -24,19 +36,31 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/api/joke.ts": $api_joke,
+    "./routes/api/jwt/token.tsx": $api_jwt_token,
     "./routes/api/orders/create.tsx": $api_orders_create,
     "./routes/checkout/index.tsx": $checkout_index,
     "./routes/index.tsx": $index,
+    "./routes/login/index.tsx": $login_index,
     "./routes/orders/index.tsx": $orders_index,
     "./routes/products/index.tsx": $products_index,
+    "./routes/work-with-me/index.tsx": $work_with_me_index,
   },
   islands: {
     "./islands/Counter.tsx": $Counter,
     "./islands/Navbar/index.tsx": $Navbar_index,
     "./islands/ShowProducts/index.tsx": $ShowProducts_index,
     "./islands/cart/index.tsx": $cart_index,
+    "./islands/changeLanguage/index.tsx": $changeLanguage_index,
     "./islands/checkout/index.tsx": $checkout_index_1,
+    "./islands/login/index.tsx": $login_index_1,
+    "./islands/main/courses.tsx": $main_courses,
+    "./islands/main/footer.tsx": $main_footer,
+    "./islands/main/head.tsx": $main_head,
+    "./islands/main/index.tsx": $main_index,
+    "./islands/main/learnWithMe.tsx": $main_learnWithMe,
+    "./islands/main/testimonials.tsx": $main_testimonials,
     "./islands/modal/index.tsx": $modal_index,
+    "./islands/portafolio/index.tsx": $portafolio_index,
     "./islands/showOrders/showOrders.tsx": $showOrders_showOrders,
   },
   baseUrl: import.meta.url,

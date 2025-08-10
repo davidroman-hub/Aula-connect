@@ -61,7 +61,7 @@ const ShowOrders = () => {
   }, []);
 
   return (
-    <div class="bg-blue-900 m-10">
+    <div className="bg-blue-900 m-10">
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
@@ -84,10 +84,10 @@ const ShowOrders = () => {
                 <td>{order.totalPrice}</td>
                 <td>
                   <button
-                    class="cursor-pointer"
+                    className="cursor-pointer"
                     onClick={() => deleteOrder(order._id)}
                   >
-                    <i class="fas fa-trash"></i>
+                    <i className="fas fa-trash"></i>
                   </button>
                 </td>
                 <td>
@@ -98,7 +98,7 @@ const ShowOrders = () => {
                     }}
                     className="cursor-pointer px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition shadow-md"
                   >
-                    <i class="fa-solid fa-pen"></i>
+                    <i className="fa-solid fa-pen"></i>
                   </button>
 
                   <Modal
