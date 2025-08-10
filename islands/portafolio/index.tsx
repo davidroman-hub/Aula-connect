@@ -1,5 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { palette } from "../../assets/colors.ts";
+import { selectSuperProfLink } from "../helpers/index.tsx";
 
 //  .gradient-text {
 //         background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
@@ -96,59 +97,57 @@ const Portfolio = () => {
 
   const projects = [
     {
-      title: "E-commerce Platform",
+      title: "Inarix Portal",
       description:
-        "Full-featured online store with payment integration, admin dashboard, and real-time inventory management.",
-      technologies: ["MongoDB", "Express", "React", "Node.js", "Stripe API"],
+        "Since 5 years I engineered the end-to-end development of the Inarix portal , leading French agritech company, rigorously implementing pixel-perfect Figma designs to ensure UI consistency and ergonomics. Developed complex functionalities including user and device management, sample visualization, and location editing through interactive Mapbox maps. Utilized MUI tables extensively for data management tasks such as user and device editing, simple and advanced sample visualization, and real-time location updates. Ensured application reliability and performance through comprehensive automated testing with Jest and Cypress.",
+      technologies: [
+        "React",
+        "Redux",
+        "Typescript",
+        "Axios",
+        "React Router",
+        "React Hooks",
+        "Mapbox",
+        "MUI",
+        "JEST",
+        "Cypress io",
+        "i18next",
+        "Sass",
+      ],
       image:
-        "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      link: "#",
+        "https://res.cloudinary.com/dm8dxwvix/image/upload/v1754828954/learningplat/Captura_de_pantalla_2025-08-10_a_la_s_14.28.12_lpdsfy.png",
+      link: "https://inarix.com/",
+      github: null,
     },
     {
-      title: "Social Media Dashboard",
+      title: "Learning platform with Deno Fresh",
       description:
-        "Interactive dashboard with real-time analytics, user management, and content moderation tools.",
-      technologies: ["MongoDB", "Express", "React", "Node.js", "Socket.io"],
+        "Learning platform built with Deno Fresh that allows students to register and access a personalized dashboard to track their course progress. As an admin, I can manage and monitor the learning modules, enabling efficient oversight of student progress and engagement.",
+      technologies: [
+        "Deno Fresh",
+        "MongoDB",
+        "React",
+        "Tailwind CSS",
+        "Daisy UI",
+        "i18next",
+        "JWT",
+        "Axiod (Deno Axios)",
+      ],
       image:
-        "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      link: "#",
-    },
-    {
-      title: "Task Management App",
-      description:
-        "Collaborative task management solution with drag-and-drop interface and team collaboration features.",
-      technologies: ["MongoDB", "Express", "React", "Node.js", "D3.js"],
-      image:
-        "https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      link: "#",
+        "https://res.cloudinary.com/dm8dxwvix/image/upload/v1754830405/learningplat/leargningpltss/Captura_de_pantalla_2025-08-10_a_la_s_14.52.16_wutcse.png",
+      link: "https://codewithdavid.davidroman-hub.deno.net/",
+      github:
+        "https://github.com/davidroman-hub/Learning-platform-with-deno-fresh",
     },
   ];
 
   const skills = [
     { name: "React", icon: "fab fa-react", level: 95, color: "text-blue-400" },
     {
-      name: "Node.js",
-      icon: "fab fa-node-js",
-      level: 90,
-      color: "text-green-500",
-    },
-    {
-      name: "MongoDB",
-      icon: "fas fa-database",
+      name: "Redux",
+      icon: "fas fa-cubes",
       level: 85,
-      color: "text-green-400",
-    },
-    {
-      name: "Express",
-      icon: "fas fa-server",
-      level: 85,
-      color: "text-gray-400",
-    },
-    {
-      name: "JavaScript",
-      icon: "fab fa-js",
-      level: 95,
-      color: "text-yellow-400",
+      color: "text-purple-500",
     },
     {
       name: "TypeScript",
@@ -156,17 +155,22 @@ const Portfolio = () => {
       level: 80,
       color: "text-blue-500",
     },
+
     {
-      name: "GraphQL",
-      icon: "fas fa-project-diagram",
-      level: 75,
-      color: "text-pink-500",
+      name: "Deno Fresh",
+      icon: null,
+      src:
+        "https://res.cloudinary.com/dm8dxwvix/image/upload/v1754824434/learningplat/fresh-seeklogo_pcoivz.svg",
+      level: 85,
+      color: "text-purple-600",
     },
     {
-      name: "Redux",
-      icon: "fas fa-cubes",
+      name: "Material UI",
+      icon: null,
+      src:
+        "https://res.cloudinary.com/dm8dxwvix/image/upload/v1754825073/learningplat/Material_UI_hudhto.svg",
       level: 85,
-      color: "text-purple-500",
+      color: "text-purple-600",
     },
     {
       name: "Tailwind CSS",
@@ -175,17 +179,86 @@ const Portfolio = () => {
       color: "text-cyan-400",
     },
     {
-      name: "Docker",
-      icon: "fab fa-docker",
-      level: 70,
-      color: "text-blue-300",
+      name: "MongoDB",
+      icon: "fas fa-database",
+      level: 85,
+      color: "text-green-400",
     },
-    { name: "AWS", icon: "fab fa-aws", level: 65, color: "text-orange-500" },
+
+    {
+      name: "Jest",
+      icon: null,
+      src:
+        "https://res.cloudinary.com/dm8dxwvix/image/upload/v1754824275/learningplat/Jest_zuvwop.svg",
+      level: 85,
+      color: "text-purple-600",
+    },
+    {
+      name: "Cypress io",
+      icon: null,
+      level: 85,
+      src:
+        "https://res.cloudinary.com/dm8dxwvix/image/upload/v1754824299/learningplat/Cypress_rzw9yb.svg",
+      color: "text-white-600",
+    },
+    {
+      name: "MapBox",
+      icon: null,
+      src:
+        "https://res.cloudinary.com/dm8dxwvix/image/upload/v1754825048/learningplat/mapbox-seeklogo_wf9yro.svg",
+      level: 85,
+      color: "text-purple-600",
+    },
+
+    {
+      name: "JavaScript",
+      icon: "fab fa-js",
+      level: 95,
+      color: "text-yellow-400",
+    },
     {
       name: "Git",
       icon: "fab fa-git-alt",
       level: 85,
       color: "text-orange-600",
+    },
+    {
+      name: "Node.js",
+      icon: "fab fa-node-js",
+      level: 90,
+      color: "text-green-500",
+    },
+
+    {
+      name: "Express",
+      icon: "fas fa-server",
+      level: 85,
+      color: "text-gray-400",
+    },
+
+    {
+      name: "Html 5",
+      icon: "fa-brands fa-html5",
+      level: 85,
+      color: "text-orange-600",
+    },
+    {
+      name: "Sass",
+      icon: "fa-brands fa-sass",
+      level: 85,
+      color: "text-pink-600",
+    },
+    {
+      name: "CSS 3",
+      icon: "fa-brands fa-css3",
+      level: 85,
+      color: "text-blue-600",
+    },
+    {
+      name: "Bootstrap",
+      icon: "fa-brands fa-bootstrap",
+      level: 85,
+      color: "text-purple-600",
     },
   ];
 
@@ -201,6 +274,22 @@ const Portfolio = () => {
   ];
 
   const experience = [{
+    title: "Private web trainer",
+    company: "Freelance - Via Superprof platform, France",
+    duration: "2025-Present",
+    description:
+      `I provide personalized lessons for students and professionals, covering modern
+      and high-demand technologies such as React, Redux, JavaScript, Tailwind,
+      Deno Fresh (server rendering and database), MUI, Mapbox, Node.js, SCSS, and
+      HTML.
+      I developed a custom platform using Deno Fresh and MongoDB to deliver my
+      Superprof classes, where students can track the progress of topics covered in
+      lessons through a dashboard, and the admin panel allows me to monitor each
+      student’s learning progress.
+      I adapt the content and methodology to the student’s level and goals, fostering
+      practical learning and a focus on real-world projects. `,
+    link: "https://codewithdavid.davidroman-hub.deno.net/",
+  }, {
     title: "Front end Developer",
     company: "Inarix Paris, France",
     duration: "2020-Present",
@@ -291,7 +380,7 @@ const Portfolio = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <span className="text-xl font-bold gradient-text">
-                MERN<span className="font-normal">DEV</span>
+                D<span className="font-normal">R</span>
               </span>
             </div>
 
@@ -467,7 +556,7 @@ const Portfolio = () => {
             <div className="flex flex-wrap gap-4">
               <button
                 onClick={() => scrollToSection("projects")}
-                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
+                className="z-2 px-6 py-3 bg-[#F43374] rounded-full transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
               >
                 View My Work
               </button>
@@ -476,7 +565,7 @@ const Portfolio = () => {
                   console.log("Contact Me Clicked");
                   scrollToSection("contact");
                 }}
-                className={`z-2 px-6 py-3 rounded-lg font-medium border ${
+                className={`z-2 px-6 py-3 rounded-full font-medium border ${
                   darkMode
                     ? "border-gray-700 hover:bg-gray-800"
                     : "border-gray-300 hover:bg-gray-100"
@@ -531,17 +620,16 @@ const Portfolio = () => {
 
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="md:w-1/3 flex justify-center">
-              <div className="relative w-64 h-64 rounded-2xl overflow-hidden border-4 border-blue-500/20 shadow-xl">
+              <div
+                style={{ background: palette.backgroundSoft }}
+                className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500/20 shadow-xl"
+              >
                 <img
-                  src="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                  src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1754490890/learningplat/logo_qkfxhw.png"
                   alt="Developer at work"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent">
-                </div>
-                <div className="absolute bottom-0 left-0 p-6">
-                  <h3 className="text-xl font-bold text-white">Alex Johnson</h3>
-                  <p className="text-blue-400">MERN Stack Developer</p>
                 </div>
               </div>
             </div>
@@ -631,7 +719,9 @@ const Portfolio = () => {
                         target="_blank"
                         className="text-blue-400 hover:underline mt-2 inline-block"
                       >
-                        {exp.link}
+                        {exp.link.length > 25
+                          ? exp.link.slice(0, 21)
+                          : exp.link}
                       </a>
                     </div>
                   ))}
@@ -697,27 +787,21 @@ const Portfolio = () => {
                 }`}
               >
                 <div className="flex items-center mb-3">
-                  <i className={`${skill.icon} ${skill.color} text-2xl mr-3`}>
-                  </i>
+                  {skill.icon !== null
+                    ? (
+                      <i
+                        className={`${skill.icon} ${skill.color} text-2xl mr-3`}
+                      >
+                      </i>
+                    )
+                    : (
+                      <img
+                        style={{ width: "24px" }}
+                        className="mr-4"
+                        src={skill.src}
+                      />
+                    )}
                   <h3 className="font-semibold">{skill.name}</h3>
-                </div>
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
-                  <div
-                    className={`h-2.5 rounded-full ${
-                      index % 4 === 0
-                        ? "bg-blue-500"
-                        : index % 4 === 1
-                        ? "bg-purple-500"
-                        : index % 4 === 2
-                        ? "bg-pink-500"
-                        : "bg-cyan-500"
-                    }`}
-                    style={{ width: `${skill.level}%` }}
-                  >
-                  </div>
-                </div>
-                <div className="text-right mt-1 text-sm text-gray-400">
-                  {skill.level}%
                 </div>
               </div>
             ))}
@@ -809,7 +893,7 @@ const Portfolio = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="gradient-text">My Projects</span>
+              <span className="gradient-text">Big Projects</span>
             </h2>
             <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mb-6">
             </div>
@@ -862,28 +946,28 @@ const Portfolio = () => {
                   </div>
                   <div className="flex justify-between items-center">
                     <a
+                      target="_blank"
                       href={project.link}
                       className="text-blue-400 hover:text-blue-300 flex items-center"
                     >
                       View Project <i className="fas fa-arrow-right ml-2"></i>
                     </a>
-                    <a
-                      href="#"
-                      className="text-gray-400 hover:text-white"
-                      title="View Code"
-                    >
-                      <i className="fab fa-github"></i>
-                    </a>
+                    {project.github
+                      ? (
+                        <a
+                          target="_blank"
+                          href={project.github ? project.github : ""}
+                          className="text-gray-400 hover:text-white"
+                          title="View Code"
+                        >
+                          <i className="fab fa-github"></i>
+                        </a>
+                      )
+                      : ""}
                   </div>
                 </div>
               </div>
             ))}
-          </div>
-
-          <div className="text-center">
-            <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
-              View All Projects
-            </button>
           </div>
         </div>
       </section>
@@ -921,10 +1005,10 @@ const Portfolio = () => {
                     <div>
                       <h4 className="font-semibold mb-1">Email</h4>
                       <a
-                        href="mailto:alex@example.com"
+                        href="mailto:jobroman83@gmail.com"
                         className="text-blue-400 hover:underline"
                       >
-                        alex@example.com
+                        jobroman83@gmail.com
                       </a>
                     </div>
                   </div>
@@ -935,10 +1019,10 @@ const Portfolio = () => {
                     <div>
                       <h4 className="font-semibold mb-1">Phone</h4>
                       <a
-                        href="tel:+1234567890"
+                        href="tel:+33744409662"
                         className="text-blue-400 hover:underline"
                       >
-                        +1 (234) 567-890
+                        +33 7 44 40 96 62
                       </a>
                     </div>
                   </div>
@@ -953,7 +1037,7 @@ const Portfolio = () => {
                           darkMode ? "text-gray-300" : "text-gray-600"
                         }`}
                       >
-                        San Francisco, CA
+                        Paris, France
                       </p>
                     </div>
                   </div>
@@ -963,28 +1047,38 @@ const Portfolio = () => {
                   <h4 className="font-semibold mb-4">Connect with me</h4>
                   <div className="flex space-x-4">
                     <a
-                      href="#"
+                      target="_blank"
+                      href="https://www.linkedin.com/in/jobdavidroman/"
                       className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center hover:bg-blue-600 transition-colors"
                     >
                       <i className="fab fa-linkedin-in"></i>
                     </a>
                     <a
-                      href="#"
+                      target="_blank"
+                      href="https://github.com/davidroman-hub/"
                       className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center hover:bg-gray-800 transition-colors"
                     >
                       <i className="fab fa-github"></i>
                     </a>
+
                     <a
-                      href="#"
-                      className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center hover:bg-blue-400 transition-colors"
+                      target="_blank"
+                      href={selectSuperProfLink()}
+                      className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center hover:bg-white transition-colors"
                     >
-                      <i className="fab fa-twitter"></i>
+                      <img
+                        style={{ width: "24px" }}
+                        src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1754826402/learningplat/ss_rvpyqv.png"
+                        alt="superprof"
+                      />
                     </a>
+
                     <a
-                      href="#"
-                      className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center hover:bg-red-500 transition-colors"
+                      target="_blank"
+                      href="https://discord.gg/8K99PkyW"
+                      className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center hover:bg-blue-600 transition-colors"
                     >
-                      <i className="fab fa-youtube"></i>
+                      <i className="fab fa-discord"></i>
                     </a>
                   </div>
                 </div>
@@ -998,22 +1092,18 @@ const Portfolio = () => {
       <footer className="py-8 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <span className="text-xl font-bold gradient-text">
-                MERN<span className="font-normal">DEV</span>
-              </span>
-            </div>
             <div
               className={`text-sm ${
                 darkMode ? "text-gray-400" : "text-gray-600"
               }`}
             >
               &copy; {new Date().getFullYear()}{" "}
-              Alex Johnson. All rights reserved.
+              David Roman. All rights reserved.
             </div>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <a
-                href="#"
+                target="_blank"
+                href="https://github.com/davidroman-hub/"
                 className={`${
                   darkMode
                     ? "text-gray-400 hover:text-white"
@@ -1023,7 +1113,8 @@ const Portfolio = () => {
                 <i className="fab fa-github"></i>
               </a>
               <a
-                href="#"
+                target="_blank"
+                href="https://www.linkedin.com/in/jobdavidroman/"
                 className={`${
                   darkMode
                     ? "text-gray-400 hover:text-white"
@@ -1032,18 +1123,10 @@ const Portfolio = () => {
               >
                 <i className="fab fa-linkedin-in"></i>
               </a>
+
               <a
-                href="#"
-                className={`${
-                  darkMode
-                    ? "text-gray-400 hover:text-white"
-                    : "text-gray-600 hover:text-gray-900"
-                } transition-colors`}
-              >
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a
-                href="#"
+                target="_blank"
+                href="mailto:jobroman83@gmail.com"
                 className={`${
                   darkMode
                     ? "text-gray-400 hover:text-white"
@@ -1051,6 +1134,33 @@ const Portfolio = () => {
                 } transition-colors`}
               >
                 <i className="fas fa-envelope"></i>
+              </a>
+
+              <a
+                target="_blank"
+                href="https://discord.gg/8K99PkyW"
+                className={`${
+                  darkMode
+                    ? "text-gray-400 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                } transition-colors`}
+              >
+                <i className="fab fa-discord"></i>
+              </a>
+              <a
+                target="_blank"
+                href={selectSuperProfLink()}
+                className={`${
+                  darkMode
+                    ? "text-gray-400 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                } transition-colors`}
+              >
+                <img
+                  style={{ width: "24px" }}
+                  src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1754826402/learningplat/ss_rvpyqv.png"
+                  alt="superprof"
+                />
               </a>
             </div>
           </div>

@@ -19,6 +19,7 @@ import * as $ShowProducts_index from "./islands/ShowProducts/index.tsx";
 import * as $cart_index from "./islands/cart/index.tsx";
 import * as $changeLanguage_index from "./islands/changeLanguage/index.tsx";
 import * as $checkout_index_1 from "./islands/checkout/index.tsx";
+import * as $helpers_index from "./islands/helpers/index.tsx";
 import * as $login_index_1 from "./islands/login/index.tsx";
 import * as $main_courses from "./islands/main/courses.tsx";
 import * as $main_footer from "./islands/main/footer.tsx";
@@ -52,6 +53,7 @@ const manifest = {
     "./islands/cart/index.tsx": $cart_index,
     "./islands/changeLanguage/index.tsx": $changeLanguage_index,
     "./islands/checkout/index.tsx": $checkout_index_1,
+    "./islands/helpers/index.tsx": $helpers_index,
     "./islands/login/index.tsx": $login_index_1,
     "./islands/main/courses.tsx": $main_courses,
     "./islands/main/footer.tsx": $main_footer,
