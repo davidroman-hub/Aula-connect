@@ -370,7 +370,7 @@ const Portfolio = () => {
 
       {/* Navigation */}
       <nav
-        className={`fixed w-full z-40 transition-all duration-300 ${
+        className={`fixed w-full mt-15 z-5 transition-all duration-300 ${
           darkMode
             ? "bg-gray-900/80 backdrop-blur-md"
             : "bg-white/80 backdrop-blur-md"
@@ -427,27 +427,11 @@ const Portfolio = () => {
                 >
                   Contact
                 </button>
-                <button
-                  onClick={toggleDarkMode}
-                  className="p-2 rounded-full focus:outline-none"
-                >
-                  {darkMode
-                    ? <i className="fas fa-sun text-yellow-400"></i>
-                    : <i className="fas fa-moon text-gray-700"></i>}
-                </button>
               </div>
             </div>
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center">
-              <button
-                onClick={toggleDarkMode}
-                className="p-2 rounded-full mr-4 focus:outline-none"
-              >
-                {darkMode
-                  ? <i className="fas fa-sun text-yellow-400"></i>
-                  : <i className="fas fa-moon text-gray-700"></i>}
-              </button>
               <button
                 onClick={toggleMenu}
                 className="inline-flex items-center justify-center p-2 rounded-md focus:outline-none"

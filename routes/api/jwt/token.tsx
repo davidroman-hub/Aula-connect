@@ -22,7 +22,7 @@ export const handler: Handlers = {
       return new Response("Contraseña incorrecta", { status: 401 });
     }
 
-    const token = await createJWT(user.username);
+    const token = await createJWT(user.username, user.type);
 
     return new Response(JSON.stringify({ token }), {
       headers: { "Content-Type": "application/json" },

@@ -82,3 +82,25 @@
 .project-card:hover .project-image {
   transform: scale(1.03);
 }
+
+.menu-transition {
+  transition: all 0.3s ease-in-out;
+  transform-origin: top center;
+  right: 0px;
+}
+.menu-enter {
+  opacity: 0;
+  transform: scaleY(0);
+}
+.menu-enter-active {
+  opacity: 1;
+  transform: scaleY(1);
+}
+.menu-exit {
+  opacity: 1;
+  transform: scaleY(1);
+}
+.menu-exit-active {
+  opacity: 0;
+  transform: scaleY(0);
+}
