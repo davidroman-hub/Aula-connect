@@ -38,6 +38,8 @@ const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [cartProductsLength, setCartProductsLength] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null as any);
   const isAuth = localStorage.getItem("auth") || "false";
   const user = localStorage.getItem("user") || "user";
 
@@ -50,6 +52,43 @@ const Navbar = () => {
     }, 1000);
     return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      const menu = document.getElementById("menu-container");
+      const button = document.getElementById("menu-button");
+
+      if (
+        menu && button && !menu.contains(event.target) &&
+        !button.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const menuOptions = [
+    { id: 1, label: "Dashboard", icon: "fa-gauge" },
+    { id: 2, label: "Profile", icon: "fa-user" },
+    { id: 6, label: "Logout", icon: "fa-right-from-bracket" },
+  ];
+
+  const handleOptionClick = (option: any) => {
+    const logout = 6;
+
+    setSelectedOption(option);
+    setIsOpen(false);
+    if (option.id === logout) {
+      localStorage.removeItem("auth");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
+    }
+  };
 
   const { t } = i18n;
 
@@ -173,13 +212,55 @@ const Navbar = () => {
               </div>
             )
             : (
-              <button
-                style={{ background: palette.backgroundSoft }}
-                className="uppercase hover:bg-primaryDark text-white px-4 py-2 rounded-full font-medium transition duration-300"
-              >
-                {user.substring(0, 1)}
-              </button>
+              <div className="">
+                <button
+                  id="menu-button"
+                  style={{ background: palette.backgroundSoft }}
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="flex items-center cursor-pointer justify-between px-6 py-3 bg-indigo-600 text-white rounded-full shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200"
+                >
+                  <span className="font-medium uppercase">
+                    {user.substring(0, 1)}
+                  </span>
+                  <span className="ml-2">
+                    <i
+                      className={`fas fa-chevron-${
+                        isOpen ? "up" : "down"
+                      } transition-transform duration-200`}
+                    >
+                    </i>
+                  </span>
+                </button>
+
+                {isOpen && (
+                  <div
+                    id="menu-container"
+                    className="absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none menu-transition"
+                  >
+                    <div className="py-1">
+                      {menuOptions.map((option) => (
+                        <div
+                          key={option.id}
+                          onClick={() => handleOptionClick(option)}
+                          className={`flex items-center px-4 py-2 text-sm cursor-pointer ${
+                            selectedOption?.id === option.id
+                              ? "bg-indigo-100 text-indigo-900"
+                              : "text-gray-700 hover:bg-gray-100"
+                          }`}
+                        >
+                          <i
+                            className={`fas ${option.icon} mr-3 text-[${palette.primary}]`}
+                          >
+                          </i>
+                          {option.label}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
+
           <button
             onClick={() =>
               setIsMobileMenuOpen(isMobileMenuOpen ? !isMobileMenuOpen : true)}

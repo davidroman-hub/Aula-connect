@@ -47,8 +47,7 @@ const CartItems = () => {
                 <p className="text-gray-600 text-sm mt-1">{product.category}</p>
                 <div className="flex items-center justify-between mt-2">
                   <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
-                    <button className="quantity-btn px-3 py-1 text-gray-600" //onclick="updateQuantity('item1', -1)"
-                    >
+                    <button className="quantity-btn px-3 py-1 text-gray-600">
                       <i className="fas fa-minus"></i>
                     </button>
                     <span
