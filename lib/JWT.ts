@@ -13,10 +13,11 @@ const key = await crypto.subtle.generateKey(
 );
 
 // Crear un token
-export async function createJWT(username: string) {
+export async function createJWT(username: string, type: string) {
   const payload: Payload = {
     iss: "fresh-app",
     username,
+    type,
     exp: getNumericDate(60 * 60), // Expira en 1 hora
   };
   return await create({ alg: "HS256", typ: "JWT" } as Header, payload, key);
