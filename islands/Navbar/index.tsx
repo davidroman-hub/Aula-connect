@@ -153,10 +153,7 @@ const Navbar = () => {
                 </span>
               </button>
               {isOpen && (
-                <div
-                  id="menu-container"
-                  className="absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none menu-transition"
-                >
+                <div className="absolute  mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none menu-transition">
                   <div className="py-1">
                     {menuOptions.map((option) => (
                       <div
@@ -236,6 +233,7 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
+            {buttonLog()}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md focus:outline-none"
@@ -255,7 +253,6 @@ const Navbar = () => {
         }`}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
-          {buttonLog()}
           {sections.map((sections) => {
             return (
               <a
