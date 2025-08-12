@@ -46,7 +46,8 @@
 }
 .card-hover-effect:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 .skill-pill {
@@ -103,4 +104,84 @@
 .menu-exit-active {
   opacity: 0;
   transform: scaleY(0);
+}
+
+/* Dashboard */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  grid-template-rows: 80px 1fr;
+  grid-template-areas:
+    "sidebar header"
+    "sidebar main";
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "main";
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    z-index: 40;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 30;
+  }
+
+  .sidebar-open .overlay {
+    display: block;
+  }
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.header {
+  grid-area: header;
+}
+
+.main {
+  grid-area: main;
+}
+
+.progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
 }

@@ -18,5 +18,8 @@
 
   "css.customData": [
     ".vscode/tailwind.json"
-  ]
+  ],
+  "[css]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  }
 }

@@ -41,3 +41,11 @@ export const manageFontColor = () => {
     return "bg-gray-50";
   }
 };
+
+export const manageFontColorDash = () => {
+  if (theme === "dark") {
+    return "text-white";
+  } else {
+    return "text-gray-800";
+  }
+};
