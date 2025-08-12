@@ -2,7 +2,7 @@ import { Dispatch, StateUpdater, useEffect, useState } from "preact/hooks";
 import CartItems from "../cart/index.tsx";
 import { i18n } from "../../i18next.ts";
 import ChangeToSpanish from "../changeLanguage/index.tsx";
-import { palette } from "../../assets/colors.ts";
+import { manageTheme, manageTheme2, palette } from "../../assets/colors.ts";
 
 const Cart = (
   showSidebar: boolean,
@@ -35,6 +35,7 @@ const Cart = (
 );
 
 const Navbar = () => {
+  const activeSectionLocal = localStorage.getItem("section") || "home";
   const [showSidebar, setShowSidebar] = useState(false);
   const [cartProductsLength, setCartProductsLength] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -43,7 +44,14 @@ const Navbar = () => {
   const isAuth = localStorage.getItem("auth") || "false";
   const user = localStorage.getItem("user") || "user";
   const theme = localStorage.getItem("theme") || "light";
-  const [activeSection, setActiveSection] = useState("home");
+  const [activeSection, setActiveSection] = useState(
+    activeSectionLocal || "home",
+  );
+
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section);
+    localStorage.setItem("section", section);
+  };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -73,6 +81,10 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("section", activeSection);
+  }, [selectedOption]);
 
   const menuOptions = [
     { id: 1, label: "Dashboard", icon: "fa-gauge" },
@@ -183,7 +195,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed w-full z-40 transition-all duration-300 bg-white backdrop-blur-md border-b border-gray-200`}
+      className={`fixed w-full z-40 transition-all duration-300 ${manageTheme2()} backdrop-blur-md border-b border-gray-200`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -218,6 +230,7 @@ const Navbar = () => {
               {sections.map((option) => (
                 <a
                   href={`/${option.link}`}
+                  onClick={() => handleSectionChange(option.id)}
                   className={`nav-link px-3 py-2 text-sm font-medium ${
                     activeSection === option.id
                       ? `text-[${palette.primary}]`
@@ -256,6 +269,7 @@ const Navbar = () => {
           {sections.map((sections) => {
             return (
               <a
+                onClick={() => setActiveSection(sections.id)}
                 href={`/${sections.link}`}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   activeSection === sections.id
