@@ -1,8 +1,10 @@
+import { manageFontColorDash } from "../../assets/colors.ts";
+
 function Students({ students, openStudentDetail }: any) {
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className={`text-2xl font-bold text-gray-800`}>
+      <div className="flex justify-between  items-center mb-6">
+        <h2 className={`text-2xl font-bold ${manageFontColorDash()}`}>
           Gestión de Estudiantes
         </h2>
         <button className="bg-primary text-white px-4 py-2 rounded-lg flex items-center">

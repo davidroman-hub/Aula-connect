@@ -141,8 +141,7 @@ export function AdminDashboards() {
       <HeaderAdminDashboard setSidebarOpen={setSidebarOpen} />
 
       {/* Main Content */}
-      {
-        /* <main className="main p-4 md:p-6 overflow-y-auto">
+      <main className="main p-4 md:p-6 overflow-y-auto">
         {view === "dashboard" && (
           <AdminDashboard students={students} courses={courses} />
         )}
@@ -162,8 +161,7 @@ export function AdminDashboards() {
         {view === "createCourse" && (
           <CreateCourse addCourse={addCourse} setView={setView} />
         )}
-      </main> */
-      }
+      </main>
     </div>
   );
 }
