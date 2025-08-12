@@ -36,17 +36,22 @@ const Cart = (
 
 const Navbar = () => {
   const activeSectionLocal = localStorage.getItem("section") || "home";
+  const isAuth = localStorage.getItem("auth") || "false";
+  const user = localStorage.getItem("user") || "user";
+  const theme = localStorage.getItem("theme") || "light";
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [cartProductsLength, setCartProductsLength] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null as any);
-  const isAuth = localStorage.getItem("auth") || "false";
-  const user = localStorage.getItem("user") || "user";
-  const theme = localStorage.getItem("theme") || "light";
+
   const [activeSection, setActiveSection] = useState(
     activeSectionLocal || "home",
   );
+
+  //  const { userId }: TokenPayload = jwt.decode(token) as TokenPayload;
 
   const handleSectionChange = (section: string) => {
     setActiveSection(section);
@@ -87,9 +92,14 @@ const Navbar = () => {
   }, [selectedOption]);
 
   const menuOptions = [
-    { id: 1, label: "Dashboard", icon: "fa-gauge" },
-    { id: 2, label: "Profile", icon: "fa-user" },
-    { id: 6, label: "Logout", icon: "fa-right-from-bracket" },
+    {
+      id: 1,
+      label: "Dashboard",
+      link: userInfo.type === "admin" ? "admin-dash" : "user-dashboard",
+      icon: "fa-gauge",
+    },
+    { id: 2, label: "Profile", link: "profile", icon: "fa-user" },
+    { id: 6, label: "Logout", link: null, icon: "fa-right-from-bracket" },
   ];
 
   const handleOptionClick = (option: any) => {
@@ -100,6 +110,8 @@ const Navbar = () => {
     if (option.id === logout) {
       localStorage.removeItem("auth");
       localStorage.removeItem("user");
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("jwtToken");
       window.location.href = "/login";
     }
   };
@@ -167,23 +179,62 @@ const Navbar = () => {
               {isOpen && (
                 <div className="absolute  mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none menu-transition">
                   <div className="py-1">
-                    {menuOptions.map((option) => (
-                      <div
-                        key={option.id}
-                        onClick={() => handleOptionClick(option)}
-                        className={`flex items-center px-4 py-2 text-sm cursor-pointer ${
-                          selectedOption?.id === option.id
-                            ? "bg-indigo-100 text-indigo-900"
-                            : "text-gray-700 hover:bg-gray-100"
-                        }`}
-                      >
-                        <i
-                          className={`fas ${option.icon} mr-3 text-[${palette.primary}]`}
-                        >
-                        </i>
-                        {option.label}
-                      </div>
-                    ))}
+                    {menuOptions.map((option) => {
+                      if (option.link) {
+                        return (
+                          <a
+                            key={option.id}
+                            type="button"
+                            href={`/${option.link.toLowerCase()}`}
+                            onClick={() => handleOptionClick(option)}
+                            className={`flex items-center w-full text-left px-4 py-2 text-sm cursor-pointer ${
+                              selectedOption?.id === option.id
+                                ? "bg-indigo-100 text-indigo-900"
+                                : "text-gray-700 hover:bg-gray-100"
+                            }`}
+                            role="menuitem"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                handleOptionClick(option);
+                              }
+                            }}
+                          >
+                            <i
+                              className={`fas ${option.icon} mr-3 text-[${palette.primary}]`}
+                            >
+                            </i>
+                            {option.label}
+                          </a>
+                        );
+                      } else {
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            onClick={() => handleOptionClick(option)}
+                            className={`flex items-center w-full text-left px-4 py-2 text-sm cursor-pointer ${
+                              selectedOption?.id === option.id
+                                ? "bg-indigo-100 text-indigo-900"
+                                : "text-gray-700 hover:bg-gray-100"
+                            }`}
+                            role="menuitem"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                handleOptionClick(option);
+                              }
+                            }}
+                          >
+                            <i
+                              className={`fas ${option.icon} mr-3 text-[${palette.primary}]`}
+                            >
+                            </i>
+                            {option.label}
+                          </button>
+                        );
+                      }
+                    })}
                   </div>
                 </div>
               )}

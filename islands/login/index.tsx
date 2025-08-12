@@ -2,7 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { palette } from "../../assets/colors.ts";
-import { red } from "$std/fmt/colors.ts";
+import { decode } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -33,6 +33,8 @@ const LoginPage = () => {
         localStorage.setItem("jwtToken", token);
         localStorage.setItem("auth", "true");
         localStorage.setItem("user", username);
+        localStorage.setItem("userInfo", JSON.stringify(decode(token)[1]));
+
         window.location.href = "/";
       } else {
         alert("Login failed. Please check your credentials.");

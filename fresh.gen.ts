@@ -4,6 +4,7 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $admin_dash_index from "./routes/admin-dash/index.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
@@ -12,6 +13,7 @@ import * as $index from "./routes/index.tsx";
 import * as $login_index from "./routes/login/index.tsx";
 import * as $orders_index from "./routes/orders/index.tsx";
 import * as $products_index from "./routes/products/index.tsx";
+import * as $user_dash_index from "./routes/user-dash/index.tsx";
 import * as $work_with_me_index from "./routes/work-with-me/index.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Navbar_index from "./islands/Navbar/index.tsx";
@@ -36,6 +38,7 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/admin-dash/index.tsx": $admin_dash_index,
     "./routes/api/joke.ts": $api_joke,
     "./routes/api/jwt/token.tsx": $api_jwt_token,
     "./routes/api/orders/create.tsx": $api_orders_create,
@@ -44,6 +47,7 @@ const manifest = {
     "./routes/login/index.tsx": $login_index,
     "./routes/orders/index.tsx": $orders_index,
     "./routes/products/index.tsx": $products_index,
+    "./routes/user-dash/index.tsx": $user_dash_index,
     "./routes/work-with-me/index.tsx": $work_with_me_index,
   },
   islands: {
