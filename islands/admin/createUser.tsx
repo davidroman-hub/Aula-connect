@@ -1,9 +1,10 @@
 import { useState } from "preact/hooks";
+import axiod from "https://deno.land/x/axiod/mod.ts";
 
-function CreateUser({ addStudent, setView }: any) {
+function CreateUser({ addStudent, setView, token }: any) {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+    password: "",
   });
 
   const handleChange = (e: any) => {
@@ -13,11 +14,34 @@ function CreateUser({ addStudent, setView }: any) {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (formData.name && formData.email) {
+    if (formData.name && formData.password) {
       addStudent(formData);
-      setFormData({ name: "", email: "" });
+      setFormData({ name: "", password: "" });
     }
   };
+
+  async function createUser(e: any) {
+    e.preventDefault();
+    try {
+      const response = await axiod.post("/api/users/user", {
+        username: formData.name,
+        password: formData.password,
+        role: "user",
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      setFormData({ name: "", password: "" });
+      return response.data;
+    } catch (error: any) {
+      console.error("Error creating user:", error);
+      const errorMessage = error.response?.data || error.message ||
+        "Unknown error occurred";
+      throw new Error(`Error creating user: ${errorMessage}`);
+    }
+  }
 
   return (
     <div>
@@ -34,7 +58,7 @@ function CreateUser({ addStudent, setView }: any) {
       </div>
 
       <div className="bg-white rounded-xl shadow p-6 max-w-2xl mx-auto">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={createUser}>
           <div className="mb-6">
             <label className="block text-gray-700 mb-2" htmlFor="name">
               Nombre Completo
@@ -52,17 +76,17 @@ function CreateUser({ addStudent, setView }: any) {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2" htmlFor="email">
-              Correo Electrónico
+            <label className="block text-gray-700 mb-2" htmlFor="name">
+              Nombre Completo
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              id="password"
+              name="password"
+              value={formData.password}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Ingresa el correo electrónico"
+              placeholder="Ingresa el nombre completo"
               required
             />
           </div>

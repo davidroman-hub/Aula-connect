@@ -76,6 +76,7 @@ const initialModules = [
 
 // Componente principal de la aplicación
 export function AdminDashboards() {
+  const token = localStorage.getItem("jwtToken") || "{}";
   const [view, setView] = useState("dashboard"); // dashboard, students, courses, createUser, createCourse
   const [students, setStudents] = useState(initialStudents);
   const [courses, setCourses] = useState(initialCourses);
@@ -156,7 +157,7 @@ export function AdminDashboards() {
         )}
         {view === "courses" && <Courses courses={courses} />}
         {view === "createUser" && (
-          <CreateUser addStudent={addStudent} setView={setView} />
+          <CreateUser addStudent={addStudent} setView={setView} token={token} />
         )}
         {view === "createCourse" && (
           <CreateCourse addCourse={addCourse} setView={setView} />

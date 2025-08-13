@@ -21,4 +21,6 @@ async function createMongoDbConnection() {
 
 db = await createMongoDbConnection();
 
+export const usersCollection = db.collection("users");
+
 export { createMongoDbConnection, db };
