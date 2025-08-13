@@ -77,38 +77,6 @@ const Footer = () => {
               style={{ color: palette.white }}
               className="text-lg font-bold mb-4"
             >
-              Company
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white">
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white">Blog</a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white">
-                  Affiliates
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white">Press</a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3
-              style={{ color: palette.white }}
-              className="text-lg font-bold mb-4"
-            >
               Support
             </h3>
             <ul className="space-y-2">
@@ -146,7 +114,6 @@ const Footer = () => {
           <div className="flex space-x-6">
             <a href="#" className="text-gray-300 hover:text-white">Terms</a>
             <a href="#" className="text-gray-300 hover:text-white">Privacy</a>
-            <a href="#" className="text-gray-300 hover:text-white">Cookies</a>
           </div>
         </div>
       </div>

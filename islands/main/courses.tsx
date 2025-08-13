@@ -1,6 +1,9 @@
+import { useState } from "preact/hooks";
 import { manageTheme, palette } from "../../assets/colors.ts";
 
 const Courses = () => {
+  const activeSectionLocal = localStorage.getItem("section") || "home";
+
   const courses = [
     {
       icon: <i class="fab fa-html5 text-white text-7xl"></i>,
@@ -33,6 +36,14 @@ const Courses = () => {
       price: "$49.99",
     },
   ];
+  const [activeSection, setActiveSection] = useState(
+    activeSectionLocal || "home",
+  );
+
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section);
+    localStorage.setItem("section", section);
+  };
 
   return (
     <section className={`py-16 ${manageTheme()}`}>
@@ -81,9 +92,13 @@ const Courses = () => {
         </div>
 
         <div className="text-center mt-12">
-          <button className="border-2 border-[#C1275A] text-[#C1275A] px-8 py-3 rounded-full font-bold hover:bg-[#C1275A] hover:text-white transition duration-300">
+          <a
+            href="/courses"
+            onClick={() => handleSectionChange("courses")}
+            className="inline-block border-2 border-[#C1275A] text-[#C1275A] px-8 py-3 rounded-full font-bold hover:bg-[#C1275A] hover:text-white transition duration-300"
+          >
             View All Courses
-          </button>
+          </a>
         </div>
       </div>
     </section>

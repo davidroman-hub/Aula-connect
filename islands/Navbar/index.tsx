@@ -3,6 +3,7 @@ import CartItems from "../cart/index.tsx";
 import { i18n } from "../../i18next.ts";
 import ChangeToSpanish from "../changeLanguage/index.tsx";
 import { manageTheme, manageTheme2, palette } from "../../assets/colors.ts";
+import { selectSuperProfLink } from "../helpers/index.tsx";
 
 const Cart = (
   showSidebar: boolean,
@@ -251,15 +252,22 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-2">
-            <div
-              style={{ background: palette.backgroundSoft }}
-              className="w-13 h-13 rounded-full flex items-center justify-center"
+            <a
+              href="/"
+              onClick={() => handleSectionChange("home")}
+              className="block"
             >
-              <img
-                src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1754490890/learningplat/logo_qkfxhw.png"
-                alt="logo"
-              />
-            </div>
+              <div
+                style={{ background: palette.backgroundSoft }}
+                className="w-13 h-13 rounded-full flex items-center justify-center"
+              >
+                <img
+                  src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1754490890/learningplat/logo_qkfxhw.png"
+                  alt="logo"
+                  className="cursor-pointer"
+                />
+              </div>
+            </a>
 
             <button
               onClick={() => {
@@ -280,7 +288,10 @@ const Navbar = () => {
             <div className="ml-10 flex items-center space-x-8">
               {sections.map((option) => (
                 <a
-                  href={`/${option.link}`}
+                  href={option.id !== "pricing"
+                    ? `/${option.link}`
+                    : selectSuperProfLink()}
+                  target={option.id === "pricing" ? "_blank" : "_self"}
                   onClick={() => handleSectionChange(option.id)}
                   className={`nav-link px-3 py-2 text-sm font-medium ${
                     activeSection === option.id
