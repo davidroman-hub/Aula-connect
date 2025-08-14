@@ -1,25 +1,60 @@
 import { useState } from "preact/hooks";
 import { palette } from "../../assets/colors.ts";
+import { axiod } from "https://deno.land/x/axiod@0.26.2/mod.ts";
 
-function CreateCourse({ addCourse, setView }: any) {
+function CreateCourse({ getCourses, token, setView }: any) {
   const [formData, setFormData] = useState({
     name: "",
-    modules: "",
+    modules: [],
   });
+
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: any) => {
+  async function createCourse(e: any) {
     e.preventDefault();
-    if (formData.name && formData.modules) {
-      addCourse(formData);
-      setFormData({ name: "", modules: "" });
-    }
-  };
+    try {
+      const response = await axiod.post("/api/courses/course", {
+        name: formData.name,
+        slug: formData.name.toLowerCase().replace(/\s+/g, "-"),
+        modules: [],
+        students: [],
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
 
+      if (response.status === 201) {
+        setSuccess(true);
+        setFormData({ name: "", modules: [] });
+        getCourses();
+      } else {
+        setError("Error creating course");
+      }
+    } catch (error: any) {
+      setError(
+        error.response?.data || error.message || "Unknown error occurred",
+      );
+    }
+  }
+  if (success) {
+    setTimeout(() => {
+      setSuccess(false);
+    }, 3000);
+  }
+
+  if (error) {
+    setTimeout(() => {
+      setError("");
+    }, 3000);
+  }
   return (
     <div>
       <div className="flex items-center mb-6">
@@ -35,7 +70,44 @@ function CreateCourse({ addCourse, setView }: any) {
       </div>
 
       <div className="bg-white rounded-xl shadow p-6 max-w-2xl mx-auto">
-        <form onSubmit={handleSubmit}>
+        {success && (
+          <div role="alert" className="alert alert-success mb-10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="h-6 w-6 shrink-0 stroke-current"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              >
+              </path>
+            </svg>
+            <span>Curso creado exitosamente.</span>
+          </div>
+        )}
+        {error && (
+          <div role="alert" className="alert alert-error mb-10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{error}</span>
+          </div>
+        )}
+        <form onSubmit={createCourse}>
           <div className="mb-6">
             <label className="block text-gray-700 mb-2" htmlFor="name">
               Nombre del Curso

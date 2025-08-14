@@ -1,4 +1,5 @@
 import { palette } from "../../assets/colors.ts";
+import { Course } from "../../routes/api/courses/course.tsx";
 
 function Courses({ courses }: any) {
   return (
@@ -14,7 +15,7 @@ function Courses({ courses }: any) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {courses.map((course: any) => (
+        {courses.map((course: Course) => (
           <div
             key={course.id}
             className="bg-white rounded-xl shadow p-6 card-hover transition-all duration-300"
@@ -24,7 +25,7 @@ function Courses({ courses }: any) {
                 <h3 className="text-xl font-bold text-gray-800">
                   {course.name}
                 </h3>
-                <p className="text-gray-600">ID: {course.id}</p>
+                <p className="text-gray-600">ID: {course.slug}</p>
               </div>
               <div className="bg-purple-100 p-2 rounded-lg">
                 <i className="fas fa-book text-secondary text-xl"></i>
@@ -34,11 +35,11 @@ function Courses({ courses }: any) {
             <div className="flex justify-between mb-4">
               <div>
                 <p className="text-gray-500 text-sm">Módulos</p>
-                <p className="font-bold">{course.modules}</p>
+                <p className="font-bold">{course.modules.length}</p>
               </div>
               <div>
                 <p className="text-gray-500 text-sm">Estudiantes</p>
-                <p className="font-bold">{course.students}</p>
+                <p className="font-bold">{course.students.length}</p>
               </div>
             </div>
 

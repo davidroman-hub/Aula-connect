@@ -11,86 +11,6 @@ import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { use } from "https://deno.land/x/i18next@v21.8.1/index.js";
 
 // Datos iniciales de prueba
-export type Course = {
-  id: number;
-  name: string;
-  slug: string;
-  modules: Module[];
-  students: Student[];
-  progress?: number;
-};
-
-export type Module = {
-  id: number;
-  name: string;
-  course: string;
-  progress?: number;
-};
-
-export type Student = {
-  id: number;
-  username: string;
-  courses: Course[];
-  password?: string;
-  type: string;
-};
-const initialStudents = [
-  {
-    id: 1,
-    name: "María Rodríguez",
-    email: "maria@ejemplo.com",
-    progress: 75,
-    modules: [
-      { id: 1, name: "Fundamentos de JS", progress: 90 },
-      { id: 2, name: "React Básico", progress: 80 },
-      { id: 3, name: "React Avanzado", progress: 60 },
-      { id: 4, name: "Bases de Datos", progress: 70 },
-    ],
-  },
-  {
-    id: 2,
-    name: "Carlos Pérez",
-    email: "carlos@ejemplo.com",
-    progress: 60,
-    modules: [
-      { id: 1, name: "Fundamentos de JS", progress: 100 },
-      { id: 2, name: "React Básico", progress: 70 },
-      { id: 3, name: "React Avanzado", progress: 30 },
-      { id: 4, name: "Bases de Datos", progress: 40 },
-    ],
-  },
-  {
-    id: 3,
-    name: "Ana Gómez",
-    email: "ana@ejemplo.com",
-    progress: 90,
-    modules: [
-      { id: 1, name: "Fundamentos de JS", progress: 100 },
-      { id: 2, name: "React Básico", progress: 95 },
-      { id: 3, name: "React Avanzado", progress: 85 },
-      { id: 4, name: "Bases de Datos", progress: 80 },
-    ],
-  },
-  {
-    id: 4,
-    name: "Jorge Martínez",
-    email: "jorge@ejemplo.com",
-    progress: 45,
-    modules: [
-      { id: 1, name: "Fundamentos de JS", progress: 70 },
-      { id: 2, name: "React Básico", progress: 40 },
-      { id: 3, name: "React Avanzado", progress: 30 },
-      { id: 4, name: "Bases de Datos", progress: 35 },
-    ],
-  },
-];
-
-const initialCourses = [
-  { id: 1, name: "Desarrollo Web Full Stack", modules: 6, students: 24 },
-  { id: 2, name: "React Avanzado", modules: 4, students: 18 },
-  { id: 3, name: "JavaScript Profesional", modules: 5, students: 32 },
-  { id: 4, name: "Node.js y Express", modules: 4, students: 15 },
-];
 
 const initialModules = [
   { id: 1, name: "Fundamentos de JS", course: "JavaScript Profesional" },
@@ -102,9 +22,9 @@ const initialModules = [
 // Componente principal de la aplicación
 export function AdminDashboards() {
   const token = localStorage.getItem("jwtToken") || "{}";
-  const [view, setView] = useState("dashboard"); // dashboard, students, courses, createUser, createCourse
-  const [students, setStudents] = useState([] as any[]); // Inicializar como array vacío
-  const [courses, setCourses] = useState(initialCourses);
+  const [view, setView] = useState("dashboard");
+  const [students, setStudents] = useState([] as any[]);
+  const [courses, setCourses] = useState([] as any[]);
   const [modules, setModules] = useState(initialModules);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -120,26 +40,25 @@ export function AdminDashboards() {
         },
       );
       setStudents(response.data);
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
-  // Agregar nuevo estudiante
-  const addStudent = (student: Student) => {
-    const newStudent = {
-      id: student.id,
-      name: student.username,
-      password: student.password,
-      progress: 0,
-      modules: modules.map((module) => ({
-        id: module.id,
-        name: module.name,
-        progress: 0,
-      })),
-    };
-    setStudents([...students, newStudent]);
-    setView("students");
+
+  const getCourses = async () => {
+    try {
+      const response = await axiod.get(
+        `api/courses/course`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setCourses(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // Agregar nuevo curso
@@ -168,6 +87,7 @@ export function AdminDashboards() {
 
   useEffect(() => {
     getStudents();
+    getCourses();
   }, []);
 
   return (
@@ -202,10 +122,18 @@ export function AdminDashboards() {
         )}
         {view === "courses" && <Courses courses={courses} />}
         {view === "createUser" && (
-          <CreateUser addStudent={addStudent} setView={setView} token={token} />
+          <CreateUser
+            setView={setView}
+            token={token}
+            getStudents={getStudents}
+          />
         )}
         {view === "createCourse" && (
-          <CreateCourse addCourse={addCourse} setView={setView} />
+          <CreateCourse
+            getCourses={getCourses}
+            token={token}
+            setView={setView}
+          />
         )}
       </main>
     </div>

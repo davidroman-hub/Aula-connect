@@ -5,6 +5,7 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $admin_dash_index from "./routes/admin-dash/index.tsx";
+import * as $api_courses_course from "./routes/api/courses/course.tsx";
 import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
 import * as $api_users_user from "./routes/api/users/user.tsx";
@@ -49,6 +50,7 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/admin-dash/index.tsx": $admin_dash_index,
+    "./routes/api/courses/course.tsx": $api_courses_course,
     "./routes/api/jwt/token.tsx": $api_jwt_token,
     "./routes/api/orders/create.tsx": $api_orders_create,
     "./routes/api/users/user.tsx": $api_users_user,
