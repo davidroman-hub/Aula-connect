@@ -1,10 +1,11 @@
-import { manageFontColorDash } from "../../assets/colors.ts";
+import { manageFontColorDash, palette } from "../../assets/colors.ts";
+import { Student } from "./index.tsx";
 
 function Students({ students, openStudentDetail }: any) {
   return (
     <div>
       <div className="flex justify-between  items-center mb-6">
-        <h2 className={`text-2xl font-bold ${manageFontColorDash()}`}>
+        <h2 className={`text-2xl font-bold text-[${palette.primary}]`}>
           Gestión de Estudiantes
         </h2>
         <button className="bg-primary text-white px-4 py-2 rounded-lg flex items-center">
@@ -22,7 +23,7 @@ function Students({ students, openStudentDetail }: any) {
                   Estudiante
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
+                  Contrasena
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Progreso
@@ -33,7 +34,7 @@ function Students({ students, openStudentDetail }: any) {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {students.map((student: any) => (
+              {students.map((student: Student) => (
                 <tr key={student.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -41,25 +42,23 @@ function Students({ students, openStudentDetail }: any) {
                         <i className="fas fa-user text-white"></i>
                       </div>
                       <div className="font-medium text-gray-900">
-                        {student.name}
+                        {student.username}
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                    {student.email}
+                    {student.password}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="w-32 mr-3">
                         <div className="progress-bar bg-gray-200">
-                          <div
-                            className="bg-primary h-full"
-                            style={{ width: `${student.progress}%` }}
+                          <div className="bg-primary h-full" // style={{ width: `${student.progress}%` }}
                           >
                           </div>
                         </div>
                       </div>
-                      <span className="text-gray-600">{student.progress}%</span>
+                      {/* <span className="text-gray-600">{student.progress}%</span> */}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

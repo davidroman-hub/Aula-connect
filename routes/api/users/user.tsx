@@ -10,7 +10,7 @@ export const handler: Handlers = {
   async POST(req) {
     const admin = await requireAdmin(req);
 
-    if (admin instanceof Response) return admin; // si no es admin, corta aquí
+    if (admin instanceof Response) return admin;
 
     const { username, password, role } = await req.json();
     if (!username || !password) {
@@ -27,11 +27,39 @@ export const handler: Handlers = {
     await usersCollection.insertOne({
       username,
       password,
+      courses: [],
       type: role || "user",
     });
 
     return new Response("User created", { status: 201 });
   },
+
+  async GET(req) {
+    const admin = await requireAdmin(req);
+    if (admin instanceof Response) return admin; // si no es admin, corta aquí
+
+    const users = await usersCollection.find({}).toArray();
+    return new Response(JSON.stringify(users), {
+      status: STATUS_CODE.OK,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+  //   try {
+  //     const users = await usersCollection.find({}).toArray();
+  //     return new Response(JSON.stringify(users), {
+  //       status: STATUS_CODE.OK,
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //   } catch (error: any) {
+  //     return new Response(error?.message ?? "Internal Server Error", {
+  //       status: STATUS_CODE.InternalServerError,
+  //     });
+  //   }
+  // },
 };
 
 // export const handler: Handlers = {

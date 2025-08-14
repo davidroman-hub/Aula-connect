@@ -1,3 +1,5 @@
+import { palette } from "../../assets/colors.ts";
+
 function DashboardSidebar({ view, setView, sidebarOpen, setSidebarOpen }: any) {
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: "grid" },
@@ -8,7 +10,7 @@ function DashboardSidebar({ view, setView, sidebarOpen, setSidebarOpen }: any) {
   ];
 
   return (
-    <aside className="sidebar bg-dark text-white">
+    <aside className={`sidebar bg-[${palette.primary}] text-white`}>
       <div className="p-4 border-b border-gray-700 flex items-center justify-between">
         <div className="flex items-center">
           <div className="bg-accent rounded-lg p-2 mr-3">

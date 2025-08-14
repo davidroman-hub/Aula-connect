@@ -5,6 +5,7 @@ export interface UserSchema {
   username: string;
   password: string; // hashed
   type: string; // "admin" | "user"
+  courses: any[];
 }
 
 export const Users = db.collection<UserSchema>("users");

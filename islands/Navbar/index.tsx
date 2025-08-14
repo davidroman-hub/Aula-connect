@@ -307,7 +307,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden  flex items-center">
             {buttonLog()}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

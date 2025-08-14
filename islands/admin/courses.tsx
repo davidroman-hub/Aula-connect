@@ -1,8 +1,12 @@
+import { palette } from "../../assets/colors.ts";
+
 function Courses({ courses }: any) {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Gestión de Cursos</h2>
+        <h2 className={`text-2xl font-bold text-[${palette.primary}]`}>
+          Gestión de Cursos
+        </h2>
         <button className="bg-primary text-white px-4 py-2 rounded-lg flex items-center">
           <i className="fas fa-plus mr-2"></i>
           Nuevo Módulo

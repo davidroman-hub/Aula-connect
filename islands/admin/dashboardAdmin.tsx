@@ -1,4 +1,5 @@
-import { manageFontColorDash } from "../../assets/colors.ts";
+import { manageFontColorDash, palette } from "../../assets/colors.ts";
+import { Student } from "./index.tsx";
 
 function AdminDashboard({ students, courses }: any) {
   // Calcular estadísticas
@@ -60,7 +61,7 @@ function AdminDashboard({ students, courses }: any) {
 
   return (
     <div>
-      <h2 className={`text-2xl font-bold ${manageFontColorDash()} mb-6`}>
+      <h2 className={`text-2xl font-bold text-[${palette.primary}] mb-6`}>
         Resumen General
       </h2>
 
@@ -164,7 +165,7 @@ function AdminDashboard({ students, courses }: any) {
           Top Estudiantes
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {topStudents.map((student) => (
+          {topStudents.map((student: Student) => (
             <div
               key={student.id}
               className="border rounded-lg p-4 hover:bg-gray-50 transition"
@@ -174,18 +175,18 @@ function AdminDashboard({ students, courses }: any) {
                   <i className="fas fa-user text-white"></i>
                 </div>
                 <div>
-                  <h4 className="font-bold">{student.name}</h4>
-                  <p className="text-gray-500 text-sm">{student.email}</p>
+                  <h4 className="font-bold">{student.username}</h4>
+                  <p className="text-gray-500 text-sm">{student.password}</p>
                 </div>
               </div>
               <div>
                 <p className="text-gray-600 mb-1">
-                  Progreso: {student.progress}%
+                  Progreso: {100}%
                 </p>
                 <div className="progress-bar bg-gray-200">
                   <div
                     className="bg-primary h-full"
-                    style={{ width: `${student.progress}%` }}
+                    style={{ width: `${100}%` }}
                   >
                   </div>
                 </div>

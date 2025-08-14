@@ -1,4 +1,11 @@
-function StudentDetail({ student, closeDetail }: any) {
+import { Student } from "./index.tsx";
+
+function StudentDetail(
+  { student, closeDetail }: {
+    student: Student | null;
+    closeDetail: () => void;
+  },
+) {
   if (!student) return null;
 
   return (
@@ -11,7 +18,7 @@ function StudentDetail({ student, closeDetail }: any) {
           <i className="fas fa-arrow-left"></i>
         </button>
         <h2 className="text-2xl font-bold text-gray-800">
-          Progreso de {student.name}
+          Progreso de {student.username}
         </h2>
       </div>
 
@@ -21,20 +28,20 @@ function StudentDetail({ student, closeDetail }: any) {
             <i className="fas fa-user text-white text-4xl"></i>
           </div>
           <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold">{student.name}</h3>
-            <p className="text-gray-600 mb-2">{student.email}</p>
+            <h3 className="text-xl font-bold">{student.username}</h3>
+            <p className="text-gray-600 mb-2">{student.password}</p>
             <div className="flex items-center">
               <div className="w-48 mr-3">
                 <div className="progress-bar bg-gray-200">
                   <div
                     className="bg-primary h-full"
-                    style={{ width: `${student.progress}%` }}
+                    style={{ width: `${100}%` }}
                   >
                   </div>
                 </div>
               </div>
               <span className="text-lg font-bold text-gray-800">
-                {student.progress}%
+                {100}%
               </span>
             </div>
             <p className="text-gray-500 mt-1">Progreso general</p>
@@ -47,7 +54,8 @@ function StudentDetail({ student, closeDetail }: any) {
           Progreso por Módulo
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {
+          /* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {student.modules.map((module: any) => (
             <div
               key={module.id}
@@ -95,7 +103,8 @@ function StudentDetail({ student, closeDetail }: any) {
               </div>
             </div>
           ))}
-        </div>
+        </div> */
+        }
       </div>
     </div>
   );

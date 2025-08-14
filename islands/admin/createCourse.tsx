@@ -1,4 +1,5 @@
 import { useState } from "preact/hooks";
+import { palette } from "../../assets/colors.ts";
 
 function CreateCourse({ addCourse, setView }: any) {
   const [formData, setFormData] = useState({
@@ -28,7 +29,9 @@ function CreateCourse({ addCourse, setView }: any) {
         >
           <i className="fas fa-arrow-left"></i>
         </button>
-        <h2 className="text-2xl font-bold text-gray-800">Crear Nuevo Curso</h2>
+        <h2 className={`text-2xl font-bold text-[${palette.primary}]`}>
+          Crear Nuevo Curso
+        </h2>
       </div>
 
       <div className="bg-white rounded-xl shadow p-6 max-w-2xl mx-auto">
@@ -43,7 +46,7 @@ function CreateCourse({ addCourse, setView }: any) {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full text-gray-700 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               placeholder="Ingresa el nombre del curso"
               required
             />
@@ -61,7 +64,7 @@ function CreateCourse({ addCourse, setView }: any) {
               onChange={handleChange}
               min="1"
               max="20"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 text-gray-700 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               placeholder="Ingresa el número de módulos"
               required
             />

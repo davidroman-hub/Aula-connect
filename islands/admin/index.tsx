@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import Sidebar from "./sidebar.tsx";
 import HeaderAdminDashboard from "./header.tsx";
 import AdminDashboard from "./dashboardAdmin.tsx";
@@ -7,8 +7,33 @@ import StudentDetail from "./studentDetails.tsx";
 import Courses from "./courses.tsx";
 import CreateUser from "./createUser.tsx";
 import CreateCourse from "./createCourse.tsx";
+import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
+import { use } from "https://deno.land/x/i18next@v21.8.1/index.js";
 
 // Datos iniciales de prueba
+export type Course = {
+  id: number;
+  name: string;
+  slug: string;
+  modules: Module[];
+  students: Student[];
+  progress?: number;
+};
+
+export type Module = {
+  id: number;
+  name: string;
+  course: string;
+  progress?: number;
+};
+
+export type Student = {
+  id: number;
+  username: string;
+  courses: Course[];
+  password?: string;
+  type: string;
+};
 const initialStudents = [
   {
     id: 1,
@@ -78,18 +103,34 @@ const initialModules = [
 export function AdminDashboards() {
   const token = localStorage.getItem("jwtToken") || "{}";
   const [view, setView] = useState("dashboard"); // dashboard, students, courses, createUser, createCourse
-  const [students, setStudents] = useState(initialStudents);
+  const [students, setStudents] = useState([] as any[]); // Inicializar como array vacío
   const [courses, setCourses] = useState(initialCourses);
   const [modules, setModules] = useState(initialModules);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const getStudents = async () => {
+    try {
+      const response = await axiod.get(
+        `api/users/user`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setStudents(response.data);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // Agregar nuevo estudiante
-  const addStudent = (student: any) => {
+  const addStudent = (student: Student) => {
     const newStudent = {
-      id: students.length + 1,
-      name: student.name,
-      email: student.email,
+      id: student.id,
+      name: student.username,
+      password: student.password,
       progress: 0,
       modules: modules.map((module) => ({
         id: module.id,
@@ -124,6 +165,10 @@ export function AdminDashboards() {
     setSelectedStudent(null);
     setView("students");
   };
+
+  useEffect(() => {
+    getStudents();
+  }, []);
 
   return (
     <div className={`dashboard-grid ${sidebarOpen ? "sidebar-open" : ""}`}>
