@@ -8,26 +8,18 @@ import Courses from "./courses.tsx";
 import CreateUser from "./createUser.tsx";
 import CreateCourse from "./createCourse.tsx";
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
-import { use } from "https://deno.land/x/i18next@v21.8.1/index.js";
+import { updateCourseModuleOptions } from "./adminActions/index.ts";
 
-// Datos iniciales de prueba
-
-const initialModules = [
-  { id: 1, name: "Fundamentos de JS", course: "JavaScript Profesional" },
-  { id: 2, name: "React Básico", course: "React Avanzado" },
-  { id: 3, name: "React Avanzado", course: "React Avanzado" },
-  { id: 4, name: "Bases de Datos", course: "Desarrollo Web Full Stack" },
-];
-
-// Componente principal de la aplicación
 export function AdminDashboards() {
   const token = localStorage.getItem("jwtToken") || "{}";
   const [view, setView] = useState("dashboard");
   const [students, setStudents] = useState([] as any[]);
   const [courses, setCourses] = useState([] as any[]);
-  const [modules, setModules] = useState(initialModules);
+
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isModuleCreated, setIsModuleCreated] = useState(false);
+  const [isModuleError, setIsModuleError] = useState("");
 
   const getStudents = async () => {
     try {
@@ -61,16 +53,29 @@ export function AdminDashboards() {
     }
   };
 
-  // Agregar nuevo curso
-  const addCourse = (course: any) => {
-    const newCourse = {
-      id: courses.length + 1,
-      name: course.name,
-      modules: parseInt(course.modules),
-      students: 0,
-    };
-    setCourses([...courses, newCourse]);
-    setView("courses");
+  const createModule = async (module: any) => {
+    try {
+      const response = await axiod.post(
+        `/api/modules/module`,
+        {
+          name: module.name,
+          course: module.course,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      await updateCourseModuleOptions(module.course, response.data.id);
+
+      setIsModuleCreated(true);
+      return response.data;
+    } catch (error: any) {
+      setIsModuleError(error.message || "Error creating module");
+    }
   };
 
   // Abrir detalle de estudiante
@@ -84,6 +89,18 @@ export function AdminDashboards() {
     setSelectedStudent(null);
     setView("students");
   };
+
+  if (isModuleCreated) {
+    setTimeout(() => {
+      setIsModuleCreated(false);
+    }, 2000);
+  }
+
+  if (isModuleError) {
+    setTimeout(() => {
+      setIsModuleError("");
+    }, 2000);
+  }
 
   useEffect(() => {
     getStudents();
@@ -120,7 +137,14 @@ export function AdminDashboards() {
             closeDetail={closeStudentDetail}
           />
         )}
-        {view === "courses" && <Courses courses={courses} />}
+        {view === "courses" && (
+          <Courses
+            courses={courses}
+            createModule={createModule}
+            isModuleCreated={isModuleCreated}
+            isModuleError={isModuleError}
+          />
+        )}
         {view === "createUser" && (
           <CreateUser
             setView={setView}
@@ -138,4 +162,8 @@ export function AdminDashboards() {
       </main>
     </div>
   );
+}
+
+function updateModuleOptions(course: any, name: any) {
+  throw new Error("Function not implemented.");
 }

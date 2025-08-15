@@ -1,6 +1,7 @@
 import { useState } from "preact/hooks";
 import { palette } from "../../assets/colors.ts";
 import { axiod } from "https://deno.land/x/axiod@0.26.2/mod.ts";
+import { ErrorAlert, SuccessAlert } from "../alerts/index.tsx";
 
 function CreateCourse({ getCourses, token, setView }: any) {
   const [formData, setFormData] = useState({
@@ -70,42 +71,11 @@ function CreateCourse({ getCourses, token, setView }: any) {
       </div>
 
       <div className="bg-white rounded-xl shadow p-6 max-w-2xl mx-auto">
-        {success && (
-          <div role="alert" className="alert alert-success mb-10">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="h-6 w-6 shrink-0 stroke-current"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              >
-              </path>
-            </svg>
-            <span>Curso creado exitosamente.</span>
-          </div>
-        )}
+        {success && <SuccessAlert message={"Curso creado exitosamente."} />}
         {error && (
-          <div role="alert" className="alert alert-error mb-10">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 shrink-0 stroke-current"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span>{error}</span>
-          </div>
+          <ErrorAlert
+            message={error}
+          />
         )}
         <form onSubmit={createCourse}>
           <div className="mb-6">

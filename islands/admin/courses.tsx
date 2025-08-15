@@ -1,17 +1,29 @@
 import { palette } from "../../assets/colors.ts";
 import { Course } from "../../routes/api/courses/course.tsx";
+import ModuleModal from "./modalToCreateModule.tsx";
 
-function Courses({ courses }: any) {
+export interface CoursesProps {
+  courses: Course[];
+  createModule: (moduleData: any) => void;
+  isModuleCreated: boolean;
+  isModuleError: string;
+}
+
+function Courses(
+  { courses, createModule, isModuleCreated, isModuleError }: CoursesProps,
+) {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className={`text-2xl font-bold text-[${palette.primary}]`}>
           Gestión de Cursos
         </h2>
-        <button className="bg-primary text-white px-4 py-2 rounded-lg flex items-center">
-          <i className="fas fa-plus mr-2"></i>
-          Nuevo Módulo
-        </button>
+        <ModuleModal
+          createModule={createModule}
+          isModuleCreated={isModuleCreated}
+          courses={courses}
+          isModuleError={isModuleError}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
