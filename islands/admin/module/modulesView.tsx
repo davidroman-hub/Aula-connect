@@ -1,13 +1,20 @@
 import { useEffect, useState } from "preact/hooks";
 import type { Module } from "../../../routes/api/modules/module.tsx";
 import EditModule from "./editModule.tsx";
+import ModuleModal from "./modalToCreateModule.tsx";
 
 interface ModulesViewProps {
   token: string;
   courses: any[];
+  createModule: (moduleData: any) => void;
+  isModuleCreated: boolean;
+  isModuleError: string;
 }
 
-const ModulesView = ({ token, courses }: ModulesViewProps) => {
+const ModulesView = (
+  { token, courses, createModule, isModuleCreated, isModuleError }:
+    ModulesViewProps,
+) => {
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingModule, setEditingModule] = useState<Module | null>(null);
@@ -111,6 +118,12 @@ const ModulesView = ({ token, courses }: ModulesViewProps) => {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
+        <ModuleModal
+          createModule={createModule}
+          isModuleCreated={isModuleCreated}
+          courses={courses}
+          isModuleError={isModuleError}
+        />
         <h2 className="text-2xl font-bold text-gray-800">Gestión de Módulos</h2>
         <div className="text-sm text-gray-500">
           {filteredModules.length} de {modules.length} módulos

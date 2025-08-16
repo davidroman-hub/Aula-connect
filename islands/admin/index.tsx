@@ -141,12 +141,17 @@ export function AdminDashboards() {
         {view === "courses" && (
           <Courses
             courses={courses}
+          />
+        )}
+        {view === "modules" && (
+          <ModulesView
+            token={token}
+            courses={courses}
             createModule={createModule}
             isModuleCreated={isModuleCreated}
             isModuleError={isModuleError}
           />
         )}
-        {view === "modules" && <ModulesView token={token} courses={courses} />}
         {view === "createUser" && (
           <CreateUser
             setView={setView}

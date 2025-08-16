@@ -1,6 +1,5 @@
 import { palette } from "../../../assets/colors.ts";
 import { Course } from "../../../routes/api/courses/course.tsx";
-import ModuleModal from "../module/modalToCreateModule.tsx";
 
 export interface CoursesProps {
   courses: Course[];
@@ -10,7 +9,7 @@ export interface CoursesProps {
 }
 
 function Courses(
-  { courses, createModule, isModuleCreated, isModuleError }: CoursesProps,
+  { courses }: CoursesProps,
 ) {
   return (
     <div>
@@ -18,12 +17,6 @@ function Courses(
         <h2 className={`text-2xl font-bold text-[${palette.primary}]`}>
           Gestión de Cursos
         </h2>
-        <ModuleModal
-          createModule={createModule}
-          isModuleCreated={isModuleCreated}
-          courses={courses}
-          isModuleError={isModuleError}
-        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
