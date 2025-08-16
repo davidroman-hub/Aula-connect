@@ -154,8 +154,6 @@ const StudentUpdate = (
       formData.password || "",
       formData.course.map((course) => course._id),
     );
-
-    console.log(student._id);
   };
 
   useEffect(() => {

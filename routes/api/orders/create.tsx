@@ -102,7 +102,7 @@ export const handler: Handlers = {
       const { id } = await req.json();
 
       const result = await orderCollection.deleteOne({ _id: new ObjectId(id) });
-      console.log(result, "result from delete");
+
       if (result === 0) {
         return new Response("Order not found", {
           status: STATUS_CODE.NotFound,

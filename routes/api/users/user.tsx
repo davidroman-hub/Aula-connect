@@ -64,7 +64,6 @@ export const handler: Handlers = {
 
     const { id, username, password, role, courses } = await req.json();
 
-    console.log("Updating user:", id, username, password, role, courses);
     if (!username) {
       return new Response("Missing fields", { status: 400 });
     }

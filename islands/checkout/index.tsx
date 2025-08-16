@@ -159,11 +159,8 @@ const CheckoutFields = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      console.log("Form submitted:", formData);
-      console.log("listo");
       setIsSubmitted(true);
       handleCreatorOrder();
-      // Here you would typically send the data to your backend
     }
   };
 

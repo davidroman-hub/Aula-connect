@@ -504,7 +504,6 @@ const Portfolio = () => {
               </button>
               <button
                 onClick={() => {
-                  console.log("Contact Me Clicked");
                   scrollToSection("contact");
                 }}
                 className={`z-2 px-6 py-3 rounded-full font-medium border ${

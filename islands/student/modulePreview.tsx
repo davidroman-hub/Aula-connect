@@ -51,7 +51,6 @@ const ModulePreview = ({ token, courses, studentId }: ModulePreviewProps) => {
 
   useEffect(() => {
     fetchAvailableModules();
-    fetchStudentEnrollments();
   }, []);
 
   const fetchAvailableModules = async () => {
@@ -76,30 +75,12 @@ const ModulePreview = ({ token, courses, studentId }: ModulePreviewProps) => {
     }
   };
 
-  const fetchStudentEnrollments = () => {
-    if (!studentId) return;
-
-    try {
-      console.log("Fetching enrollments for student:", studentId);
-    } catch (error) {
-      console.error("Error fetching enrollments:", error);
-    }
-  };
-
   const handleModulePreview = (module: Module) => {
     setSelectedModule(module);
   };
 
   const handleClosePreview = () => {
     setSelectedModule(null);
-  };
-
-  const handleEnrollModule = (moduleId: string) => {
-    try {
-      console.log("Inscribirse al módulo:", moduleId);
-    } catch (error) {
-      console.error("Error enrolling in module:", error);
-    }
   };
 
   const getModuleId = (module: Module): string => {
@@ -263,8 +244,6 @@ const ModulePreview = ({ token, courses, studentId }: ModulePreviewProps) => {
                       : (
                         <button
                           type="button"
-                          onClick={() =>
-                            handleEnrollModule(getModuleId(selectedModule))}
                           className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
                           Inscribirse al módulo
@@ -456,8 +435,6 @@ const ModulePreview = ({ token, courses, studentId }: ModulePreviewProps) => {
                         : (
                           <button
                             type="button"
-                            onClick={() =>
-                              handleEnrollModule(getModuleId(module))}
                             className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
                           >
                             Inscribirse

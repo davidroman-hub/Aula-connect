@@ -79,9 +79,7 @@ const LoginPage = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
     setTimeout(() => {
-      console.log("Login attempt with:", { username, password, rememberMe });
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", username);
       } else {

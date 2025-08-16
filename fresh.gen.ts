@@ -25,6 +25,7 @@ import * as $ShowProducts_index from "./islands/ShowProducts/index.tsx";
 import * as $admin_adminActions_index from "./islands/admin/adminActions/index.ts";
 import * as $admin_adminActions_index_1 from "./islands/admin/adminActions/index.tsx";
 import * as $admin_adminActions_studentsAsyncActions_studentAsyncActions from "./islands/admin/adminActions/studentsAsyncActions/studentAsyncActions.ts";
+import * as $admin_courses_courseDetails from "./islands/admin/courses/courseDetails.tsx";
 import * as $admin_courses_courses from "./islands/admin/courses/courses.tsx";
 import * as $admin_courses_createCourse from "./islands/admin/courses/createCourse.tsx";
 import * as $admin_createUser from "./islands/admin/createUser.tsx";
@@ -93,6 +94,7 @@ const manifest = {
     "./islands/admin/adminActions/index.tsx": $admin_adminActions_index_1,
     "./islands/admin/adminActions/studentsAsyncActions/studentAsyncActions.ts":
       $admin_adminActions_studentsAsyncActions_studentAsyncActions,
+    "./islands/admin/courses/courseDetails.tsx": $admin_courses_courseDetails,
     "./islands/admin/courses/courses.tsx": $admin_courses_courses,
     "./islands/admin/courses/createCourse.tsx": $admin_courses_createCourse,
     "./islands/admin/createUser.tsx": $admin_createUser,

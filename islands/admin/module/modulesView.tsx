@@ -29,9 +29,6 @@ const ModulesView = (
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCourse, setFilterCourse] = useState("all");
 
-  // Obtener lista única de cursos
-
-  // Helper function para obtener clases CSS de dificultad
   const getDifficultyClass = (difficulty?: string) => {
     switch (difficulty) {
       case "beginner":
@@ -44,8 +41,6 @@ const ModulesView = (
         return "bg-gray-100 text-gray-800";
     }
   };
-
-  console.log(courses);
 
   useEffect(() => {
     fetchAllModules();
@@ -123,7 +118,6 @@ const ModulesView = (
     );
   }
 
-  console.log(courses);
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
