@@ -1,14 +1,41 @@
 import { Handlers, STATUS_CODE } from "$fresh/server.ts";
 import { requireAdmin } from "../../../middleware/auth.ts";
 import { db } from "../../../lib/mongo.ts";
+import { ObjectId } from "https://deno.land/x/mongo@v0.32.0/mod.ts";
 
 const modulesCollection = db.collection("modules");
 
 export type Module = {
+  _id?: string;
   id: number;
   name: string;
   course: string;
   isFinished: boolean;
+  // Contenido educativo
+  content: {
+    description: string;
+    objectives: string[];
+    duration: number; // en minutos
+    difficulty: "beginner" | "intermediate" | "advanced";
+    videoUrl?: string;
+    materials: {
+      type: "pdf" | "link" | "code" | "exercise";
+      title: string;
+      url: string;
+      description?: string;
+    }[];
+    exercises: {
+      title: string;
+      description: string;
+      instructions: string;
+      solution?: string;
+    }[];
+    notes: string; // Rich text content
+  };
+  // Metadatos
+  createdAt: Date;
+  updatedAt: Date;
+  order: number; // Para ordenar módulos en el curso
 };
 
 export const handler: Handlers = {
@@ -54,6 +81,46 @@ export const handler: Handlers = {
         },
       },
     );
+  },
+
+  async PATCH(req) {
+    const admin = await requireAdmin(req);
+    if (admin instanceof Response) return admin;
+
+    const moduleData = await req.json();
+    const { _id, ...updateFields } = moduleData;
+
+    if (!_id) {
+      return new Response("Missing module _id", { status: 400 });
+    }
+
+    try {
+      const query = { _id: new ObjectId(_id) };
+
+      const result = await modulesCollection.updateOne(query, {
+        $set: {
+          ...updateFields,
+          updatedAt: new Date(),
+        },
+      });
+
+      if (result.matchedCount === 0) {
+        return new Response("Module not found", { status: 404 });
+      }
+
+      return new Response(
+        JSON.stringify({ message: "Module updated successfully" }),
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    } catch (error) {
+      console.error("Error updating module:", error);
+      return new Response("Error updating module", { status: 500 });
+    }
   },
 
   async GET(req) {

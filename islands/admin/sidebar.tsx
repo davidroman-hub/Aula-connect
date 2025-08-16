@@ -5,6 +5,7 @@ function DashboardSidebar({ view, setView, sidebarOpen, setSidebarOpen }: any) {
     { id: "dashboard", label: "Dashboard", icon: "grid" },
     { id: "students", label: "Estudiantes", icon: "users" },
     { id: "courses", label: "Cursos", icon: "book" },
+    { id: "modules", label: "Módulos", icon: "puzzle-piece" },
     { id: "createUser", label: "Nuevo Estudiante", icon: "user-plus" },
     { id: "createCourse", label: "Nuevo Curso", icon: "plus-circle" },
   ];

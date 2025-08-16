@@ -7,6 +7,7 @@ import StudentDetail from "./studentDetails.tsx";
 import Courses from "./courses.tsx";
 import CreateUser from "./createUser.tsx";
 import CreateCourse from "./createCourse.tsx";
+import ModulesView from "./modulesView.tsx";
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { updateCourseModuleOptions } from "./adminActions/index.ts";
 
@@ -145,6 +146,7 @@ export function AdminDashboards() {
             isModuleError={isModuleError}
           />
         )}
+        {view === "modules" && <ModulesView token={token} />}
         {view === "createUser" && (
           <CreateUser
             setView={setView}

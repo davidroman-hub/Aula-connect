@@ -21,14 +21,17 @@ import * as $Counter from "./islands/Counter.tsx";
 import * as $Navbar_index from "./islands/Navbar/index.tsx";
 import * as $ShowProducts_index from "./islands/ShowProducts/index.tsx";
 import * as $admin_adminActions_index from "./islands/admin/adminActions/index.ts";
+import * as $admin_adminActions_index_1 from "./islands/admin/adminActions/index.tsx";
 import * as $admin_courses from "./islands/admin/courses.tsx";
 import * as $admin_createCourse from "./islands/admin/createCourse.tsx";
 import * as $admin_createUser from "./islands/admin/createUser.tsx";
 import * as $admin_dashboardAdmin from "./islands/admin/dashboardAdmin.tsx";
+import * as $admin_editModule from "./islands/admin/editModule.tsx";
 import * as $admin_fakeData from "./islands/admin/fakeData.ts";
 import * as $admin_header from "./islands/admin/header.tsx";
 import * as $admin_index from "./islands/admin/index.tsx";
 import * as $admin_modalToCreateModule from "./islands/admin/modalToCreateModule.tsx";
+import * as $admin_modulesView from "./islands/admin/modulesView.tsx";
 import * as $admin_sidebar from "./islands/admin/sidebar.tsx";
 import * as $admin_studentDetails from "./islands/admin/studentDetails.tsx";
 import * as $admin_students from "./islands/admin/students.tsx";
@@ -72,14 +75,17 @@ const manifest = {
     "./islands/Navbar/index.tsx": $Navbar_index,
     "./islands/ShowProducts/index.tsx": $ShowProducts_index,
     "./islands/admin/adminActions/index.ts": $admin_adminActions_index,
+    "./islands/admin/adminActions/index.tsx": $admin_adminActions_index_1,
     "./islands/admin/courses.tsx": $admin_courses,
     "./islands/admin/createCourse.tsx": $admin_createCourse,
     "./islands/admin/createUser.tsx": $admin_createUser,
     "./islands/admin/dashboardAdmin.tsx": $admin_dashboardAdmin,
+    "./islands/admin/editModule.tsx": $admin_editModule,
     "./islands/admin/fakeData.ts": $admin_fakeData,
     "./islands/admin/header.tsx": $admin_header,
     "./islands/admin/index.tsx": $admin_index,
     "./islands/admin/modalToCreateModule.tsx": $admin_modalToCreateModule,
+    "./islands/admin/modulesView.tsx": $admin_modulesView,
     "./islands/admin/sidebar.tsx": $admin_sidebar,
     "./islands/admin/studentDetails.tsx": $admin_studentDetails,
     "./islands/admin/students.tsx": $admin_students,
