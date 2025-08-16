@@ -4,6 +4,14 @@ import { Course } from "../../../routes/api/courses/course.tsx";
 import { Module } from "../../../routes/api/modules/module.tsx";
 import { Student } from "../../../routes/api/users/user.tsx";
 
+type CourseRawInfo = {
+  _id: string;
+  name: string;
+  slug: string;
+  modules: string[];
+  students: string[];
+};
+
 export interface CourseDetailsProps {
   readonly course: Course | null;
   readonly onBack: () => void;
