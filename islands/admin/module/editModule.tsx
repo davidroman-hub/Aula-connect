@@ -1,6 +1,8 @@
-import { useState } from "preact/hooks";
+import { useRef, useState } from "preact/hooks";
 import type { Module } from "../../../routes/api/modules/module.tsx";
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
+import { getPlaceholderText } from "../../../lib/notesEditor.ts";
+import { renderFormattedNotesPreview } from "../../../lib/notesRenderer.tsx";
 
 interface EditModuleProps {
   module: Module;
@@ -10,6 +12,8 @@ interface EditModuleProps {
 }
 
 const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
+  const notesTextareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [formData, setFormData] = useState({
     name: module.name || "",
     description: module.content?.description || "",
@@ -22,13 +26,50 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
 
   const [materials, setMaterials] = useState(module.content?.materials || []);
   const [exercises, setExercises] = useState(module.content?.exercises || []);
+  const [noteFormat, setNoteFormat] = useState("markdown"); // "text", "markdown", "html"
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
+  const handleInputChange = (e: Event) => {
+    const target = e.target as
+      | HTMLInputElement
+      | HTMLTextAreaElement
+      | HTMLSelectElement;
+    const { name, value } = target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+  };
+
+  // Función para insertar formato en el textarea
+  const handleInsertFormatting = (
+    prefix: string,
+    suffix: string,
+    placeholder: string,
+  ) => {
+    const textarea = notesTextareaRef.current;
+    if (!textarea) return;
+
+    // Enfocar el textarea primero
+    textarea.focus();
+
+    const start = textarea.selectionStart || 0;
+    const end = textarea.selectionEnd || 0;
+    const currentValue = formData.notes;
+    const selectedText = currentValue.substring(start, end);
+    const textToInsert = selectedText || placeholder;
+    const newText = prefix + textToInsert + suffix;
+
+    const newValue = currentValue.substring(0, start) + newText +
+      currentValue.substring(end);
+
+    // Actualizar el estado
+    setFormData((prev) => ({ ...prev, notes: newValue }));
+
+    // Reposicionar el cursor después de que React actualice el DOM
+    setTimeout(() => {
+      const newCursorPos = start + prefix.length + textToInsert.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
   };
 
   const addMaterial = () => {
@@ -84,10 +125,7 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
             obj.trim()
           ),
           duration: formData.duration,
-          difficulty: formData.difficulty as
-            | "beginner"
-            | "intermediate"
-            | "advanced",
+          difficulty: formData.difficulty,
           videoUrl: formData.videoUrl,
           materials,
           exercises,
@@ -96,7 +134,7 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
         updatedAt: new Date(),
       };
 
-      const response = await axiod.patch(`/api/modules/module`, updatedModule, {
+      await axiod.patch(`/api/modules/module`, updatedModule, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
@@ -140,10 +178,14 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
           </h3>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="module-name"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Nombre del Módulo
             </label>
             <input
+              id="module-name"
               type="text"
               name="name"
               value={formData.name}
@@ -154,10 +196,14 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="module-description"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Descripción
             </label>
             <textarea
+              id="module-description"
               name="description"
               value={formData.description}
               onChange={handleInputChange}
@@ -230,18 +276,122 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-700">Contenido</h3>
 
+          {/* Editor de Notas Avanzado */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Notas y Contenido
-            </label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="text-sm font-medium text-gray-700">
+                Contenido y Notas del Módulo
+              </label>
+              <select
+                value={noteFormat}
+                onChange={(e) =>
+                  setNoteFormat((e.target as HTMLSelectElement).value)}
+                className="text-xs px-2 py-1 border border-gray-300 rounded text-black"
+              >
+                <option value="text">Texto Simple</option>
+                <option value="markdown">Markdown</option>
+                <option value="html">HTML</option>
+              </select>
+            </div>
+
+            {/* Barra de herramientas para formato */}
+            <div className="border border-gray-300 rounded-t-lg bg-gray-50 p-2 flex flex-wrap gap-1">
+              <button
+                type="button"
+                onClick={() =>
+                  handleInsertFormatting("**", "**", "texto en negrita")}
+                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                title="Negrita"
+              >
+                <b>B</b>
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  handleInsertFormatting("*", "*", "texto en cursiva")}
+                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                title="Cursiva"
+              >
+                <i>I</i>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleInsertFormatting("`", "`", "código")}
+                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100 font-mono"
+                title="Código inline"
+              >
+                `code`
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  handleInsertFormatting(
+                    "\n```\n",
+                    "\n```\n",
+                    "bloque de código",
+                  )}
+                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100 font-mono"
+                title="Bloque de código"
+              >
+                ```
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  handleInsertFormatting("\n## ", "", "Título de Sección")}
+                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                title="Título"
+              >
+                H2
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  handleInsertFormatting("\n- ", "", "elemento de lista")}
+                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                title="Lista"
+              >
+                •
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  handleInsertFormatting("\n> ", "", "cita importante")}
+                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                title="Cita"
+              >
+                "
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  handleInsertFormatting("[", "](url)", "texto del enlace")}
+                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                title="Enlace"
+              >
+                🔗
+              </button>
+            </div>
+
             <textarea
+              ref={notesTextareaRef}
               name="notes"
               value={formData.notes}
               onChange={handleInputChange}
-              rows={6}
-              placeholder="Contenido de la clase, explicaciones, conceptos clave..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-black"
+              rows={12}
+              placeholder={getPlaceholderText(noteFormat)}
+              className="w-full px-3 py-2 border-x border-b border-gray-300 rounded-b-lg focus:ring-2 focus:ring-blue-500 text-black font-mono text-sm"
             />
+
+            {/* Vista previa */}
+            {noteFormat !== "text" && formData.notes && (
+              <div className="mt-2 border border-gray-300 rounded-lg p-3 bg-gray-50">
+                <div className="text-xs text-gray-600 mb-2">Vista previa:</div>
+                <div className="prose prose-sm max-w-none">
+                  {renderFormattedNotesPreview(formData.notes)}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Materiales */}

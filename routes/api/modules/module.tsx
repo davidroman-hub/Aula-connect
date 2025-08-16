@@ -7,7 +7,7 @@ const modulesCollection = db.collection("modules");
 
 export type Module = {
   _id?: string;
-  id: number;
+  id: string;
   name: string;
   course: string;
   isFinished: boolean;

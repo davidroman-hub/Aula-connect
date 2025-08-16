@@ -1,12 +1,19 @@
 import { useEffect, useState } from "preact/hooks";
 import type { Module } from "../../../routes/api/modules/module.tsx";
+import type { Course } from "../../../routes/api/courses/course.tsx";
 import EditModule from "./editModule.tsx";
 import ModuleModal from "./modalToCreateModule.tsx";
+import ModulePreviewModal from "./modulePreviewModal.tsx";
+
+interface ModuleData {
+  name: string;
+  course: string;
+}
 
 interface ModulesViewProps {
   token: string;
-  courses: any[];
-  createModule: (moduleData: any) => void;
+  courses: Course[];
+  createModule: (moduleData: ModuleData) => void;
   isModuleCreated: boolean;
   isModuleError: string;
 }
@@ -18,6 +25,7 @@ const ModulesView = (
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingModule, setEditingModule] = useState<Module | null>(null);
+  const [previewModule, setPreviewModule] = useState<Module | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCourse, setFilterCourse] = useState("all");
 
@@ -115,6 +123,7 @@ const ModulesView = (
     );
   }
 
+  console.log(courses);
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
@@ -166,7 +175,9 @@ const ModulesView = (
             >
               <option value="all">Todos los cursos</option>
               {courses.map((course) => (
-                <option key={course.id} value={course.id}>{course.name}</option>
+                <option key={course._id} value={course._id}>
+                  {course.name}
+                </option>
               ))}
             </select>
           </div>
@@ -250,13 +261,25 @@ const ModulesView = (
                       )}
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => handleEditModule(module)}
-                      className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      Editar
-                    </button>
+                    <div className="flex justify-between items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => setPreviewModule(module)}
+                        className="flex-1 px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
+                        title="Vista previa del módulo"
+                      >
+                        <i className="fas fa-eye mr-1"></i>
+                        <span>Vista previa</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleEditModule(module)}
+                        className="flex-1 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        <i className="fas fa-edit mr-1"></i>
+                        <span>Editar</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -276,6 +299,16 @@ const ModulesView = (
               : "Aún no hay módulos creados"}
           </p>
         </div>
+      )}
+
+      {/* Modal de vista previa */}
+      {previewModule && (
+        <ModulePreviewModal
+          module={previewModule}
+          isOpen={Boolean(previewModule)}
+          onClose={() => setPreviewModule(null)}
+          courses={courses}
+        />
       )}
     </div>
   );

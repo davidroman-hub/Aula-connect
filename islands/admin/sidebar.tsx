@@ -52,7 +52,7 @@ function DashboardSidebar({ view, setView, sidebarOpen, setSidebarOpen }: any) {
         </ul>
       </nav>
 
-      <div className="absolute bottom-0 w-full p-4 border-t border-gray-700">
+      <div className="absolute bottom-0 p-4 border-t border-gray-700">
         <div className="flex items-center">
           <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center mr-3">
             <i className="fas fa-user text-white"></i>

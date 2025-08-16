@@ -141,6 +141,9 @@ export function AdminDashboards() {
         {view === "courses" && (
           <Courses
             courses={courses}
+            createModule={createModule}
+            isModuleCreated={isModuleCreated}
+            isModuleError={isModuleError}
           />
         )}
         {view === "modules" && (
