@@ -95,7 +95,15 @@ export const handler: Handlers = {
     }
 
     try {
-      const query = { _id: new ObjectId(_id) };
+      // Handle both ObjectId strings (24 hex chars) and custom string IDs
+      let query;
+      if (_id.length === 24 && /^[0-9a-fA-F]{24}$/.test(_id)) {
+        // Valid ObjectId format
+        query = { _id: new ObjectId(_id) };
+      } else {
+        // Custom string ID (like timestamp)
+        query = { _id: _id };
+      }
 
       const result = await modulesCollection.updateOne(query, {
         $set: {

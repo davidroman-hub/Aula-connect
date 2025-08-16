@@ -30,12 +30,19 @@ const LoginPage = () => {
       });
       if (respo.status === 200) {
         const { token } = respo.data;
+
+        // Guardar en localStorage
         localStorage.setItem("jwtToken", token);
         localStorage.setItem("auth", "true");
         localStorage.setItem("user", username);
         localStorage.setItem("userInfo", JSON.stringify(decode(token)[1]));
 
-        window.location.href = "/";
+        // También guardar en cookies para que el servidor pueda acceder
+        document.cookie =
+          `jwtToken=${token}; path=/; max-age=86400; SameSite=Strict`;
+
+        // Redirigir al dashboard estudiantil
+        globalThis.location.href = "/user-dash";
       } else {
         alert("Login failed. Please check your credentials.");
       }

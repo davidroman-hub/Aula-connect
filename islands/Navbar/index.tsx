@@ -96,7 +96,7 @@ const Navbar = () => {
     {
       id: 1,
       label: "Dashboard",
-      link: userInfo.type === "admin" ? "admin-dash" : "user-dashboard",
+      link: userInfo.type === "admin" ? "admin-dash" : "user-dash",
       icon: "fa-gauge",
     },
     { id: 2, label: "Profile", link: "profile", icon: "fa-user" },

@@ -1,4 +1,4 @@
-import { Student } from "./index.tsx";
+import type { Student } from "../../../routes/api/users/user.tsx";
 
 function StudentDetail(
   { student, closeDetail }: {

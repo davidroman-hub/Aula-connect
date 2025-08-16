@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
-import { palette } from "../../assets/colors.ts";
-import { CoursesProps } from "./courses.tsx";
-import { ErrorAlert, SuccessAlert } from "../alerts/index.tsx";
+import { palette } from "../../../assets/colors.ts";
+import { CoursesProps } from "../courses/courses.tsx";
+import { ErrorAlert, SuccessAlert } from "../../alerts/index.tsx";
 
 // Simple icon components to replace react-icons
 const FaChevronDown = ({ className }: { className?: string }) => (

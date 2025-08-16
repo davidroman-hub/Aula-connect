@@ -1,5 +1,5 @@
-import { manageFontColorDash, palette } from "../../assets/colors.ts";
-import { Student } from "./index.tsx";
+import { palette } from "../../../assets/colors.ts";
+import type { Student } from "../../../routes/api/users/user.tsx";
 
 function Students({ students, openStudentDetail }: any) {
   return (

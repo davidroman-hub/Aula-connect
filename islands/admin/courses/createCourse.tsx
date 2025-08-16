@@ -1,29 +1,30 @@
 import { useState } from "preact/hooks";
-import axiod from "https://deno.land/x/axiod/mod.ts";
-import { palette } from "../../assets/colors.ts";
-import { ErrorAlert, SuccessAlert } from "../alerts/index.tsx";
+import { palette } from "../../../assets/colors.ts";
+import { axiod } from "https://deno.land/x/axiod@0.26.2/mod.ts";
+import { ErrorAlert, SuccessAlert } from "../../alerts/index.tsx";
 
-function CreateUser({ setView, token, getStudents }: any) {
+function CreateCourse({ getCourses, token, setView }: any) {
   const [formData, setFormData] = useState({
     name: "",
-    password: "",
+    modules: [],
   });
 
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  async function createUser(e: any) {
+  async function createCourse(e: any) {
     e.preventDefault();
     try {
-      const response = await axiod.post("/api/users/user", {
-        username: formData.name,
-        password: formData.password,
-        role: "user",
+      const response = await axiod.post("/api/courses/course", {
+        name: formData.name,
+        slug: formData.name.toLowerCase().replace(/\s+/g, "-"),
+        modules: [],
+        students: [],
       }, {
         headers: {
           "Content-Type": "application/json",
@@ -31,22 +32,19 @@ function CreateUser({ setView, token, getStudents }: any) {
         },
       });
 
-      setSuccess(true);
-      setFormData({ name: "", password: "" });
-
-      if (getStudents) {
-        await getStudents();
+      if (response.status === 201) {
+        setSuccess(true);
+        setFormData({ name: "", modules: [] });
+        getCourses();
+      } else {
+        setError("Error creating course");
       }
-
-      return response.data;
     } catch (error: any) {
-      setError(true);
-      const errorMessage = error.response?.data || error.message ||
-        "Unknown error occurred";
-      throw new Error(`Error creating user: ${errorMessage}`);
+      setError(
+        error.response?.data || error.message || "Unknown error occurred",
+      );
     }
   }
-
   if (success) {
     setTimeout(() => {
       setSuccess(false);
@@ -55,35 +53,34 @@ function CreateUser({ setView, token, getStudents }: any) {
 
   if (error) {
     setTimeout(() => {
-      setError(false);
+      setError("");
     }, 3000);
   }
-
   return (
     <div>
       <div className="flex items-center mb-6">
         <button
-          onClick={() => setView("students")}
+          onClick={() => setView("courses")}
           className="mr-4 text-gray-600 hover:text-gray-900"
         >
           <i className="fas fa-arrow-left"></i>
         </button>
         <h2 className={`text-2xl font-bold text-[${palette.primary}]`}>
-          Registrar Nuevo Estudiante
+          Crear Nuevo Curso
         </h2>
       </div>
 
-      <div className={`bg-white rounded-xl shadow p-6 max-w-2xl mx-auto`}>
-        {success && <SuccessAlert message={"Usuario creado exitosamente."} />}
+      <div className="bg-white rounded-xl shadow p-6 max-w-2xl mx-auto">
+        {success && <SuccessAlert message={"Curso creado exitosamente."} />}
         {error && (
           <ErrorAlert
-            message={"Error! usuario no creado, algo mal paso.."}
+            message={error}
           />
         )}
-        <form onSubmit={createUser}>
+        <form onSubmit={createCourse}>
           <div className="mb-6">
-            <label className={`block text-gray-700 mb-2`} htmlFor="name">
-              Nombre Completo
+            <label className="block text-gray-700 mb-2" htmlFor="name">
+              Nombre del Curso
             </label>
             <input
               type="text"
@@ -92,23 +89,25 @@ function CreateUser({ setView, token, getStudents }: any) {
               value={formData.name}
               onChange={handleChange}
               className="w-full text-gray-700 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Ingresa el nombre completo"
+              placeholder="Ingresa el nombre del curso"
               required
             />
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2" htmlFor="name">
-              Contrasena
+            <label className="block text-gray-700 mb-2" htmlFor="modules">
+              Número de Módulos
             </label>
             <input
-              type="text"
-              id="password"
-              name="password"
-              value={formData.password}
+              type="number"
+              id="modules"
+              name="modules"
+              value={formData.modules}
               onChange={handleChange}
-              className="w-full px-4 py-2 border text-gray-700 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Ingresa el nombre completo"
+              min="1"
+              max="20"
+              className="w-full px-4 text-gray-700 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Ingresa el número de módulos"
               required
             />
           </div>
@@ -116,7 +115,7 @@ function CreateUser({ setView, token, getStudents }: any) {
           <div className="flex justify-end">
             <button
               type="button"
-              onClick={() => setView("students")}
+              onClick={() => setView("courses")}
               className="mr-3 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
             >
               Cancelar
@@ -125,7 +124,7 @@ function CreateUser({ setView, token, getStudents }: any) {
               type="submit"
               className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition"
             >
-              Registrar Estudiante
+              Crear Curso
             </button>
           </div>
         </form>
@@ -134,4 +133,4 @@ function CreateUser({ setView, token, getStudents }: any) {
   );
 }
 
-export default CreateUser;
+export default CreateCourse;

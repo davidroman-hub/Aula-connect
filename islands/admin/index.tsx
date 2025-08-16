@@ -2,12 +2,12 @@ import { useEffect, useState } from "preact/hooks";
 import Sidebar from "./sidebar.tsx";
 import HeaderAdminDashboard from "./header.tsx";
 import AdminDashboard from "./dashboardAdmin.tsx";
-import Students from "./students.tsx";
-import StudentDetail from "./studentDetails.tsx";
-import Courses from "./courses.tsx";
-import CreateUser from "./createUser.tsx";
-import CreateCourse from "./createCourse.tsx";
-import ModulesView from "./modulesView.tsx";
+import Students from "./students/students.tsx";
+import StudentDetail from "./students/studentDetails.tsx";
+import Courses from "./courses/courses.tsx";
+import CreateUser from "./students/createUser.tsx";
+import CreateCourse from "./courses/createCourse.tsx";
+import ModulesView from "./module/modulesView.tsx";
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { updateCourseModuleOptions } from "./adminActions/index.ts";
 
@@ -146,7 +146,7 @@ export function AdminDashboards() {
             isModuleError={isModuleError}
           />
         )}
-        {view === "modules" && <ModulesView token={token} />}
+        {view === "modules" && <ModulesView token={token} courses={courses} />}
         {view === "createUser" && (
           <CreateUser
             setView={setView}
@@ -164,8 +164,4 @@ export function AdminDashboards() {
       </main>
     </div>
   );
-}
-
-function updateModuleOptions(course: any, name: any) {
-  throw new Error("Function not implemented.");
 }

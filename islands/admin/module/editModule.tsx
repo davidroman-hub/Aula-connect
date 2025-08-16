@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { Module } from "../../routes/api/modules/module.tsx";
+import type { Module } from "../../../routes/api/modules/module.tsx";
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 
 interface EditModuleProps {

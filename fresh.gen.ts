@@ -5,11 +5,13 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $admin_dash_index from "./routes/admin-dash/index.tsx";
+import * as $api_auth_set_cookie from "./routes/api/auth/set-cookie.tsx";
 import * as $api_courses_course from "./routes/api/courses/course.tsx";
 import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
 import * as $api_modules_module from "./routes/api/modules/module.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
 import * as $api_users_user from "./routes/api/users/user.tsx";
+import * as $auth_redirect_index from "./routes/auth-redirect/index.tsx";
 import * as $checkout_index from "./routes/checkout/index.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $login_index from "./routes/login/index.tsx";
@@ -22,24 +24,24 @@ import * as $Navbar_index from "./islands/Navbar/index.tsx";
 import * as $ShowProducts_index from "./islands/ShowProducts/index.tsx";
 import * as $admin_adminActions_index from "./islands/admin/adminActions/index.ts";
 import * as $admin_adminActions_index_1 from "./islands/admin/adminActions/index.tsx";
-import * as $admin_courses from "./islands/admin/courses.tsx";
-import * as $admin_createCourse from "./islands/admin/createCourse.tsx";
-import * as $admin_createUser from "./islands/admin/createUser.tsx";
+import * as $admin_courses_courses from "./islands/admin/courses/courses.tsx";
+import * as $admin_courses_createCourse from "./islands/admin/courses/createCourse.tsx";
 import * as $admin_dashboardAdmin from "./islands/admin/dashboardAdmin.tsx";
-import * as $admin_editModule from "./islands/admin/editModule.tsx";
-import * as $admin_fakeData from "./islands/admin/fakeData.ts";
 import * as $admin_header from "./islands/admin/header.tsx";
 import * as $admin_index from "./islands/admin/index.tsx";
-import * as $admin_modalToCreateModule from "./islands/admin/modalToCreateModule.tsx";
-import * as $admin_modulesView from "./islands/admin/modulesView.tsx";
+import * as $admin_module_editModule from "./islands/admin/module/editModule.tsx";
+import * as $admin_module_modalToCreateModule from "./islands/admin/module/modalToCreateModule.tsx";
+import * as $admin_module_modulesView from "./islands/admin/module/modulesView.tsx";
 import * as $admin_sidebar from "./islands/admin/sidebar.tsx";
-import * as $admin_studentDetails from "./islands/admin/studentDetails.tsx";
-import * as $admin_students from "./islands/admin/students.tsx";
+import * as $admin_students_createUser from "./islands/admin/students/createUser.tsx";
+import * as $admin_students_studentDetails from "./islands/admin/students/studentDetails.tsx";
+import * as $admin_students_students from "./islands/admin/students/students.tsx";
 import * as $alerts_index from "./islands/alerts/index.tsx";
 import * as $cart_index from "./islands/cart/index.tsx";
 import * as $changeLanguage_index from "./islands/changeLanguage/index.tsx";
 import * as $checkout_index_1 from "./islands/checkout/index.tsx";
 import * as $helpers_index from "./islands/helpers/index.tsx";
+import * as $helpers_tokenRedirect from "./islands/helpers/tokenRedirect.tsx";
 import * as $login_index_1 from "./islands/login/index.tsx";
 import * as $main_courses from "./islands/main/courses.tsx";
 import * as $main_footer from "./islands/main/footer.tsx";
@@ -50,6 +52,9 @@ import * as $main_testimonials from "./islands/main/testimonials.tsx";
 import * as $modal_index from "./islands/modal/index.tsx";
 import * as $portafolio_index from "./islands/portafolio/index.tsx";
 import * as $showOrders_showOrders from "./islands/showOrders/showOrders.tsx";
+import * as $student_moduleCard from "./islands/student/moduleCard.tsx";
+import * as $student_modulePreview from "./islands/student/modulePreview.tsx";
+import * as $student_studentDashboard from "./islands/student/studentDashboard.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -57,11 +62,13 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/admin-dash/index.tsx": $admin_dash_index,
+    "./routes/api/auth/set-cookie.tsx": $api_auth_set_cookie,
     "./routes/api/courses/course.tsx": $api_courses_course,
     "./routes/api/jwt/token.tsx": $api_jwt_token,
     "./routes/api/modules/module.tsx": $api_modules_module,
     "./routes/api/orders/create.tsx": $api_orders_create,
     "./routes/api/users/user.tsx": $api_users_user,
+    "./routes/auth-redirect/index.tsx": $auth_redirect_index,
     "./routes/checkout/index.tsx": $checkout_index,
     "./routes/index.tsx": $index,
     "./routes/login/index.tsx": $login_index,
@@ -76,24 +83,26 @@ const manifest = {
     "./islands/ShowProducts/index.tsx": $ShowProducts_index,
     "./islands/admin/adminActions/index.ts": $admin_adminActions_index,
     "./islands/admin/adminActions/index.tsx": $admin_adminActions_index_1,
-    "./islands/admin/courses.tsx": $admin_courses,
-    "./islands/admin/createCourse.tsx": $admin_createCourse,
-    "./islands/admin/createUser.tsx": $admin_createUser,
+    "./islands/admin/courses/courses.tsx": $admin_courses_courses,
+    "./islands/admin/courses/createCourse.tsx": $admin_courses_createCourse,
     "./islands/admin/dashboardAdmin.tsx": $admin_dashboardAdmin,
-    "./islands/admin/editModule.tsx": $admin_editModule,
-    "./islands/admin/fakeData.ts": $admin_fakeData,
     "./islands/admin/header.tsx": $admin_header,
     "./islands/admin/index.tsx": $admin_index,
-    "./islands/admin/modalToCreateModule.tsx": $admin_modalToCreateModule,
-    "./islands/admin/modulesView.tsx": $admin_modulesView,
+    "./islands/admin/module/editModule.tsx": $admin_module_editModule,
+    "./islands/admin/module/modalToCreateModule.tsx":
+      $admin_module_modalToCreateModule,
+    "./islands/admin/module/modulesView.tsx": $admin_module_modulesView,
     "./islands/admin/sidebar.tsx": $admin_sidebar,
-    "./islands/admin/studentDetails.tsx": $admin_studentDetails,
-    "./islands/admin/students.tsx": $admin_students,
+    "./islands/admin/students/createUser.tsx": $admin_students_createUser,
+    "./islands/admin/students/studentDetails.tsx":
+      $admin_students_studentDetails,
+    "./islands/admin/students/students.tsx": $admin_students_students,
     "./islands/alerts/index.tsx": $alerts_index,
     "./islands/cart/index.tsx": $cart_index,
     "./islands/changeLanguage/index.tsx": $changeLanguage_index,
     "./islands/checkout/index.tsx": $checkout_index_1,
     "./islands/helpers/index.tsx": $helpers_index,
+    "./islands/helpers/tokenRedirect.tsx": $helpers_tokenRedirect,
     "./islands/login/index.tsx": $login_index_1,
     "./islands/main/courses.tsx": $main_courses,
     "./islands/main/footer.tsx": $main_footer,
@@ -104,6 +113,9 @@ const manifest = {
     "./islands/modal/index.tsx": $modal_index,
     "./islands/portafolio/index.tsx": $portafolio_index,
     "./islands/showOrders/showOrders.tsx": $showOrders_showOrders,
+    "./islands/student/moduleCard.tsx": $student_moduleCard,
+    "./islands/student/modulePreview.tsx": $student_modulePreview,
+    "./islands/student/studentDashboard.tsx": $student_studentDashboard,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

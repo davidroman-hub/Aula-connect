@@ -37,7 +37,7 @@ export const handler: Handlers = {
       username,
       password,
       courses: [],
-      type: role || "user",
+      type: role || "student",
     });
 
     return new Response("User created", { status: 201 });

@@ -32,5 +32,3 @@ jobs:
           project: "davidroman-learning-pl-85"
           entrypoint: "main.ts"
           root: "."
-          
-          

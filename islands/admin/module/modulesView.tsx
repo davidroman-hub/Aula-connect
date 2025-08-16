@@ -1,12 +1,13 @@
 import { useEffect, useState } from "preact/hooks";
-import { Module } from "../../routes/api/modules/module.tsx";
+import type { Module } from "../../../routes/api/modules/module.tsx";
 import EditModule from "./editModule.tsx";
 
 interface ModulesViewProps {
   token: string;
+  courses: any[];
 }
 
-const ModulesView = ({ token }: ModulesViewProps) => {
+const ModulesView = ({ token, courses }: ModulesViewProps) => {
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingModule, setEditingModule] = useState<Module | null>(null);
@@ -14,7 +15,6 @@ const ModulesView = ({ token }: ModulesViewProps) => {
   const [filterCourse, setFilterCourse] = useState("all");
 
   // Obtener lista única de cursos
-  const courses = [...new Set(modules.map((module) => module.course))];
 
   // Helper function para obtener clases CSS de dificultad
   const getDifficultyClass = (difficulty?: string) => {
@@ -29,6 +29,8 @@ const ModulesView = ({ token }: ModulesViewProps) => {
         return "bg-gray-100 text-gray-800";
     }
   };
+
+  console.log(courses);
 
   useEffect(() => {
     fetchAllModules();
@@ -91,6 +93,10 @@ const ModulesView = ({ token }: ModulesViewProps) => {
     return matchesSearch && matchesCourse;
   });
 
+  const findCourse = (courseId: string) => {
+    return courses.find((course) => course._id === courseId);
+  };
+
   if (editingModule) {
     return (
       <EditModule
@@ -147,7 +153,7 @@ const ModulesView = ({ token }: ModulesViewProps) => {
             >
               <option value="all">Todos los cursos</option>
               {courses.map((course) => (
-                <option key={course} value={course}>{course}</option>
+                <option key={course.id} value={course.id}>{course.name}</option>
               ))}
             </select>
           </div>
@@ -185,7 +191,9 @@ const ModulesView = ({ token }: ModulesViewProps) => {
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center text-sm text-gray-600">
                       <i className="fas fa-book mr-2"></i>
-                      <span className="font-medium">{module.course}</span>
+                      <span className="font-medium">
+                        {findCourse(module.course)?.name || module.course}
+                      </span>
                     </div>
 
                     {module.content?.duration && (

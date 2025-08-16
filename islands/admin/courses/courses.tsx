@@ -1,6 +1,6 @@
-import { palette } from "../../assets/colors.ts";
-import { Course } from "../../routes/api/courses/course.tsx";
-import ModuleModal from "./modalToCreateModule.tsx";
+import { palette } from "../../../assets/colors.ts";
+import { Course } from "../../../routes/api/courses/course.tsx";
+import ModuleModal from "../module/modalToCreateModule.tsx";
 
 export interface CoursesProps {
   courses: Course[];

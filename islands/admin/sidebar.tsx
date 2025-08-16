@@ -20,6 +20,7 @@ function DashboardSidebar({ view, setView, sidebarOpen, setSidebarOpen }: any) {
           <h1 className="text-xl font-bold">CodeMaster Dashboard</h1>
         </div>
         <button
+          type="button"
           className="md:hidden text-white"
           onClick={() => setSidebarOpen(false)}
         >
@@ -32,6 +33,7 @@ function DashboardSidebar({ view, setView, sidebarOpen, setSidebarOpen }: any) {
           {menuItems.map((item) => (
             <li key={item.id} className="mb-2">
               <button
+                type="button"
                 onClick={() => {
                   setView(item.id);
                   setSidebarOpen(false);

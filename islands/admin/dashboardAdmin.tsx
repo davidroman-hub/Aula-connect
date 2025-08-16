@@ -1,5 +1,5 @@
 import { manageFontColorDash, palette } from "../../assets/colors.ts";
-import { Student } from "./index.tsx";
+import { Student } from "../../routes/api/users/user.tsx";
 
 function AdminDashboard({ students, courses }: any) {
   // Calcular estadísticas
