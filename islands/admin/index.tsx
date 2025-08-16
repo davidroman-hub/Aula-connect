@@ -33,6 +33,7 @@ export function AdminDashboards() {
         },
       );
       setStudents(response.data);
+      return response.data;
     } catch (error) {
       console.error(error);
     }
@@ -135,6 +136,7 @@ export function AdminDashboards() {
             getCourses={getCourses}
             students={students}
             openStudentDetail={openStudentDetail}
+            getStudents={getStudents}
           />
         )}
         {view === "studentDetail" && (

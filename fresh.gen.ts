@@ -24,6 +24,7 @@ import * as $Navbar_index from "./islands/Navbar/index.tsx";
 import * as $ShowProducts_index from "./islands/ShowProducts/index.tsx";
 import * as $admin_adminActions_index from "./islands/admin/adminActions/index.ts";
 import * as $admin_adminActions_index_1 from "./islands/admin/adminActions/index.tsx";
+import * as $admin_adminActions_studentsAsyncActions_studentAsyncActions from "./islands/admin/adminActions/studentsAsyncActions/studentAsyncActions.ts";
 import * as $admin_courses_courses from "./islands/admin/courses/courses.tsx";
 import * as $admin_courses_createCourse from "./islands/admin/courses/createCourse.tsx";
 import * as $admin_createUser from "./islands/admin/createUser.tsx";
@@ -46,6 +47,7 @@ import * as $alerts_index from "./islands/alerts/index.tsx";
 import * as $cart_index from "./islands/cart/index.tsx";
 import * as $changeLanguage_index from "./islands/changeLanguage/index.tsx";
 import * as $checkout_index_1 from "./islands/checkout/index.tsx";
+import * as $components_spinners_spinners from "./islands/components/spinners/spinners.tsx";
 import * as $helpers_index from "./islands/helpers/index.tsx";
 import * as $helpers_tokenRedirect from "./islands/helpers/tokenRedirect.tsx";
 import * as $login_index_1 from "./islands/login/index.tsx";
@@ -89,6 +91,8 @@ const manifest = {
     "./islands/ShowProducts/index.tsx": $ShowProducts_index,
     "./islands/admin/adminActions/index.ts": $admin_adminActions_index,
     "./islands/admin/adminActions/index.tsx": $admin_adminActions_index_1,
+    "./islands/admin/adminActions/studentsAsyncActions/studentAsyncActions.ts":
+      $admin_adminActions_studentsAsyncActions_studentAsyncActions,
     "./islands/admin/courses/courses.tsx": $admin_courses_courses,
     "./islands/admin/courses/createCourse.tsx": $admin_courses_createCourse,
     "./islands/admin/createUser.tsx": $admin_createUser,
@@ -114,6 +118,7 @@ const manifest = {
     "./islands/cart/index.tsx": $cart_index,
     "./islands/changeLanguage/index.tsx": $changeLanguage_index,
     "./islands/checkout/index.tsx": $checkout_index_1,
+    "./islands/components/spinners/spinners.tsx": $components_spinners_spinners,
     "./islands/helpers/index.tsx": $helpers_index,
     "./islands/helpers/tokenRedirect.tsx": $helpers_tokenRedirect,
     "./islands/login/index.tsx": $login_index_1,

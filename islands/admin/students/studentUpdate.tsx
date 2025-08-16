@@ -1,29 +1,50 @@
 import { useEffect, useState } from "preact/hooks";
+import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { palette } from "../../../assets/colors.ts";
 import { Student } from "../../../routes/api/users/user.tsx";
 import { Course } from "../../../routes/api/courses/course.tsx";
+import { updateMultipleCourses } from "../adminActions/index.ts";
+import { ErrorAlert, SuccessAlert } from "../../alerts/index.tsx";
+import { buttonSpinnerLoading } from "../../components/spinners/spinners.tsx";
 
 type StudentUpdateProps = {
   getCourses: () => Promise<Course[]>;
   student: Student;
+  getStudents: () => Promise<Student[]>;
 };
 
-const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
+const StudentUpdate = (
+  { getCourses, student, getStudents }: StudentUpdateProps,
+) => {
   const [isEditingUser, setIsEditingUser] = useState(false);
-
   const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [successMessageUpdateStudent, setSuccessMessageUpdateStudent] =
+    useState("");
+  const [successMessageUpdateCourses, setSuccessMessageUpdateCourses] =
+    useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [formData, setFormData] = useState({
     name: student.username,
-    password: student.password,
+    password: student.password || "",
     course: student.courses || [],
   });
+
+  useEffect(() => {
+    setFormData({
+      name: student.username,
+      password: student.password || "",
+      course: student.courses || [],
+    });
+  }, [student]);
 
   const closeModal = () => {
     setIsEditingUser(false);
     setFormData({
-      name: "",
-      password: "",
-      course: [],
+      name: student.username,
+      password: student.password || "",
+      course: student.courses || [],
     });
   };
 
@@ -41,7 +62,6 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
     );
 
     if (isSelected) {
-      // Remove course
       setFormData({
         ...formData,
         course: formData.course.filter((course) =>
@@ -51,7 +71,6 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
         ),
       });
     } else {
-      // Add course - find the full course object
       const selectedCourse = courses.find((course) => course._id === courseId);
       if (selectedCourse) {
         setFormData({
@@ -73,9 +92,70 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
     });
   };
 
+  const editStudent = async (
+    studentId: string,
+    username: string,
+    password: string,
+    coursesIdsWhereUserWillBe: string[],
+  ) => {
+    setLoading(true);
+    try {
+      const response = await axiod.patch(`/api/users/user`, {
+        id: studentId,
+        username,
+        password,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      });
+
+      if (response.status === 200 && coursesIdsWhereUserWillBe.length > 0) {
+        const updateCoursers = await updateMultipleCourses(
+          coursesIdsWhereUserWillBe,
+          studentId,
+        );
+        setLoading(false);
+        if (updateCoursers.length > 0) {
+          setSuccessMessageUpdateCourses("Courses updated successfully");
+        }
+      }
+
+      if (response.status === 200) {
+        setLoading(false);
+        setSuccessMessageUpdateStudent("Student updated successfully");
+      }
+
+      await getCourses();
+      await getStudents();
+
+      return response.data;
+    } catch (error) {
+      setLoading(false);
+      setErrorMessage(
+        `Failed to edit user: ${
+          (error instanceof Error) ? error.message : String(error)
+        }`,
+      );
+      throw new Error(
+        `Failed to edit user: ${
+          (error instanceof Error) ? error.message : String(error)
+        }`,
+      );
+    }
+  };
+
   const handleSubmit = (e: Event) => {
     e.preventDefault();
-    console.log("Form data to submit:", formData);
+    editStudent(
+      student._id,
+      formData.name,
+      formData.password || "",
+      formData.course.map((course) => course._id),
+    );
+
+    console.log(student._id);
   };
 
   useEffect(() => {
@@ -86,7 +166,16 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
     fetchCourses();
   }, []);
 
-  console.log("Courses:", courses);
+  if (
+    successMessageUpdateStudent || successMessageUpdateCourses || errorMessage
+  ) {
+    setTimeout(() => {
+      closeModal();
+      setErrorMessage("");
+      setSuccessMessageUpdateStudent("");
+      setSuccessMessageUpdateCourses("");
+    }, 2000);
+  }
 
   return (
     <div className="flex items-center justify-center p-4">
@@ -104,6 +193,7 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
             type="button"
             className="absolute inset-0 w-full h-full"
             onClick={closeModal}
+            disabled={loading}
             onKeyDown={(e) => e.key === "Escape" && closeModal()}
             aria-label="Close modal"
           />
@@ -124,6 +214,13 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
               </button>
             </div>
             <div className="p-6 flex flex-col">
+              {errorMessage && <ErrorAlert message={errorMessage} />}
+              {successMessageUpdateStudent && (
+                <SuccessAlert message={successMessageUpdateStudent} />
+              )}
+              {successMessageUpdateCourses && (
+                <SuccessAlert message={successMessageUpdateCourses} />
+              )}
               <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
                 <div>
                   <label
@@ -133,6 +230,7 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
                     <i className="fas fa-user text-white" /> Name
                   </label>
                   <input
+                    disabled={loading}
                     type="text"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-black"
                     name="name"
@@ -150,6 +248,7 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
                     <i className="fas fa-password text-black"></i> Password
                   </label>
                   <input
+                    disabled={loading}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-black"
                     type="text"
                     name="password"
@@ -214,7 +313,7 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
                         (selectedCourse) =>
                           typeof selectedCourse === "string"
                             ? selectedCourse === course._id
-                            : selectedCourse._id === course._id
+                            : selectedCourse._id === course._id,
                       );
                       return !isSelected;
                     }).map((course) => (
@@ -228,8 +327,10 @@ const StudentUpdate = ({ getCourses, student }: StudentUpdateProps) => {
                 <button
                   className={` bg-[${palette.primary}] text-white px-4 py-2 border border-gray-300 rounded-lg hover:bg-[${palette.hover}] transition`}
                   type="submit"
+                  disabled={loading || successMessageUpdateCourses.length > 0 ||
+                    successMessageUpdateStudent.length > 0}
                 >
-                  Update Student
+                  {loading ? buttonSpinnerLoading() : "Update Student"}
                 </button>
               </form>
             </div>

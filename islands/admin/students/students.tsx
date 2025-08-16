@@ -6,9 +6,12 @@ type StudentsProps = {
   students: Student[];
   openStudentDetail: (student: Student) => void;
   getCourses: () => Promise<any[]>;
+  getStudents: () => Promise<any[]>;
 };
 
-function Students({ students, openStudentDetail, getCourses }: StudentsProps) {
+function Students(
+  { students, openStudentDetail, getCourses, getStudents }: StudentsProps,
+) {
   return (
     <div>
       <div className="flex justify-between  items-center mb-6">
@@ -76,7 +79,11 @@ function Students({ students, openStudentDetail, getCourses }: StudentsProps) {
                     >
                       <i className="fas fa-eye"></i> Ver Detalle
                     </button>
-                    <StudentUpdate getCourses={getCourses} student={student} />
+                    <StudentUpdate
+                      getCourses={getCourses}
+                      student={student}
+                      getStudents={getStudents}
+                    />
                   </td>
                 </tr>
               ))}

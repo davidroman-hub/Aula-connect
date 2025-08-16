@@ -5,10 +5,12 @@ import { requireAdmin } from "../../../middleware/auth.ts";
 
 import { db } from "../../../lib/mongo.ts";
 import { Course } from "../courses/course.tsx";
+import { ObjectId } from "https://deno.land/x/web_bson@v0.3.0/mod.js";
 const usersCollection = db.collection("users");
 
 export type Student = {
-  id: number;
+  id: string;
+  _id: string;
   username: string;
   courses: Course[];
   password?: string;
@@ -31,13 +33,13 @@ export const handler: Handlers = {
       return new Response("User already exists", { status: 409 });
     }
 
-    const hashed = await hash(password);
-
     await usersCollection.insertOne({
       username,
       password,
       courses: [],
       type: role || "student",
+      createdAt: new Date(),
+      updatedAt: null,
     });
 
     return new Response("User created", { status: 201 });
@@ -61,18 +63,25 @@ export const handler: Handlers = {
     if (admin instanceof Response) return admin;
 
     const { id, username, password, role, courses } = await req.json();
-    if (!id || !username) {
+
+    console.log("Updating user:", id, username, password, role, courses);
+    if (!username) {
       return new Response("Missing fields", { status: 400 });
     }
 
-    const user = await usersCollection.findOne({ _id: id });
+    const user = await usersCollection.findOne({ _id: new ObjectId(id) });
     if (!user) {
       return new Response("User not found", { status: 404 });
     }
 
-    const updateData: any = { username };
+    const updateData: any = { username, updatedAt: new Date() };
+
+    if (username) {
+      updateData.username = username;
+    }
+
     if (password) {
-      updateData.password = await hash(password);
+      updateData.password = password;
     }
     if (role) {
       updateData.type = role;
@@ -82,8 +91,14 @@ export const handler: Handlers = {
       updateData.courses = courses;
     }
 
-    await usersCollection.updateOne({ _id: id }, { $set: updateData });
+    const result = await usersCollection.updateOne({ _id: new ObjectId(id) }, {
+      $set: updateData,
+    });
 
-    return new Response("User updated", { status: 200 });
+    if (result.matchedCount === 0) {
+      return new Response("user not found", { status: 404 });
+    }
+
+    return new Response(`User ${username} updated`, { status: 200 });
   },
 };
