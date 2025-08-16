@@ -40,6 +40,7 @@ import * as $admin_modulesView from "./islands/admin/modulesView.tsx";
 import * as $admin_sidebar from "./islands/admin/sidebar.tsx";
 import * as $admin_students_createUser from "./islands/admin/students/createUser.tsx";
 import * as $admin_students_studentDetails from "./islands/admin/students/studentDetails.tsx";
+import * as $admin_students_studentUpdate from "./islands/admin/students/studentUpdate.tsx";
 import * as $admin_students_students from "./islands/admin/students/students.tsx";
 import * as $alerts_index from "./islands/alerts/index.tsx";
 import * as $cart_index from "./islands/cart/index.tsx";
@@ -107,6 +108,7 @@ const manifest = {
     "./islands/admin/students/createUser.tsx": $admin_students_createUser,
     "./islands/admin/students/studentDetails.tsx":
       $admin_students_studentDetails,
+    "./islands/admin/students/studentUpdate.tsx": $admin_students_studentUpdate,
     "./islands/admin/students/students.tsx": $admin_students_students,
     "./islands/alerts/index.tsx": $alerts_index,
     "./islands/cart/index.tsx": $cart_index,

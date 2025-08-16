@@ -1,7 +1,14 @@
 import { palette } from "../../../assets/colors.ts";
 import type { Student } from "../../../routes/api/users/user.tsx";
+import StudentUpdate from "./studentUpdate.tsx";
 
-function Students({ students, openStudentDetail }: any) {
+type StudentsProps = {
+  students: Student[];
+  openStudentDetail: (student: Student) => void;
+  getCourses: () => Promise<any[]>;
+};
+
+function Students({ students, openStudentDetail, getCourses }: StudentsProps) {
   return (
     <div>
       <div className="flex justify-between  items-center mb-6">
@@ -69,9 +76,7 @@ function Students({ students, openStudentDetail }: any) {
                     >
                       <i className="fas fa-eye"></i> Ver Detalle
                     </button>
-                    <button className="text-gray-500 hover:text-gray-700">
-                      <i className="fas fa-edit"></i>
-                    </button>
+                    <StudentUpdate getCourses={getCourses} student={student} />
                   </td>
                 </tr>
               ))}

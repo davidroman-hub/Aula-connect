@@ -49,6 +49,7 @@ export function AdminDashboards() {
         },
       );
       setCourses(response.data);
+      return response.data;
     } catch (error) {
       console.error(error);
     }
@@ -130,7 +131,11 @@ export function AdminDashboards() {
           <AdminDashboard students={students} courses={courses} />
         )}
         {view === "students" && (
-          <Students students={students} openStudentDetail={openStudentDetail} />
+          <Students
+            getCourses={getCourses}
+            students={students}
+            openStudentDetail={openStudentDetail}
+          />
         )}
         {view === "studentDetail" && (
           <StudentDetail

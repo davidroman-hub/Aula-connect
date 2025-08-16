@@ -55,4 +55,35 @@ export const handler: Handlers = {
       },
     });
   },
+
+  async PATCH(req) {
+    const admin = await requireAdmin(req);
+    if (admin instanceof Response) return admin;
+
+    const { id, username, password, role, courses } = await req.json();
+    if (!id || !username) {
+      return new Response("Missing fields", { status: 400 });
+    }
+
+    const user = await usersCollection.findOne({ _id: id });
+    if (!user) {
+      return new Response("User not found", { status: 404 });
+    }
+
+    const updateData: any = { username };
+    if (password) {
+      updateData.password = await hash(password);
+    }
+    if (role) {
+      updateData.type = role;
+    }
+
+    if (courses) {
+      updateData.courses = courses;
+    }
+
+    await usersCollection.updateOne({ _id: id }, { $set: updateData });
+
+    return new Response("User updated", { status: 200 });
+  },
 };
