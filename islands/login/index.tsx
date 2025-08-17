@@ -29,21 +29,27 @@ const LoginPage = () => {
         password: password,
       });
       if (respo.status === 200) {
-        const { token } = respo.data;
+        const { token, accessToken, refreshToken } = respo.data;
+
+        // Usar accessToken si está disponible, si no usar token para compatibilidad
+        const finalToken = accessToken || token;
 
         // Decodificar el token y obtener el payload
-        const decoded = decode(token);
+        const decoded = decode(finalToken);
         const payload = decoded[1] as { type?: string };
 
-        // Guardar en localStorage
-        localStorage.setItem("jwtToken", token);
+        // Guardar tokens en localStorage
+        localStorage.setItem("jwtToken", finalToken);
+        if (refreshToken) {
+          localStorage.setItem("refreshToken", refreshToken);
+        }
         localStorage.setItem("auth", "true");
         localStorage.setItem("user", username);
         localStorage.setItem("userInfo", JSON.stringify(payload));
 
         // También guardar en cookies para que el servidor pueda acceder
         document.cookie =
-          `jwtToken=${token}; path=/; max-age=86400; SameSite=Strict`;
+          `jwtToken=${finalToken}; path=/; max-age=86400; SameSite=Strict`;
 
         // Redirigir según el rol
         if (payload.type === "admin") {

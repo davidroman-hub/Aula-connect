@@ -17,13 +17,25 @@ const key = await crypto.subtle.importKey(
   ["sign", "verify"],
 );
 
-// Crear un token
+// Crear un access token (corta duración)
 export async function createJWT(username: string, type: string) {
   const payload: Payload = {
     iss: "fresh-app",
     username,
     type,
-    exp: getNumericDate(60 * 60), // Expira en 1 hora (60 minutes * 60 seconds)
+    exp: getNumericDate(15 * 60), // Expira en 15 minutos
+  };
+  return await create({ alg: "HS256", typ: "JWT" } as Header, payload, key);
+}
+
+// Crear un refresh token (larga duración)
+export async function createRefreshToken(username: string, type: string) {
+  const payload: Payload = {
+    iss: "fresh-app",
+    username,
+    type,
+    tokenType: "refresh",
+    exp: getNumericDate(7 * 24 * 60 * 60), // Expira en 7 días
   };
   return await create({ alg: "HS256", typ: "JWT" } as Header, payload, key);
 }
@@ -44,6 +56,32 @@ export async function verifyJWT(token: string) {
     return payload;
   } catch (error) {
     console.log("JWT verification failed. Error:", error);
+    return null;
+  }
+}
+
+// Verificar un refresh token específicamente
+export async function verifyRefreshToken(token: string) {
+  console.log("Verifying refresh token...");
+  try {
+    const payload = await verify(token, key);
+    console.log("Refresh token verification successful. Payload:", payload);
+
+    // Check if token is expired
+    if (payload.exp && payload.exp < Date.now() / 1000) {
+      console.log("Refresh token has expired");
+      return null;
+    }
+
+    // Verificar que sea un refresh token
+    if (payload.tokenType !== "refresh") {
+      console.log("Token is not a refresh token");
+      return null;
+    }
+
+    return payload;
+  } catch (error) {
+    console.log("Refresh token verification failed. Error:", error);
     return null;
   }
 }

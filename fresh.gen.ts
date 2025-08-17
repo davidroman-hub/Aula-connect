@@ -7,6 +7,7 @@ import * as $_app from "./routes/_app.tsx";
 import * as $admin_dash_index from "./routes/admin-dash/index.tsx";
 import * as $api_auth_set_cookie from "./routes/api/auth/set-cookie.tsx";
 import * as $api_courses_course from "./routes/api/courses/course.tsx";
+import * as $api_jwt_refresh from "./routes/api/jwt/refresh.tsx";
 import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
 import * as $api_modules_module from "./routes/api/modules/module.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
@@ -49,6 +50,7 @@ import * as $cart_index from "./islands/cart/index.tsx";
 import * as $changeLanguage_index from "./islands/changeLanguage/index.tsx";
 import * as $checkout_index_1 from "./islands/checkout/index.tsx";
 import * as $components_spinners_spinners from "./islands/components/spinners/spinners.tsx";
+import * as $helpers_TokenInitializer from "./islands/helpers/TokenInitializer.tsx";
 import * as $helpers_index from "./islands/helpers/index.tsx";
 import * as $helpers_tokenRedirect from "./islands/helpers/tokenRedirect.tsx";
 import * as $login_index_1 from "./islands/login/index.tsx";
@@ -73,6 +75,7 @@ const manifest = {
     "./routes/admin-dash/index.tsx": $admin_dash_index,
     "./routes/api/auth/set-cookie.tsx": $api_auth_set_cookie,
     "./routes/api/courses/course.tsx": $api_courses_course,
+    "./routes/api/jwt/refresh.tsx": $api_jwt_refresh,
     "./routes/api/jwt/token.tsx": $api_jwt_token,
     "./routes/api/modules/module.tsx": $api_modules_module,
     "./routes/api/orders/create.tsx": $api_orders_create,
@@ -121,6 +124,7 @@ const manifest = {
     "./islands/changeLanguage/index.tsx": $changeLanguage_index,
     "./islands/checkout/index.tsx": $checkout_index_1,
     "./islands/components/spinners/spinners.tsx": $components_spinners_spinners,
+    "./islands/helpers/TokenInitializer.tsx": $helpers_TokenInitializer,
     "./islands/helpers/index.tsx": $helpers_index,
     "./islands/helpers/tokenRedirect.tsx": $helpers_tokenRedirect,
     "./islands/login/index.tsx": $login_index_1,

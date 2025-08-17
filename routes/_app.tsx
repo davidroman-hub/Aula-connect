@@ -1,8 +1,10 @@
 import { type PageProps } from "$fresh/server.ts";
 import Navbar from "../islands/Navbar/index.tsx";
+import TokenInitializer from "../islands/helpers/TokenInitializer.tsx";
+
 export default function App({ Component }: PageProps) {
   return (
-    <html data-theme="light">
+    <html lang="es" data-theme="light">
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,6 +18,7 @@ export default function App({ Component }: PageProps) {
         </script>
       </head>
       <body>
+        <TokenInitializer />
         <Navbar />
         <Component />
       </body>

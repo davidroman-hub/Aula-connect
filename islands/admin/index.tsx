@@ -5,11 +5,22 @@ import AdminDashboard from "./dashboardAdmin.tsx";
 import Students from "./students/students.tsx";
 import StudentDetail from "./students/studentDetails.tsx";
 import Courses from "./courses/courses.tsx";
+import CourseDetails from "./courses/courseDetails.tsx";
 import CreateUser from "./students/createUser.tsx";
 import CreateCourse from "./courses/createCourse.tsx";
 import ModulesView from "./module/modulesView.tsx";
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { updateCourseModuleOptions } from "./adminActions/index.ts";
+import { Course } from "../../routes/api/courses/course.tsx";
+import { Student } from "../../routes/api/users/user.tsx";
+import { authenticatedGet } from "../../lib/apiHelpers.ts";
+
+// Para el tipo del módulo
+interface ModuleData {
+  course?: string;
+  name?: string;
+  [key: string]: unknown;
+}
 
 export function AdminDashboards() {
   const token = localStorage.getItem("jwtToken") || "{}";
@@ -24,14 +35,8 @@ export function AdminDashboards() {
 
   const getStudents = async () => {
     try {
-      const response = await axiod.get(
-        `api/users/user`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      // Usar el helper autenticado con refresh automático
+      const response = await authenticatedGet("api/users/user");
       setStudents(response.data);
       return response.data;
     } catch (error) {
@@ -55,14 +60,8 @@ export function AdminDashboards() {
 
   const getCourses = async () => {
     try {
-      const response = await axiod.get(
-        `api/courses/course`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      // Usar el helper autenticado con refresh automático
+      const response = await authenticatedGet("api/courses/course");
       setCourses(response.data);
       return response.data;
     } catch (error) {

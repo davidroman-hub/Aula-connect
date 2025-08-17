@@ -1,5 +1,5 @@
 import { Handlers, STATUS_CODE } from "$fresh/server.ts";
-import { createJWT } from "../../../lib/JWT.ts";
+import { createJWT, createRefreshToken } from "../../../lib/JWT.ts";
 import { Users } from "../../../models/User.ts";
 
 export const handler: Handlers = {
@@ -22,10 +22,19 @@ export const handler: Handlers = {
       return new Response("Contraseña incorrecta", { status: 401 });
     }
 
-    const token = await createJWT(user.username, user.type);
+    const accessToken = await createJWT(user.username, user.type);
+    const refreshToken = await createRefreshToken(user.username, user.type);
 
-    return new Response(JSON.stringify({ token }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({
+        accessToken,
+        refreshToken,
+        // Mantener compatibilidad con código existente
+        token: accessToken,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   },
 };
