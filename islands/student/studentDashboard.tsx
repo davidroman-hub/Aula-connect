@@ -103,7 +103,7 @@ const StudentDashboard = () => {
                       : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
-                  <span className="fas fa-puzzle-piece mr-3" aria-hidden="true">
+                  <span className="fas fa-file-alt mr-3" aria-hidden="true">
                   </span>
                   <span>Explorar Cursos</span>
                 </button>

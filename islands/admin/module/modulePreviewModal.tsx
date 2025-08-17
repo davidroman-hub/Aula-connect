@@ -1,5 +1,6 @@
 import type { Module } from "../../../routes/api/modules/module.tsx";
 import type { Course } from "../../../routes/api/courses/course.tsx";
+import { renderFormattedNotesPreview } from "../../../lib/notesRenderer.tsx";
 
 interface ModulePreviewModalProps {
   module: Module;
@@ -13,175 +14,21 @@ const ModulePreviewModal = (
 ) => {
   if (!isOpen) return null;
 
-  // Función para renderizar formato inline de manera simple
-  const renderInlineFormatting = (text: string) => {
-    // Si no hay formato especial, devolver el texto tal como está
-    if (!text.includes("**") && !text.includes("*") && !text.includes("`")) {
-      return text;
-    }
-
-    const parts = [];
-    const segments = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`)/);
-
-    for (let i = 0; i < segments.length; i++) {
-      const segment = segments[i];
-
-      if (segment.startsWith("**") && segment.endsWith("**")) {
-        // Negrita
-        const content = segment.slice(2, -2);
-        parts.push(
-          <strong
-            key={`bold-${content.slice(0, 8)}-${i}`}
-            className="font-semibold"
-          >
-            {content}
-          </strong>,
-        );
-      } else if (
-        segment.startsWith("*") && segment.endsWith("*") &&
-        !segment.startsWith("**")
-      ) {
-        // Cursiva
-        const content = segment.slice(1, -1);
-        parts.push(
-          <em key={`italic-${content.slice(0, 8)}-${i}`} className="italic">
-            {content}
-          </em>,
-        );
-      } else if (segment.startsWith("`") && segment.endsWith("`")) {
-        // Código
-        const content = segment.slice(1, -1);
-        parts.push(
-          <code
-            key={`code-${content.slice(0, 8)}-${i}`}
-            className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono"
-          >
-            {content}
-          </code>,
-        );
-      } else if (segment) {
-        // Texto normal
-        parts.push(segment);
-      }
-    }
-
-    return parts.length > 1 ? parts : text;
-  };
-
   // Función para renderizar las notas con formato
   const renderFormattedNotes = (notes?: string) => {
     if (!notes) return null;
 
-    // Detectar si el contenido parece ser Markdown
-    const isMarkdown = notes.includes("# ") || notes.includes("## ") ||
-      notes.includes("**") || notes.includes("- ");
+    // Detectar si el contenido es HTML
+    const isHTML = notes.includes("<h1>") || notes.includes("<h2>") ||
+      notes.includes("<p>") || notes.includes("<div>") ||
+      notes.includes("<strong>");
 
-    if (isMarkdown) {
-      // Para contenido Markdown, aplicar estilos básicos
-      return (
-        <div className="space-y-4">
-          {notes.split("\n").map((line, lineIndex) => {
-            const trimmedLine = line.trim();
-            if (!trimmedLine) {
-              return (
-                <div
-                  key={`empty-${lineIndex}-${trimmedLine.length}`}
-                  className="h-2"
-                >
-                </div>
-              );
-            }
-
-            // Títulos
-            if (trimmedLine.startsWith("# ")) {
-              return (
-                <h1
-                  key={`h1-${lineIndex}-${trimmedLine.slice(0, 10)}`}
-                  className="text-2xl font-bold mb-3 text-gray-900"
-                >
-                  {trimmedLine.replace("# ", "")}
-                </h1>
-              );
-            }
-            if (trimmedLine.startsWith("## ")) {
-              return (
-                <h2
-                  key={`h2-${lineIndex}-${trimmedLine.slice(0, 10)}`}
-                  className="text-xl font-semibold mb-2 text-gray-800"
-                >
-                  {trimmedLine.replace("## ", "")}
-                </h2>
-              );
-            }
-            if (trimmedLine.startsWith("### ")) {
-              return (
-                <h3
-                  key={`h3-${lineIndex}-${trimmedLine.slice(0, 10)}`}
-                  className="text-lg font-medium mb-2 text-gray-700"
-                >
-                  {trimmedLine.replace("### ", "")}
-                </h3>
-              );
-            }
-
-            // Listas
-            if (trimmedLine.startsWith("- ")) {
-              return (
-                <div
-                  key={`list-${lineIndex}-${trimmedLine.slice(0, 10)}`}
-                  className="flex items-start ml-4"
-                >
-                  <span className="text-gray-500 mr-2">•</span>
-                  <span className="text-gray-700">
-                    {trimmedLine.replace("- ", "")}
-                  </span>
-                </div>
-              );
-            }
-
-            // Citas
-            if (trimmedLine.startsWith("> ")) {
-              return (
-                <blockquote
-                  key={`quote-${lineIndex}-${trimmedLine.slice(0, 10)}`}
-                  className="border-l-4 border-blue-500 pl-4 italic text-gray-600 my-2 bg-blue-50 py-2 rounded-r"
-                >
-                  {trimmedLine.replace("> ", "")}
-                </blockquote>
-              );
-            }
-
-            // Bloques de código
-            if (trimmedLine.startsWith("```") || trimmedLine.endsWith("```")) {
-              return (
-                <pre
-                  key={`code-${lineIndex}-${trimmedLine.slice(0, 10)}`}
-                  className="bg-gray-100 p-3 rounded-lg text-sm font-mono overflow-x-auto border"
-                >
-                  <code>{trimmedLine.replace(/```\w*/g, '')}</code>
-                </pre>
-              );
-            }
-
-            // Texto normal con formato inline
-            return (
-              <div
-                key={`text-${lineIndex}-${trimmedLine.slice(0, 10)}`}
-                className="text-gray-700 leading-relaxed"
-              >
-                {renderInlineFormatting(trimmedLine)}
-              </div>
-            );
-          })}
-        </div>
-      );
+    if (isHTML) {
+      // Usar la función del notesRenderer para HTML
+      return renderFormattedNotesPreview(notes, "html");
     } else {
-      // Texto simple con saltos de línea preservados
-      return (
-        <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
-          {notes}
-        </div>
-      );
+      // Usar la función del notesRenderer para markdown o texto
+      return renderFormattedNotesPreview(notes, "markdown");
     }
   };
 

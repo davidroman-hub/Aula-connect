@@ -12,12 +12,16 @@ export interface RenderCoursesProps {
   };
 }
 
+const easy = "1";
+const medium = "2";
+const hard = "3";
+
 const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
   // Función para obtener el gradiente según dificultad
   const getDifficultyGradient = (difficulty: string) => {
-    if (difficulty === "1") {
+    if (difficulty === easy) {
       return "bg-gradient-to-r from-green-400 to-green-600";
-    } else if (difficulty === "2") {
+    } else if (difficulty === medium) {
       return "bg-gradient-to-r from-yellow-400 to-orange-500";
     } else {
       return "bg-gradient-to-r from-red-400 to-pink-600";
@@ -32,7 +36,6 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
     const fetchCourses = async () => {
       try {
         const response = await getCourses();
-        console.log("Courses fetched:", response);
 
         const filteredCourses = response.filter((course: CourseRawInfo) =>
           course.students.find((student: string) => student === userInfo.id)
@@ -54,9 +57,7 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
 
   // Módulos de ejemplo para mostrar la funcionalidad
 
-  let coursesInfo = courses;
-
-  coursesInfo.map((course) => ({
+  const coursesObject = courses.map((course) => ({
     id: course.id,
     name: course.name,
     slug: course.slug,
@@ -65,6 +66,7 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
     description: course.description || "No description available",
   }));
 
+  console.log("Courses fetched:", coursesObject);
   // const sampleModules = [
   //   {
   //     _id: "mod1",
@@ -144,24 +146,28 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
         </div>
       </div>
 
-      {coursesInfo.length > 0
+      {coursesObject.length > 0
         ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {coursesInfo.map((module) => (
+            {coursesObject.map((course) => (
               <div
-                key={module._id}
+                key={course.id}
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               >
                 {/* Header con gradiente según dificultad */}
                 <div
                   className={`h-32 p-4 flex items-center justify-center text-white ${
-                    getDifficultyGradient(module.difficulty || "1")
+                    getDifficultyGradient(course.difficulty || "1")
                   }`}
                 >
                   <div className="text-center">
-                    <h3 className="text-xl font-bold mb-2">{module.name}</h3>
+                    <h3 className="text-xl font-bold mb-2">{course.name}</h3>
                     <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-                      {module.difficulty}
+                      {course.difficulty === easy
+                        ? "Principiante"
+                        : course.difficulty === medium
+                        ? "Intermedio"
+                        : "Avanzado"}
                     </span>
                   </div>
                 </div>
@@ -170,10 +176,10 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
                 <div className="p-6">
                   <div className="mb-4">
                     <p className="text-sm text-blue-600 font-medium mb-2">
-                      {module.name}
+                      {course.name}
                     </p>
                     <p className="text-gray-600 text-sm">
-                      {module.description}
+                      {course.description}
                     </p>
                   </div>
 
@@ -189,9 +195,10 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
                         {/* {module.videos} */}
                       </span>
                       <span>
-                        <span className="fas fa-file-alt mr-1"></span>
-                        {/* {module.documents} */}
+                        <span className="fas fa-puzzle-piece mr-1"></span>
+                        {course.modules.length}
                       </span>
+
                       <span>
                         <span className="fas fa-question-circle mr-1"></span>
                         {/* {module.quizzes} */}

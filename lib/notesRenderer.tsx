@@ -50,15 +50,176 @@ const renderInlineFormatting = (text: string) => {
   return parts.length > 1 ? parts : text;
 };
 
+// Función para renderizar HTML inline de manera segura
+const renderInlineHTML = (text: string) => {
+  if (!text) return text;
+
+  const parts = [];
+  // Dividir por tags HTML básicos
+  const segments = text.split(/(<\/?(?:strong|b|em|i|code|span)(?:\s[^>]*)?>)/);
+
+  for (let i = 0; i < segments.length; i++) {
+    const segment = segments[i];
+
+    if (segment === "<strong>" || segment === "<b>") {
+      // Buscar el contenido hasta el tag de cierre
+      let content = "";
+      let j = i + 1;
+      while (j < segments.length && !segments[j].match(/<\/(strong|b)>/)) {
+        content += segments[j];
+        j++;
+      }
+      if (j < segments.length) {
+        parts.push(
+          <strong key={`strong-${i}`} className="font-semibold">
+            {content}
+          </strong>,
+        );
+        i = j; // Skip processed segments
+      } else {
+        parts.push(segment);
+      }
+    } else if (segment === "<em>" || segment === "<i>") {
+      let content = "";
+      let j = i + 1;
+      while (j < segments.length && !segments[j].match(/<\/(em|i)>/)) {
+        content += segments[j];
+        j++;
+      }
+      if (j < segments.length) {
+        parts.push(
+          <em key={`em-${i}`} className="italic">
+            {content}
+          </em>,
+        );
+        i = j;
+      } else {
+        parts.push(segment);
+      }
+    } else if (segment === "<code>") {
+      let content = "";
+      let j = i + 1;
+      while (j < segments.length && segments[j] !== "</code>") {
+        content += segments[j];
+        j++;
+      }
+      if (j < segments.length) {
+        parts.push(
+          <code
+            key={`code-${i}`}
+            className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono"
+          >
+            {content}
+          </code>,
+        );
+        i = j;
+      } else {
+        parts.push(segment);
+      }
+    } else if (!segment.match(/<\/?(?:strong|b|em|i|code|span)>/)) {
+      // Solo agregar si no es un tag de cierre
+      parts.push(segment);
+    }
+  }
+
+  return parts.length > 1 ? parts : text;
+};
+
 // Función para renderizar la vista previa con formato
-export const renderFormattedNotesPreview = (notes: string) => {
+export const renderFormattedNotesPreview = (
+  notes: string,
+  format = "markdown",
+) => {
   if (!notes) return null;
+
+  // Si es HTML, crear elementos de manera segura
+  if (format === "html") {
+    return (
+      <div className="space-y-2">
+        {notes.split("\n").map((line, index) => {
+          if (!line.trim()) return <br key={`br-${index}`} />;
+
+          // Parsear tags HTML básicos de manera segura
+          if (line.includes("<h1>") && line.includes("</h1>")) {
+            const content = line.replace(/<\/?h1>/g, "");
+            return (
+              <h1
+                key={`h1-${index}`}
+                className="text-2xl font-bold text-gray-900 mb-2"
+              >
+                {content}
+              </h1>
+            );
+          }
+          if (line.includes("<h2>") && line.includes("</h2>")) {
+            const content = line.replace(/<\/?h2>/g, "");
+            return (
+              <h2
+                key={`h2-${index}`}
+                className="text-xl font-semibold text-gray-800 mb-2"
+              >
+                {content}
+              </h2>
+            );
+          }
+          if (line.includes("<h3>") && line.includes("</h3>")) {
+            const content = line.replace(/<\/?h3>/g, "");
+            return (
+              <h3
+                key={`h3-${index}`}
+                className="text-lg font-medium text-gray-700 mb-1"
+              >
+                {content}
+              </h3>
+            );
+          }
+          if (line.includes("<p>") && line.includes("</p>")) {
+            const content = line.replace(/<\/?p>/g, "");
+            return (
+              <p key={`p-${index}`} className="text-gray-700 mb-2">
+                {renderInlineHTML(content)}
+              </p>
+            );
+          }
+          if (line.includes("<ul>") || line.includes("</ul>")) {
+            return null; // Skip ul tags, handle li directly
+          }
+          if (line.includes("<li>") && line.includes("</li>")) {
+            const content = line.replace(/<\/?li>/g, "").trim();
+            return (
+              <div key={`li-${index}`} className="flex items-start ml-4 mb-1">
+                <span className="text-gray-500 mr-2">•</span>
+                <span className="text-gray-700">
+                  {renderInlineHTML(content)}
+                </span>
+              </div>
+            );
+          }
+          if (line.includes("<div>") && line.includes("</div>")) {
+            const content = line.replace(/<\/?div>/g, "");
+            return (
+              <div key={`div-${index}`} className="text-gray-700 mb-2">
+                {renderInlineHTML(content)}
+              </div>
+            );
+          }
+
+          // Si no tiene tags HTML, renderizar como texto normal
+          return (
+            <div key={`text-${index}`} className="text-gray-700 mb-1">
+              {renderInlineHTML(line)}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   // Detectar si es Markdown
   const isMarkdown = notes.includes("# ") || notes.includes("## ") ||
     notes.includes("**") || notes.includes("- ");
 
-  if (isMarkdown) {
+  if (isMarkdown || format === "markdown") {
     return (
       <div className="space-y-3">
         {notes.split("\n").map((line, lineIndex) => {

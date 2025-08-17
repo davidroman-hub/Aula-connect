@@ -296,81 +296,195 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
 
             {/* Barra de herramientas para formato */}
             <div className="border border-gray-300 rounded-t-lg bg-gray-50 p-2 flex flex-wrap gap-1">
-              <button
-                type="button"
-                onClick={() =>
-                  handleInsertFormatting("**", "**", "texto en negrita")}
-                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
-                title="Negrita"
-              >
-                <b>B</b>
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  handleInsertFormatting("*", "*", "texto en cursiva")}
-                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
-                title="Cursiva"
-              >
-                <i>I</i>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleInsertFormatting("`", "`", "código")}
-                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100 font-mono"
-                title="Código inline"
-              >
-                `code`
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  handleInsertFormatting(
-                    "\n```\n",
-                    "\n```\n",
-                    "bloque de código",
-                  )}
-                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100 font-mono"
-                title="Bloque de código"
-              >
-                ```
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  handleInsertFormatting("\n## ", "", "Título de Sección")}
-                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
-                title="Título"
-              >
-                H2
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  handleInsertFormatting("\n- ", "", "elemento de lista")}
-                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
-                title="Lista"
-              >
-                •
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  handleInsertFormatting("\n> ", "", "cita importante")}
-                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
-                title="Cita"
-              >
-                "
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  handleInsertFormatting("[", "](url)", "texto del enlace")}
-                className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
-                title="Enlace"
-              >
-                🔗
-              </button>
+              {noteFormat === "markdown" && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting("**", "**", "texto en negrita")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Negrita"
+                  >
+                    <b>B</b>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting("*", "*", "texto en cursiva")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Cursiva"
+                  >
+                    <i>I</i>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting("`", "`", "código")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100 font-mono"
+                    title="Código inline"
+                  >
+                    `code`
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting(
+                        "\n```\n",
+                        "\n```\n",
+                        "bloque de código",
+                      )}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100 font-mono"
+                    title="Bloque de código"
+                  >
+                    ```
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting("\n## ", "", "Título de Sección")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Título"
+                  >
+                    H2
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting("\n- ", "", "elemento de lista")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Lista"
+                  >
+                    •
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting("\n> ", "", "cita importante")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Cita"
+                  >
+                    "
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting("[", "](url)", "texto del enlace")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Enlace"
+                  >
+                    🔗
+                  </button>
+                </>
+              )}
+
+              {noteFormat === "html" && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting(
+                        "<strong>",
+                        "</strong>",
+                        "texto en negrita",
+                      )}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Negrita HTML"
+                  >
+                    <b>B</b>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting(
+                        "<em>",
+                        "</em>",
+                        "texto en cursiva",
+                      )}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Cursiva HTML"
+                  >
+                    <i>I</i>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting("<code>", "</code>", "código")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100 font-mono"
+                    title="Código HTML"
+                  >
+                    &lt;code&gt;
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting(
+                        "<h1>",
+                        "</h1>",
+                        "Título Principal",
+                      )}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Título H1"
+                  >
+                    H1
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting(
+                        "<h2>",
+                        "</h2>",
+                        "Título de Sección",
+                      )}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Título H2"
+                  >
+                    H2
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting("<h3>", "</h3>", "Subtítulo")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Título H3"
+                  >
+                    H3
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting("<p>", "</p>", "párrafo de texto")}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Párrafo"
+                  >
+                    P
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting(
+                        "<div>",
+                        "</div>",
+                        "contenido en div",
+                      )}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Div"
+                  >
+                    &lt;div&gt;
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleInsertFormatting(
+                        "\n<ul>\n<li>",
+                        "</li>\n</ul>",
+                        "elemento de lista",
+                      )}
+                    className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"
+                    title="Lista HTML"
+                  >
+                    •
+                  </button>
+                </>
+              )}
             </div>
 
             <textarea
@@ -384,11 +498,11 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
             />
 
             {/* Vista previa */}
-            {noteFormat !== "text" && formData.notes && (
+            {formData.notes && (
               <div className="mt-2 border border-gray-300 rounded-lg p-3 bg-gray-50">
                 <div className="text-xs text-gray-600 mb-2">Vista previa:</div>
                 <div className="prose prose-sm max-w-none">
-                  {renderFormattedNotesPreview(formData.notes)}
+                  {renderFormattedNotesPreview(formData.notes, noteFormat)}
                 </div>
               </div>
             )}
