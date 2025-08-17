@@ -18,7 +18,7 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
     name: module.name || "",
     description: module.content?.description || "",
     objectives: module.content?.objectives?.join("\n") || "",
-    duration: module.content?.duration || 0,
+    duration: module.content?.duration || "",
     difficulty: module.content?.difficulty || "beginner",
     videoUrl: module.content?.videoUrl || "",
     notes: module.content?.notes || "",

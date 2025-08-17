@@ -29,6 +29,7 @@ import * as $admin_adminActions_studentsAsyncActions_studentAsyncActions from ".
 import * as $admin_courses_courseDetails from "./islands/admin/courses/courseDetails.tsx";
 import * as $admin_courses_courses from "./islands/admin/courses/courses.tsx";
 import * as $admin_courses_createCourse from "./islands/admin/courses/createCourse.tsx";
+import * as $admin_courses_partsOfCourseDetails_overviewCards from "./islands/admin/courses/partsOfCourseDetails/overviewCards.tsx";
 import * as $admin_createUser from "./islands/admin/createUser.tsx";
 import * as $admin_dashboardAdmin from "./islands/admin/dashboardAdmin.tsx";
 import * as $admin_editModule from "./islands/admin/editModule.tsx";
@@ -100,6 +101,8 @@ const manifest = {
     "./islands/admin/courses/courseDetails.tsx": $admin_courses_courseDetails,
     "./islands/admin/courses/courses.tsx": $admin_courses_courses,
     "./islands/admin/courses/createCourse.tsx": $admin_courses_createCourse,
+    "./islands/admin/courses/partsOfCourseDetails/overviewCards.tsx":
+      $admin_courses_partsOfCourseDetails_overviewCards,
     "./islands/admin/createUser.tsx": $admin_createUser,
     "./islands/admin/dashboardAdmin.tsx": $admin_dashboardAdmin,
     "./islands/admin/editModule.tsx": $admin_editModule,
