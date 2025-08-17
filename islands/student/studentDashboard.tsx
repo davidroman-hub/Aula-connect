@@ -1,4 +1,5 @@
 import { useState } from "preact/hooks";
+import RenderCourses from "./dashboardParts/renderCourses.tsx";
 
 interface StudentDashboardProps {
   token: string;
@@ -19,176 +20,12 @@ interface Course {
 const StudentDashboard = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
-  console.log("User Info:", userInfo);
-  const [activeView, setActiveView] = useState("modules");
-
-  const renderModules = () => {
-    // Función para obtener el gradiente según dificultad
-    const getDifficultyGradient = (difficulty: string) => {
-      if (difficulty === "Principiante") {
-        return "bg-gradient-to-r from-green-400 to-green-600";
-      } else if (difficulty === "Intermedio") {
-        return "bg-gradient-to-r from-yellow-400 to-orange-500";
-      } else {
-        return "bg-gradient-to-r from-red-400 to-pink-600";
-      }
-    };
-
-    // Módulos de ejemplo para mostrar la funcionalidad
-    const sampleModules = [
-      {
-        _id: "mod1",
-        name: "Introducción a HTML",
-        course: "Desarrollo Web",
-        difficulty: "Principiante",
-        description: "Aprende los fundamentos de HTML para crear páginas web",
-        duration: "2 horas",
-        videos: 5,
-        documents: 3,
-        quizzes: 2,
-      },
-      {
-        _id: "mod2",
-        name: "CSS Avanzado",
-        course: "Desarrollo Web",
-        difficulty: "Intermedio",
-        description: "Domina CSS Grid, Flexbox y animaciones",
-        duration: "3 horas",
-        videos: 8,
-        documents: 4,
-        quizzes: 3,
-      },
-      {
-        _id: "mod3",
-        name: "JavaScript ES6+",
-        course: "JavaScript Avanzado",
-        difficulty: "Avanzado",
-        description: "Características modernas de JavaScript",
-        duration: "4 horas",
-        videos: 12,
-        documents: 6,
-        quizzes: 4,
-      },
-      {
-        _id: "mod4",
-        name: "React Hooks",
-        course: "React & TypeScript",
-        difficulty: "Intermedio",
-        description: "Aprende a usar React Hooks efectivamente",
-        duration: "3.5 horas",
-        videos: 10,
-        documents: 5,
-        quizzes: 3,
-      },
-    ];
-
-    return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Módulos Disponibles
-          </h2>
-          <div className="flex space-x-4">
-            <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-              <option value="">Todos los cursos</option>
-              {
-                /* {courses.map((course) => (
-                <option key={course._id} value={course._id}>
-                  {course.name}
-                </option>
-              ))} */
-              }
-            </select>
-            <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-              <option value="">Toda dificultad</option>
-              <option value="Principiante">Principiante</option>
-              <option value="Intermedio">Intermedio</option>
-              <option value="Avanzado">Avanzado</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sampleModules.map((module) => (
-            <div
-              key={module._id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-            >
-              {/* Header con gradiente según dificultad */}
-              <div
-                className={`h-32 p-4 flex items-center justify-center text-white ${
-                  getDifficultyGradient(module.difficulty)
-                }`}
-              >
-                <div className="text-center">
-                  <h3 className="text-xl font-bold mb-2">{module.name}</h3>
-                  <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-                    {module.difficulty}
-                  </span>
-                </div>
-              </div>
-
-              {/* Contenido */}
-              <div className="p-6">
-                <div className="mb-4">
-                  <p className="text-sm text-blue-600 font-medium mb-2">
-                    {module.course}
-                  </p>
-                  <p className="text-gray-600 text-sm">{module.description}</p>
-                </div>
-
-                {/* Estadísticas */}
-                <div className="flex justify-between text-sm text-gray-500 mb-4">
-                  <div className="flex items-center">
-                    <span className="fas fa-clock mr-1"></span>
-                    {module.duration}
-                  </div>
-                  <div className="flex space-x-3">
-                    <span>
-                      <span className="fas fa-video mr-1"></span>
-                      {module.videos}
-                    </span>
-                    <span>
-                      <span className="fas fa-file-alt mr-1"></span>
-                      {module.documents}
-                    </span>
-                    <span>
-                      <span className="fas fa-question-circle mr-1"></span>
-                      {module.quizzes}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Botones de acción */}
-                <div className="flex space-x-2">
-                  <button
-                    type="button"
-                    className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
-                    onClick={() => {}}
-                  >
-                    <span className="fas fa-eye mr-2"></span>
-                    <span>Vista previa</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm"
-                  >
-                    <span className="fas fa-plus mr-2"></span>
-                    <span>Inscribirse</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  const [activeView, setActiveView] = useState("courses");
 
   const renderContent = () => {
     switch (activeView) {
-      case "modules":
-        return renderModules();
+      case "courses":
+        return <RenderCourses userInfo={userInfo} />;
       case "progress":
         return (
           <div className="p-6">
@@ -216,13 +53,17 @@ const StudentDashboard = () => {
           </div>
         );
       default:
-        return renderModules();
+        return <RenderCourses userInfo={userInfo} />;
     }
   };
 
   return (
     <div
-      style={{ position: "absolute", marginTop: "60px" }}
+      style={{
+        position: "absolute",
+        marginTop: "60px",
+        width: "-webkit-fill-available",
+      }}
       className="  bg-gray-50"
     >
       {/* Header del dashboard */}
@@ -234,7 +75,7 @@ const StudentDashboard = () => {
                 Panel del Estudiante
               </h1>
               <p className="text-sm text-gray-600">
-                Bienvenido, {"Estudiante"}
+                Bienvenido {userInfo.username || "Estudiante"} !
               </p>
             </div>
             <div className="flex items-center space-x-4">
@@ -264,7 +105,7 @@ const StudentDashboard = () => {
                 >
                   <span className="fas fa-puzzle-piece mr-3" aria-hidden="true">
                   </span>
-                  <span>Explorar Módulos</span>
+                  <span>Explorar Cursos</span>
                 </button>
               </li>
               <li>
@@ -315,7 +156,7 @@ const StudentDashboard = () => {
         </div>
 
         {/* Contenido principal */}
-        <div className="flex-1">
+        <div className="p-6 overflow-y-auto">
           {userInfo.type === "student" || userInfo.type === "admin"
             ? renderContent()
             : null}

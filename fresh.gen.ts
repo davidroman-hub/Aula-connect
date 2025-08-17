@@ -64,6 +64,7 @@ import * as $main_testimonials from "./islands/main/testimonials.tsx";
 import * as $modal_index from "./islands/modal/index.tsx";
 import * as $portafolio_index from "./islands/portafolio/index.tsx";
 import * as $showOrders_showOrders from "./islands/showOrders/showOrders.tsx";
+import * as $student_dashboardParts_renderCourses from "./islands/student/dashboardParts/renderCourses.tsx";
 import * as $student_moduleCard from "./islands/student/moduleCard.tsx";
 import * as $student_modulePreview from "./islands/student/modulePreview.tsx";
 import * as $student_studentDashboard from "./islands/student/studentDashboard.tsx";
@@ -140,6 +141,8 @@ const manifest = {
     "./islands/modal/index.tsx": $modal_index,
     "./islands/portafolio/index.tsx": $portafolio_index,
     "./islands/showOrders/showOrders.tsx": $showOrders_showOrders,
+    "./islands/student/dashboardParts/renderCourses.tsx":
+      $student_dashboardParts_renderCourses,
     "./islands/student/moduleCard.tsx": $student_moduleCard,
     "./islands/student/modulePreview.tsx": $student_modulePreview,
     "./islands/student/studentDashboard.tsx": $student_studentDashboard,

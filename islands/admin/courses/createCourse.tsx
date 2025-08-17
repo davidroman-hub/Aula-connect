@@ -7,11 +7,14 @@ function CreateCourse({ getCourses, token, setView }: any) {
   const [formData, setFormData] = useState({
     name: "",
     modules: [],
+    description: "",
+    difficulty: "0",
   });
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  console.log(formData);
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -23,6 +26,8 @@ function CreateCourse({ getCourses, token, setView }: any) {
       const response = await axiod.post("/api/courses/course", {
         name: formData.name,
         slug: formData.name.toLowerCase().replace(/\s+/g, "-"),
+        description: formData.description,
+        difficulty: formData.difficulty,
         modules: [],
         students: [],
       }, {
@@ -34,7 +39,12 @@ function CreateCourse({ getCourses, token, setView }: any) {
 
       if (response.status === 201) {
         setSuccess(true);
-        setFormData({ name: "", modules: [] });
+        setFormData({
+          name: "",
+          modules: [],
+          description: "",
+          difficulty: "0",
+        });
         getCourses();
       } else {
         setError("Error creating course");
@@ -93,23 +103,48 @@ function CreateCourse({ getCourses, token, setView }: any) {
               required
             />
           </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 mb-2" htmlFor="description">
+              Descripción del Curso
+            </label>
+            <input
+              type="text"
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full text-gray-700 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Ingresa la descripción del curso"
+              required
+            />
+          </div>
 
           <div className="mb-6">
             <label className="block text-gray-700 mb-2" htmlFor="modules">
-              Número de Módulos
+              Dificultad
             </label>
-            <input
-              type="number"
-              id="modules"
-              name="modules"
-              value={formData.modules}
-              onChange={handleChange}
-              min="1"
-              max="20"
-              className="w-full px-4 text-gray-700 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Ingresa el número de módulos"
-              required
-            />
+            <select
+              name="difficulty"
+              value={formData.difficulty}
+              onChange={(e) => {
+                const target = e.target as HTMLSelectElement;
+                if (target.value) {
+                  setFormData({ ...formData, difficulty: target.value });
+                  target.value = "";
+                }
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition pr-8 text-black"
+            >
+              <option value="0">Dificultad</option>
+              <option value="1">Fácil</option>
+              <option value="2">Intermedio</option>
+              <option value="3">Difícil</option>
+            </select>
+            <div className="text-gray-500 text-sm mt-1">
+              {formData.difficulty === "0"
+                ? "Por favor selecciona una dificultad."
+                : ""}
+            </div>
           </div>
 
           <div className="flex justify-end">
@@ -121,8 +156,9 @@ function CreateCourse({ getCourses, token, setView }: any) {
               Cancelar
             </button>
             <button
+              disabled={formData.difficulty === "0"}
               type="submit"
-              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition"
+              className="disabled:bg-gray-300 bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition"
             >
               Crear Curso
             </button>

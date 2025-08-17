@@ -15,7 +15,17 @@ export type Course = {
   slug: string;
   modules: Module[];
   students: Student[];
+  difficulty?: string;
+  description?: string;
   progress?: number;
+};
+
+export type CourseRawInfo = {
+  _id: string;
+  name: string;
+  slug: string;
+  modules: string[];
+  students: string[];
 };
 
 export const handler: Handlers = {
@@ -24,7 +34,8 @@ export const handler: Handlers = {
 
     if (admin instanceof Response) return admin;
 
-    const { name, slug, modules, students } = await req.json();
+    const { name, slug, modules, students, difficulty, description } = await req
+      .json();
     if (!name || !slug) {
       return new Response("Missing fields", { status: 400 });
     }
@@ -39,6 +50,9 @@ export const handler: Handlers = {
       slug,
       modules: modules || [],
       students: students || [],
+      difficulty,
+      description,
+      createdAt: new Date(),
     });
 
     return new Response(
@@ -50,7 +64,8 @@ export const handler: Handlers = {
     const admin = await requireAdmin(req);
     if (admin instanceof Response) return admin;
 
-    const { _id, slug, name, modules, students } = await req.json();
+    const { _id, slug, name, modules, students, difficulty, description } =
+      await req.json();
 
     // Need either _id or slug to identify the course
     if (!_id && !slug) {
@@ -85,6 +100,8 @@ export const handler: Handlers = {
     if (slug) updateFields.slug = slug;
     if (modules) updateFields.modules = modules;
     if (students) updateFields.students = students;
+    if (difficulty) updateFields.difficulty = difficulty;
+    if (description) updateFields.description = description;
 
     await coursesCollection.updateOne(query, {
       $set: updateFields,
@@ -94,8 +111,8 @@ export const handler: Handlers = {
   },
 
   async GET(req) {
-    const admin = await requireAdmin(req);
-    if (admin instanceof Response) return admin;
+    // const admin = await requireAdmin(req);
+    // if (admin instanceof Response) return admin;
 
     const courses = await coursesCollection.find({}).toArray();
     return new Response(JSON.stringify(courses), {

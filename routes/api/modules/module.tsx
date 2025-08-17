@@ -65,8 +65,6 @@ export const handler: Handlers = {
       createdAt: new Date(),
     });
 
-    console.log("Module created: from functions", result);
-
     return new Response(
       JSON.stringify({
         message: "Module created yei",

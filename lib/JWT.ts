@@ -18,22 +18,32 @@ const key = await crypto.subtle.importKey(
 );
 
 // Crear un access token (corta duración)
-export async function createJWT(username: string, type: string) {
+export async function createJWT(
+  username: string,
+  type: string,
+  id: { $oid: string },
+) {
   const payload: Payload = {
     iss: "fresh-app",
     username,
     type,
+    id,
     exp: getNumericDate(15 * 60), // Expira en 15 minutos
   };
   return await create({ alg: "HS256", typ: "JWT" } as Header, payload, key);
 }
 
 // Crear un refresh token (larga duración)
-export async function createRefreshToken(username: string, type: string) {
+export async function createRefreshToken(
+  username: string,
+  type: string,
+  id: { $oid: string },
+) {
   const payload: Payload = {
     iss: "fresh-app",
     username,
     type,
+    id,
     tokenType: "refresh",
     exp: getNumericDate(7 * 24 * 60 * 60), // Expira en 7 días
   };

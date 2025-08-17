@@ -27,10 +27,12 @@ export const handler: Handlers = {
       const newAccessToken = await createJWT(
         payload.username as string,
         payload.type as string,
+        payload.id as { $oid: string },
       );
       const newRefreshToken = await createRefreshToken(
         payload.username as string,
         payload.type as string,
+        payload.id as { $oid: string },
       );
 
       return new Response(

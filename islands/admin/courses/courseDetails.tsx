@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { palette } from "../../../assets/colors.ts";
-import { Course } from "../../../routes/api/courses/course.tsx";
+import { Course, CourseRawInfo } from "../../../routes/api/courses/course.tsx";
 import { Module } from "../../../routes/api/modules/module.tsx";
 import { Student } from "../../../routes/api/users/user.tsx";
 import { use } from "https://deno.land/x/i18next@v21.8.1/index.js";
@@ -8,14 +8,6 @@ import OverviewCards from "./partsOfCourseDetails/overviewCards.tsx";
 import EditModule from "../module/editModule.tsx";
 import ModulePreviewModal from "../module/modulePreviewModal.tsx";
 import ModuleModal from "../module/modalToCreateModule.tsx";
-
-type CourseRawInfo = {
-  _id: string;
-  name: string;
-  slug: string;
-  modules: string[];
-  students: string[];
-};
 
 interface ModuleData {
   name: string;

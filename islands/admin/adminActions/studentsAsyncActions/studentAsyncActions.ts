@@ -1,5 +1,6 @@
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { updateMultipleCourses } from "../index.ts";
+import { authenticatedGet } from "../../../../lib/apiHelpers.ts";
 
 export const editStudent = async (
   studentId: string,
@@ -35,4 +36,15 @@ export const editStudent = async (
     );
   }
   // Implementation for editing a user
+};
+
+export const getCourses = async () => {
+  try {
+    // Usar el helper autenticado con refresh automático
+    const response = await authenticatedGet("api/courses/course");
+
+    return response.data;
+  } catch (error) {
+    return error;
+  }
 };
