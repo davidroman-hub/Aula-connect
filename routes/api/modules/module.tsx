@@ -15,7 +15,7 @@ export type Module = {
   content: {
     description: string;
     objectives: string[];
-    duration: number; // en minutos
+    duration: string; // en minutos
     difficulty: "beginner" | "intermediate" | "advanced";
     videoUrl?: string;
     materials: {

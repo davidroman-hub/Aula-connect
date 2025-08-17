@@ -39,6 +39,20 @@ export function AdminDashboards() {
     }
   };
 
+  const getAllModules = async () => {
+    try {
+      const response = await axiod.get("/api/modules/module", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching modules:", error);
+    }
+  };
+
   const getCourses = async () => {
     try {
       const response = await axiod.get(
@@ -147,10 +161,12 @@ export function AdminDashboards() {
         )}
         {view === "courses" && (
           <Courses
+            getStudents={getStudents}
             courses={courses}
             createModule={createModule}
             isModuleCreated={isModuleCreated}
             isModuleError={isModuleError}
+            getAllModules={getAllModules}
           />
         )}
         {view === "modules" && (

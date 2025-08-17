@@ -42,10 +42,6 @@ const ModulesView = (
     }
   };
 
-  useEffect(() => {
-    fetchAllModules();
-  }, []);
-
   const fetchAllModules = async () => {
     try {
       setLoading(true);
@@ -68,6 +64,10 @@ const ModulesView = (
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchAllModules();
+  }, []);
 
   const handleEditModule = (module: Module) => {
     setEditingModule(module);

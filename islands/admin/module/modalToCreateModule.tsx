@@ -26,7 +26,7 @@ const FaTimes = ({ className }: { className?: string }) => (
 );
 
 const ModuleModal = (
-  { createModule, isModuleCreated, courses, isModuleError }: CoursesProps,
+  { createModule, isModuleCreated, courses, isModuleError }: any,
 ) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -160,7 +160,7 @@ const ModuleModal = (
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition pr-8 text-black"
                       required
                     >
-                      {courses.map((course) => (
+                      {courses.map((course: any) => (
                         <option key={course._id} value={course._id}>
                           {course.name}
                         </option>

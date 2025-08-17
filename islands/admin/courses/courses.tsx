@@ -2,18 +2,22 @@ import { useState } from "preact/hooks";
 import { palette } from "../../../assets/colors.ts";
 import { Course } from "../../../routes/api/courses/course.tsx";
 import CourseDetails from "./courseDetails.tsx";
+import { Student } from "../../../routes/api/users/user.tsx";
+import { Module } from "../../../routes/api/modules/module.tsx";
 
 export interface CoursesProps {
   courses: Course[];
   createModule: (moduleData: any) => void;
   isModuleCreated: boolean;
   isModuleError: string;
+  getStudents: () => Promise<Student[]>;
+  getAllModules: () => Promise<Module[]>;
 }
 
 function Courses(
-  { courses }: CoursesProps,
+  { courses, getStudents, getAllModules }: CoursesProps,
 ) {
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
 
   return (
     <div>
@@ -58,7 +62,7 @@ function Courses(
                   <div className="mt-4">
                     <button
                       onClick={() => setSelectedCourse(course)}
-                      className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-lg transition"
+                      className="cursor-pointer w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-lg transition"
                     >
                       Ver Detalles
                     </button>
@@ -70,6 +74,8 @@ function Courses(
         )
         : (
           <CourseDetails
+            getModules={getAllModules}
+            getStudents={getStudents}
             course={selectedCourse}
             onBack={() => setSelectedCourse(null)}
           />

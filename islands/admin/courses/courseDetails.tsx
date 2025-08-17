@@ -1,8 +1,9 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { palette } from "../../../assets/colors.ts";
 import { Course } from "../../../routes/api/courses/course.tsx";
 import { Module } from "../../../routes/api/modules/module.tsx";
 import { Student } from "../../../routes/api/users/user.tsx";
+import { use } from "https://deno.land/x/i18next@v21.8.1/index.js";
 
 type CourseRawInfo = {
   _id: string;
@@ -13,14 +14,21 @@ type CourseRawInfo = {
 };
 
 export interface CourseDetailsProps {
-  readonly course: Course | null;
+  readonly course: CourseRawInfo | null;
   readonly onBack: () => void;
+  getStudents: () => Promise<Student[]>;
+  getModules: () => Promise<Module[]>;
 }
 
-function CourseDetails({ course, onBack }: CourseDetailsProps) {
+function CourseDetails(
+  { course, onBack, getStudents, getModules }: CourseDetailsProps,
+) {
   const [activeTab, setActiveTab] = useState<
     "overview" | "modules" | "students"
   >("overview");
+
+  const [students, setStudents] = useState<Student[]>([]);
+  const [modules, setModules] = useState<Module[]>([]);
 
   console.log("Course Details:", course);
 
@@ -46,6 +54,26 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
     return `${mins}m`;
   };
 
+  const newCourseObject = {
+    _id: course?._id || "",
+    name: course?.name || "",
+    slug: course?.slug || "",
+    modules: modules?.filter((m) => course?.modules.includes(m.id)),
+    students: students?.filter((m) => course?.students.includes(m._id)),
+  } as Course;
+
+  console.log("New Course Object:", newCourseObject);
+  useEffect(() => {
+    if (course) {
+      (async () => {
+        const students = await getStudents();
+        const modules = await getModules();
+        setStudents(students);
+        setModules(modules);
+      })();
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       {/* Header */}
@@ -61,9 +89,9 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
             </button>
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-                {course?.name}
+                {newCourseObject?.name}
               </h1>
-              <p className="text-gray-600">ID: {course?.slug}</p>
+              <p className="text-gray-600">ID: {newCourseObject?.slug}</p>
             </div>
           </div>
 
@@ -71,13 +99,13 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
           <div className="flex gap-4 md:gap-6">
             <div className="text-center">
               <div className={`text-2xl font-bold text-[${palette.primary}]`}>
-                {course?.modules.length}
+                {newCourseObject?.modules.length}
               </div>
               <p className="text-sm text-gray-600">Módulos</p>
             </div>
             <div className="text-center">
               <div className={`text-2xl font-bold text-[${palette.primary}]`}>
-                {course?.students.length}
+                {newCourseObject?.students.length}
               </div>
               <p className="text-sm text-gray-600">Estudiantes</p>
             </div>
@@ -91,7 +119,7 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
           <button
             type="button"
             onClick={() => setActiveTab("overview")}
-            className={`flex-1 px-4 py-3 text-sm md:text-base font-medium transition-colors ${
+            className={`cursor-pointer flex-1 px-4 py-3 text-sm md:text-base font-medium transition-colors ${
               activeTab === "overview"
                 ? `text-[${palette.primary}] border-b-2 border-[${palette.primary}]`
                 : "text-gray-600 hover:text-gray-800"
@@ -103,7 +131,7 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
           <button
             type="button"
             onClick={() => setActiveTab("modules")}
-            className={`flex-1 px-4 py-3 text-sm md:text-base font-medium transition-colors ${
+            className={`cursor-pointer flex-1 px-4 py-3 text-sm md:text-base font-medium transition-colors ${
               activeTab === "modules"
                 ? `text-[${palette.primary}] border-b-2 border-[${palette.primary}]`
                 : "text-gray-600 hover:text-gray-800"
@@ -115,7 +143,7 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
           <button
             type="button"
             onClick={() => setActiveTab("students")}
-            className={`flex-1 px-4 py-3 text-sm md:text-base font-medium transition-colors ${
+            className={`cursor-pointer flex-1 px-4 py-3 text-sm md:text-base font-medium transition-colors ${
               activeTab === "students"
                 ? `text-[${palette.primary}] border-b-2 border-[${palette.primary}]`
                 : "text-gray-600 hover:text-gray-800"
@@ -139,7 +167,7 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                         Total Módulos
                       </p>
                       <p className="text-2xl font-bold text-blue-800">
-                        {course?.modules.length}
+                        {newCourseObject?.modules.length}
                       </p>
                     </div>
                     <i className="fas fa-book text-blue-500 text-xl"></i>
@@ -153,7 +181,7 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                         Estudiantes
                       </p>
                       <p className="text-2xl font-bold text-green-800">
-                        {course?.students.length}
+                        {newCourseObject?.students.length}
                       </p>
                     </div>
                     <i className="fas fa-users text-green-500 text-xl"></i>
@@ -168,10 +196,11 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                       </p>
                       <p className="text-2xl font-bold text-purple-800">
                         {formatDuration(
-                          course?.modules
-                            ? course.modules.reduce(
+                          newCourseObject?.modules
+                            ? newCourseObject.modules.reduce(
                               (total, module) =>
-                                total + (module.content?.duration || 0),
+                                total +
+                                (parseInt(module.content?.duration) || 0),
                               0,
                             )
                             : 0,
@@ -189,7 +218,9 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                         Completados
                       </p>
                       <p className="text-2xl font-bold text-orange-800">
-                        {course?.modules.filter((module) => module.isFinished)
+                        {newCourseObject?.modules.filter((module) =>
+                          module.isFinished
+                        )
                           .length}
                       </p>
                     </div>
@@ -209,9 +240,10 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                     className={`h-4 rounded-full bg-gradient-to-r from-[${palette.primary}] to-[${palette.hover}]`}
                     style={{
                       width: `${
-                        course && course.modules.length > 0
-                          ? (course.modules.filter((m) => m.isFinished).length /
-                            course.modules.length) * 100
+                        newCourseObject && newCourseObject.modules.length > 0
+                          ? (newCourseObject.modules.filter((m) => m.isFinished)
+                            .length /
+                            newCourseObject.modules.length) * 100
                           : 0
                       }%`,
                     }}
@@ -219,8 +251,9 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mt-2">
-                  {course?.modules.filter((m) => m.isFinished).length} de{" "}
-                  {course?.modules.length} módulos completados
+                  {newCourseObject?.modules.filter((m) => m.isFinished).length}
+                  {" "}
+                  de {newCourseObject?.modules.length} módulos completados
                 </p>
               </div>
             </div>
@@ -239,7 +272,7 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                 </button>
               </div>
 
-              {course?.modules.length === 0
+              {newCourseObject?.modules.length === 0
                 ? (
                   <div className="text-center py-12">
                     <i className="fas fa-book text-4xl text-gray-300 mb-4"></i>
@@ -250,7 +283,10 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                 )
                 : (
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {course?.modules.map((module: Module, index: number) => (
+                    {newCourseObject?.modules.map((
+                      module: Module,
+                      index: number,
+                    ) => (
                       <div
                         key={module.id || index}
                         className="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow"
@@ -288,7 +324,9 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                           {Boolean(module.content?.duration) && (
                             <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
                               <i className="fas fa-clock mr-1"></i>
-                              {formatDuration(module.content.duration)}
+                              {formatDuration(
+                                parseInt(module.content.duration),
+                              )}
                             </span>
                           )}
                         </div>
@@ -327,7 +365,7 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                 </button>
               </div>
 
-              {course?.students.length === 0
+              {newCourseObject?.students.length === 0
                 ? (
                   <div className="text-center py-12">
                     <i className="fas fa-users text-4xl text-gray-300 mb-4"></i>
@@ -338,7 +376,10 @@ function CourseDetails({ course, onBack }: CourseDetailsProps) {
                 )
                 : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {course?.students.map((student: Student, index: number) => (
+                    {newCourseObject?.students.map((
+                      student: Student,
+                      index: number,
+                    ) => (
                       <div
                         key={student.id || index}
                         className="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow"

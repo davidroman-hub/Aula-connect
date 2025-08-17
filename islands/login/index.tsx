@@ -31,18 +31,28 @@ const LoginPage = () => {
       if (respo.status === 200) {
         const { token } = respo.data;
 
+        // Decodificar el token y obtener el payload
+        const decoded = decode(token);
+        const payload = decoded[1] as { type?: string };
+
         // Guardar en localStorage
         localStorage.setItem("jwtToken", token);
         localStorage.setItem("auth", "true");
         localStorage.setItem("user", username);
-        localStorage.setItem("userInfo", JSON.stringify(decode(token)[1]));
+        localStorage.setItem("userInfo", JSON.stringify(payload));
 
         // También guardar en cookies para que el servidor pueda acceder
         document.cookie =
           `jwtToken=${token}; path=/; max-age=86400; SameSite=Strict`;
 
-        // Redirigir al dashboard estudiantil
-        globalThis.location.href = "/user-dash";
+        // Redirigir según el rol
+        if (payload.type === "admin") {
+          globalThis.location.href = "/admin-dash";
+        } else if (payload.type === "student") {
+          globalThis.location.href = "/user-dash";
+        } else {
+          globalThis.location.href = "/user-dash";
+        }
       } else {
         alert("Login failed. Please check your credentials.");
       }
