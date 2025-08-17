@@ -69,6 +69,12 @@ const ModulesView = (
     fetchAllModules();
   }, []);
 
+  useEffect(() => {
+    if (isModuleCreated) {
+      fetchAllModules();
+    }
+  }, [isModuleCreated]);
+
   const handleEditModule = (module: Module) => {
     setEditingModule(module);
   };
