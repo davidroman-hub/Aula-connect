@@ -5,6 +5,8 @@ import { Module } from "../../../routes/api/modules/module.tsx";
 import { Student } from "../../../routes/api/users/user.tsx";
 import { use } from "https://deno.land/x/i18next@v21.8.1/index.js";
 import OverviewCards from "./partsOfCourseDetails/overviewCards.tsx";
+import EditModule from "../module/editModule.tsx";
+import ModulePreviewModal from "../module/modulePreviewModal.tsx";
 
 type CourseRawInfo = {
   _id: string;
@@ -19,10 +21,13 @@ export interface CourseDetailsProps {
   readonly onBack: () => void;
   getStudents: () => Promise<Student[]>;
   getModules: () => Promise<Module[]>;
+  token: string;
+  courses: Course[];
 }
 
 function CourseDetails(
-  { course, onBack, getStudents, getModules }: CourseDetailsProps,
+  { course, onBack, getStudents, getModules, token, courses }:
+    CourseDetailsProps,
 ) {
   const [activeTab, setActiveTab] = useState<
     "overview" | "modules" | "students"
@@ -30,8 +35,8 @@ function CourseDetails(
 
   const [students, setStudents] = useState<Student[]>([]);
   const [modules, setModules] = useState<Module[]>([]);
-
-  console.log("Course Details:", course);
+  const [editingModule, setEditingModule] = useState<Module | null>(null);
+  const [previewModule, setPreviewModule] = useState<Module | null>(null);
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -74,6 +79,38 @@ function CourseDetails(
       })();
     }
   }, []);
+  const handleEditModule = (module: Module) => {
+    setEditingModule(module);
+  };
+
+  const handleSaveModule = async (updatedModule: Module) => {
+    try {
+      setModules((prev) =>
+        prev.map((module) =>
+          module._id === updatedModule._id ? updatedModule : module
+        )
+      );
+      setEditingModule(null);
+      await getModules();
+    } catch (error) {
+      console.error("Error saving module:", error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingModule(null);
+  };
+
+  if (editingModule) {
+    return (
+      <EditModule
+        module={editingModule}
+        onSave={handleSaveModule}
+        onCancel={handleCancelEdit}
+        token={token}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
@@ -239,12 +276,14 @@ function CourseDetails(
                         <div className="flex flex-col sm:flex-row gap-2">
                           <button
                             type="button"
+                            onClick={() => setPreviewModule(module)}
                             className="flex-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded text-sm transition-colors"
                           >
                             <i className="fas fa-eye mr-2"></i> Ver Detalles
                           </button>
                           <button
                             type="button"
+                            onClick={() => handleEditModule(module)}
                             className="flex-1 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded text-sm transition-colors"
                           >
                             <i className="fas fa-edit mr-2"></i> Editar
@@ -350,6 +389,15 @@ function CourseDetails(
           )}
         </div>
       </div>
+
+      {previewModule && (
+        <ModulePreviewModal
+          module={previewModule}
+          isOpen={Boolean(previewModule)}
+          onClose={() => setPreviewModule(null)}
+          courses={courses}
+        />
+      )}
     </div>
   );
 }

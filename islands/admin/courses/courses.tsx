@@ -74,10 +74,12 @@ function Courses(
         )
         : (
           <CourseDetails
+            token={localStorage.getItem("jwtToken") || ""}
             getModules={getAllModules}
             getStudents={getStudents}
             course={selectedCourse}
             onBack={() => setSelectedCourse(null)}
+            courses={courses}
           />
         )}
     </div>
