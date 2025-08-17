@@ -1,4 +1,3 @@
-import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { refreshTokenIfNeeded } from "./tokenManager.ts";
 
 // Función helper para hacer requests autenticadas con refresh automático
@@ -23,18 +22,40 @@ export async function authenticatedRequest(config: {
     // Configurar headers con el token
     const authHeaders = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
       ...config.headers,
     };
 
-    // Hacer la request usando axiod
-    const response = await axiod({
+    // Preparar opciones para fetch
+    const fetchOptions: RequestInit = {
       method: config.method,
-      url: config.url,
-      data: config.data,
       headers: authHeaders,
-    });
+    };
 
-    return response;
+    // Agregar body si hay data
+    if (
+      config.data &&
+      (config.method === "POST" || config.method === "PUT" ||
+        config.method === "PATCH")
+    ) {
+      fetchOptions.body = JSON.stringify(config.data);
+    }
+
+    // Hacer la request usando fetch (sin interceptores)
+    const response = await fetch(config.url, fetchOptions);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // Intentar parsear como JSON, si falla devolver texto
+    try {
+      const data = await response.json();
+      return { data, status: response.status };
+    } catch {
+      const data = await response.text();
+      return { data, status: response.status };
+    }
   } catch (error) {
     console.error("Error in authenticated request:", error);
     throw error;

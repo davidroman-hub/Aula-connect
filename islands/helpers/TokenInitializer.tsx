@@ -1,13 +1,10 @@
 import { useEffect } from "preact/hooks";
-import {
-  setupTokenRefreshInterceptor,
-  verifyTokensOnPageLoad,
-} from "../../lib/tokenManager.ts";
+import { verifyTokensOnPageLoad } from "../../lib/tokenManager.ts";
 
 export default function TokenInitializer() {
   useEffect(() => {
-    // Configurar interceptores una sola vez al cargar la app
-    setupTokenRefreshInterceptor();
+    // Por ahora, no configurar interceptores para evitar bucles infinitos
+    // setupTokenRefreshInterceptor();
 
     // Verificar tokens al cargar la página
     const initTokens = async () => {
