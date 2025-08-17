@@ -12,10 +12,21 @@ export interface CoursesProps {
   isModuleError: string;
   getStudents: () => Promise<Student[]>;
   getAllModules: () => Promise<Module[]>;
+  getCourses: () => Promise<Course[]>;
+  resetModuleCreated: () => void;
 }
 
 function Courses(
-  { courses, getStudents, getAllModules }: CoursesProps,
+  {
+    courses,
+    getStudents,
+    getAllModules,
+    createModule,
+    isModuleCreated,
+    isModuleError,
+    getCourses,
+    resetModuleCreated,
+  }: CoursesProps,
 ) {
   const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
 
@@ -74,12 +85,17 @@ function Courses(
         )
         : (
           <CourseDetails
+            getCourses={getCourses}
+            isModuleCreated={isModuleCreated}
+            isModuleError={isModuleError}
             token={localStorage.getItem("jwtToken") || ""}
             getModules={getAllModules}
             getStudents={getStudents}
+            createModule={createModule}
             course={selectedCourse}
             onBack={() => setSelectedCourse(null)}
             courses={courses}
+            resetModuleCreated={resetModuleCreated}
           />
         )}
     </div>

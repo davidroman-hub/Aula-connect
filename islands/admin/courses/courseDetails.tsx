@@ -7,6 +7,7 @@ import { use } from "https://deno.land/x/i18next@v21.8.1/index.js";
 import OverviewCards from "./partsOfCourseDetails/overviewCards.tsx";
 import EditModule from "../module/editModule.tsx";
 import ModulePreviewModal from "../module/modulePreviewModal.tsx";
+import ModuleModal from "../module/modalToCreateModule.tsx";
 
 type CourseRawInfo = {
   _id: string;
@@ -16,18 +17,38 @@ type CourseRawInfo = {
   students: string[];
 };
 
+interface ModuleData {
+  name: string;
+  course: string;
+}
 export interface CourseDetailsProps {
-  readonly course: CourseRawInfo | null;
-  readonly onBack: () => void;
+  course: CourseRawInfo;
+  token: string;
+  onBack: () => void;
   getStudents: () => Promise<Student[]>;
   getModules: () => Promise<Module[]>;
-  token: string;
+  createModule: (moduleData: any) => void;
+  getCourses: () => Promise<Course[]>;
   courses: Course[];
+  isModuleCreated: boolean;
+  isModuleError: string;
+  resetModuleCreated: () => void;
 }
 
 function CourseDetails(
-  { course, onBack, getStudents, getModules, token, courses }:
-    CourseDetailsProps,
+  {
+    course,
+    onBack,
+    getStudents,
+    getModules,
+    token,
+    courses,
+    createModule,
+    isModuleCreated,
+    isModuleError,
+    getCourses,
+    resetModuleCreated,
+  }: CourseDetailsProps,
 ) {
   const [activeTab, setActiveTab] = useState<
     "overview" | "modules" | "students"
@@ -37,6 +58,36 @@ function CourseDetails(
   const [modules, setModules] = useState<Module[]>([]);
   const [editingModule, setEditingModule] = useState<Module | null>(null);
   const [previewModule, setPreviewModule] = useState<Module | null>(null);
+
+  // Buscar el curso actualizado en la lista de cursos
+  const updatedCourse = courses.find((c) => c._id === course._id) || course;
+
+  // Calcular el objeto del curso con datos filtrados dinámicamente
+  const newCourseObject = {
+    _id: updatedCourse?._id || "",
+    name: updatedCourse?.name || "",
+    slug: updatedCourse?.slug || "",
+    modules: modules?.filter((m) => {
+      if (!m._id) return false;
+      // updatedCourse.modules puede ser un array de strings o Module[]
+      const moduleIds = Array.isArray(updatedCourse?.modules)
+        ? updatedCourse.modules.map((mod) =>
+          typeof mod === "string" ? mod : mod._id
+        )
+        : [];
+      return moduleIds.includes(m._id);
+    }) || [],
+    students: students?.filter((s) => {
+      if (!s._id) return false;
+      // updatedCourse.students puede ser un array de strings o Student[]
+      const studentIds = Array.isArray(updatedCourse?.students)
+        ? updatedCourse.students.map((student) =>
+          typeof student === "string" ? student : student._id
+        )
+        : [];
+      return studentIds.includes(s._id);
+    }) || [],
+  } as Course;
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -60,15 +111,11 @@ function CourseDetails(
     return `${mins}m`;
   };
 
-  const newCourseObject = {
-    _id: course?._id || "",
+  const newCourseObjectSelect = {
     name: course?.name || "",
-    slug: course?.slug || "",
-    modules: modules?.filter((m) => course?.modules.includes(m.id)),
-    students: students?.filter((m) => course?.students.includes(m._id)),
-  } as Course;
+    _id: course?._id || "",
+  };
 
-  console.log("New Course Object:", newCourseObject);
   useEffect(() => {
     if (course) {
       (async () => {
@@ -79,6 +126,20 @@ function CourseDetails(
       })();
     }
   }, []);
+
+  useEffect(() => {
+    if (course && isModuleCreated) {
+      (async () => {
+        await getCourses();
+        const students = await getStudents();
+        const modules = await getModules();
+        setStudents(students);
+        setModules(modules);
+        resetModuleCreated();
+      })();
+    }
+  }, [isModuleCreated]);
+
   const handleEditModule = (module: Module) => {
     setEditingModule(module);
   };
@@ -206,12 +267,13 @@ function CourseDetails(
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <h3 className="text-lg font-semibold">Módulos del Curso</h3>
-                <button
-                  type="button"
-                  className={`px-4 py-2 bg-[${palette.primary}] text-white rounded-lg hover:bg-[${palette.hover}] transition-colors text-sm`}
-                >
-                  <i className="fas fa-plus mr-2"></i> Agregar Módulo
-                </button>
+
+                <ModuleModal
+                  createModule={createModule}
+                  isModuleCreated={isModuleCreated}
+                  courses={[newCourseObjectSelect]}
+                  isModuleError={isModuleError}
+                />
               </div>
 
               {newCourseObject?.modules.length === 0

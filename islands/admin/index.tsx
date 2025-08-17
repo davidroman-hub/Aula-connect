@@ -94,6 +94,10 @@ export function AdminDashboards() {
     }
   };
 
+  const resetModuleCreated = () => {
+    setIsModuleCreated(false);
+  };
+
   // Abrir detalle de estudiante
   const openStudentDetail = (student: any) => {
     setSelectedStudent(student);
@@ -166,6 +170,8 @@ export function AdminDashboards() {
             isModuleCreated={isModuleCreated}
             isModuleError={isModuleError}
             getAllModules={getAllModules}
+            getCourses={getCourses}
+            resetModuleCreated={resetModuleCreated}
           />
         )}
         {view === "modules" && (

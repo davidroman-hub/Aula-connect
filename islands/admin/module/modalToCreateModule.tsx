@@ -78,7 +78,7 @@ const ModuleModal = (
       <button
         type="button"
         onClick={openModal}
-        className={`bg-[${palette.primary}] hover:bg-[${palette.active}] text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center`}
+        className={`cursor-pointer bg-[${palette.primary}] hover:bg-[${palette.active}] text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center`}
       >
         <FaPlusCircle className="mr-2" /> Create New Module
       </button>

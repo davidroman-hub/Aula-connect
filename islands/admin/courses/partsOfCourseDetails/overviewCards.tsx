@@ -2,7 +2,7 @@ import { palette } from "../../../../assets/colors.ts";
 import { Course } from "../../../../routes/api/courses/course.tsx";
 
 type OverviewCardsProps = {
-  newCourseObject: Course;
+  newCourseObject: Course | null;
   formatDuration: (minutes: number) => string;
 };
 

@@ -77,30 +77,3 @@ export const updateModule = async (module: Module) => {
     throw new Error("Failed to update module");
   }
 };
-
-export const createModule = async (moduleData: Partial<Module>) => {
-  try {
-    const response = await axiod.post(`/api/modules/module`, {
-      ...moduleData,
-      content: moduleData.content || {
-        description: "",
-        objectives: [],
-        duration: 0,
-        difficulty: "beginner",
-        materials: [],
-        exercises: [],
-        notes: "",
-      },
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`,
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error("Error creating module:", error);
-    throw new Error("Failed to create module");
-  }
-};
