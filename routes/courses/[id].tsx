@@ -1,12 +1,14 @@
-import CoursePreview from "../../islands/student/course/selectedCourse.tsx";
+import CourseLoader from "../../islands/CourseLoader.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { CourseRawInfo } from "../../types/course.ts";
 import { Module } from "../api/modules/module.tsx";
-import mod from "https://deno.land/x/i18next_http_middleware@v3.3.2/index.js";
 
 export const handler: Handlers = {
   async GET(req, context) {
     const { id } = context.params;
+
+    // Delay de 2 segundos
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     try {
       // Obtener la URL base
@@ -79,7 +81,7 @@ const Course = ({ data }: PageProps) => {
 
   return (
     <div>
-      <CoursePreview course={course} courseId={courseId} />
+      <CourseLoader course={course} courseId={courseId} />
     </div>
   );
 };

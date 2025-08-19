@@ -24,6 +24,7 @@ import * as $products_index from "./routes/products/index.tsx";
 import * as $user_dash_index from "./routes/user-dash/index.tsx";
 import * as $work_with_me_index from "./routes/work-with-me/index.tsx";
 import * as $Counter from "./islands/Counter.tsx";
+import * as $CourseLoader from "./islands/CourseLoader.tsx";
 import * as $Navbar_index from "./islands/Navbar/index.tsx";
 import * as $ShowProducts_index from "./islands/ShowProducts/index.tsx";
 import * as $admin_adminActions_index from "./islands/admin/adminActions/index.ts";
@@ -103,6 +104,7 @@ const manifest = {
   },
   islands: {
     "./islands/Counter.tsx": $Counter,
+    "./islands/CourseLoader.tsx": $CourseLoader,
     "./islands/Navbar/index.tsx": $Navbar_index,
     "./islands/ShowProducts/index.tsx": $ShowProducts_index,
     "./islands/admin/adminActions/index.ts": $admin_adminActions_index,

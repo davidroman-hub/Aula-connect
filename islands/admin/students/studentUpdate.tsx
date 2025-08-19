@@ -2,10 +2,11 @@ import { useEffect, useState } from "preact/hooks";
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { palette } from "../../../assets/colors.ts";
 import { Student } from "../../../routes/api/users/user.tsx";
-import { Course } from "../../../routes/api/courses/course.tsx";
+
 import { updateMultipleCourses } from "../adminActions/index.ts";
 import { ErrorAlert, SuccessAlert } from "../../alerts/index.tsx";
-import { buttonSpinnerLoading } from "../../components/spinners/spinners.tsx";
+import { ButtonSpinnerLoading } from "../../components/spinners/spinners.tsx";
+import { Course } from "../../../types/course.ts";
 
 type StudentUpdateProps = {
   getCourses: () => Promise<Course[]>;
@@ -328,7 +329,7 @@ const StudentUpdate = (
                   disabled={loading || successMessageUpdateCourses.length > 0 ||
                     successMessageUpdateStudent.length > 0}
                 >
-                  {loading ? buttonSpinnerLoading() : "Update Student"}
+                  {loading ? <ButtonSpinnerLoading /> : "Update Student"}
                 </button>
               </form>
             </div>

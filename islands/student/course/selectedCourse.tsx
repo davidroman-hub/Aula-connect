@@ -41,7 +41,7 @@ interface CurrentUser {
   updatedAt: string;
 }
 
-const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
+const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -319,4 +319,4 @@ const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
   );
 };
 
-export default CoursePreview;
+export default CourseView;

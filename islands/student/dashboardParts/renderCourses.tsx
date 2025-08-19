@@ -2,6 +2,8 @@ import { useEffect, useState } from "preact/hooks";
 import { getCourses } from "../../admin/adminActions/studentsAsyncActions/studentAsyncActions.ts";
 import { Course, CourseRawInfo } from "../../../types/course.ts";
 
+import { ButtonSpinnerLoading } from "../../components/spinners/spinners.tsx";
+
 export interface RenderCoursesProps {
   userInfo: {
     id: string;
@@ -28,12 +30,17 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
   };
 
   const [courses, setCourses] = useState<Course[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [fakeLoading, setFakeLoading] = useState(false);
 
   useEffect(() => {
-    // Función para obtener los cursos
-
     const fetchCourses = async () => {
       try {
+        setIsLoading(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
         const response = await getCourses();
 
         const filteredCourses = response.filter((course: CourseRawInfo) =>
@@ -48,6 +55,8 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
         setCourses(filteredCourses);
       } catch (error) {
         console.error("Error fetching courses:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -55,6 +64,12 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
   }, []);
 
   // Módulos de ejemplo para mostrar la funcionalidad
+
+  const getDifficultyText = (difficulty: string) => {
+    if (difficulty === easy) return "Principiante";
+    if (difficulty === medium) return "Intermedio";
+    return "Avanzado";
+  };
 
   const coursesObject = courses.map((course) => ({
     id: course.id,
@@ -65,77 +80,41 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
     description: course.description || "No description available",
   }));
 
-  console.log("Courses fetched:", coursesObject);
-  // const sampleModules = [
-  //   {
-  //     _id: "mod1",
-  //     name: "Introducción a HTML",
-  //     course: "Desarrollo Web",
-  //     difficulty: "Principiante",
-  //     description: "Aprende los fundamentos de HTML para crear páginas web",
-  //     duration: "2 horas",
-  //     videos: 5,
-  //     documents: 3,
-  //     quizzes: 2,
-  //   },
-  //   {
-  //     _id: "mod2",
-  //     name: "CSS Avanzado",
-  //     course: "Desarrollo Web",
-  //     difficulty: "Intermedio",
-  //     description: "Domina CSS Grid, Flexbox y animaciones",
-  //     duration: "3 horas",
-  //     videos: 8,
-  //     documents: 4,
-  //     quizzes: 3,
-  //   },
-  //   {
-  //     _id: "mod3",
-  //     name: "JavaScript ES6+",
-  //     course: "JavaScript Avanzado",
-  //     difficulty: "Avanzado",
-  //     description: "Características modernas de JavaScript",
-  //     duration: "4 horas",
-  //     videos: 12,
-  //     documents: 6,
-  //     quizzes: 4,
-  //   },
-  //   {
-  //     _id: "mod4",
-  //     name: "React Hooks",
-  //     course: "React & TypeScript",
-  //     difficulty: "Intermedio",
-  //     description: "Aprende a usar React Hooks efectivamente",
-  //     duration: "3.5 horas",
-  //     videos: 10,
-  //     documents: 5,
-  //     quizzes: 3,
-  //   },
-  // ];
+  // Componente de loading para las tarjetas
+  const CourseCardSkeleton = () => (
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden animate-pulse">
+      {/* Header skeleton */}
+      <div className="h-32 bg-gradient-to-r from-gray-300 to-gray-400"></div>
+
+      {/* Content skeleton */}
+      <div className="p-6">
+        <div className="h-4 bg-gray-300 rounded mb-2"></div>
+        <div className="h-3 bg-gray-200 rounded mb-4"></div>
+        <div className="flex justify-between mb-4">
+          <div className="h-3 bg-gray-200 rounded w-16"></div>
+          <div className="flex space-x-3">
+            <div className="h-3 bg-gray-200 rounded w-8"></div>
+            <div className="h-3 bg-gray-200 rounded w-8"></div>
+            <div className="h-3 bg-gray-200 rounded w-8"></div>
+          </div>
+        </div>
+        <div className="h-10 bg-gray-300 rounded"></div>
+      </div>
+    </div>
+  );
 
   return (
-    <div // style={{
-     //   width: "100%",
-    //   backgroundColor: "red",
-    // }}
-    className="">
+    <div className="">
       <div className="flex flex-wrap items-center mb-6">
         <h2 className="text-2xl mr-2 mb-2 font-bold text-gray-800">
           Cursos Disponibles
         </h2>
-        <div className="flex mr-2 mb-2  space-x-4">
+        <div className="flex mr-2 mb-2 space-x-4">
           <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
             <option value="">Todos los cursos</option>
-            {
-              /* {courses.map((course) => (
-                <option key={course._id} value={course._id}>
-                  {course.name}
-                </option>
-              ))} */
-            }
           </select>
         </div>
-        <div className="flex mr-2 mb-2  space-x-4">
+        <div className="flex mr-2 mb-2 space-x-4">
           <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
             <option value="">Toda dificultad</option>
             <option value="Principiante">Principiante</option>
@@ -145,101 +124,111 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
         </div>
       </div>
 
-      {coursesObject.length > 0
+      {isLoading
         ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {coursesObject.map((course) => (
-              <div
-                key={course.id}
-                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-              >
-                {/* Header con gradiente según dificultad */}
-                <div
-                  className={`h-32 p-4 flex items-center justify-center text-white ${
-                    getDifficultyGradient(course.difficulty || "1")
-                  }`}
-                >
-                  <div className="text-center">
-                    <h3 className="text-xl font-bold mb-2">{course.name}</h3>
-                    <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
-                      {course.difficulty === easy
-                        ? "Principiante"
-                        : course.difficulty === medium
-                        ? "Intermedio"
-                        : "Avanzado"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Contenido */}
-                <div className="p-6">
-                  <div className="mb-4">
-                    <p className="text-sm text-blue-600 font-medium mb-2">
-                      {course.name}
-                    </p>
-                    <p className="text-gray-600 text-sm">
-                      {course.description}
-                    </p>
-                  </div>
-
-                  {/* Estadísticas */}
-                  <div className="flex justify-between text-sm text-gray-500 mb-4">
-                    <div className="flex items-center">
-                      <span className="fas fa-clock mr-1"></span>
-                      {/* {module.duration} */}
-                    </div>
-                    <div className="flex space-x-3">
-                      <span>
-                        <span className="fas fa-video mr-1"></span>
-                        {/* {module.videos} */}
-                      </span>
-                      <span>
-                        <span className="fas fa-puzzle-piece mr-1"></span>
-                        {course.modules.length}
-                      </span>
-
-                      <span>
-                        <span className="fas fa-question-circle mr-1"></span>
-                        {/* {module.quizzes} */}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Botones de acción */}
-                  <div className="flex space-x-2">
-                    {
-                      /* <button
-                      type="button"
-                      className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
-                      onClick={() => {}}
-                    >
-                      <span className="fas fa-eye mr-2"></span>
-                      <span>Vista previa</span>
-                    </button> */
-                    }
-
-                    <a
-                      href={`/courses/${course.id}`}
-                      className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm"
-                    >
-                      Inscribirse
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
+            {Array.from(
+              { length: 6 },
+              (_, index) => (
+                <CourseCardSkeleton key={`skeleton-card-${index + 1}`} />
+              ),
+            )}
           </div>
         )
         : (
-          <div className="text-center py-12">
-            <i className="fas fa-book text-gray-400 text-6xl mb-4">
-            </i>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
-              No se encontraron Cursos
-            </h3>
-            <p className="text-gray-500">
-              Aún no hay cursos disponibles
-            </p>
+          <div>
+            {coursesObject.length > 0
+              ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {coursesObject.map((course) => (
+                    <div
+                      key={course.id}
+                      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                    >
+                      {/* Header con gradiente según dificultad */}
+                      <div
+                        className={`h-32 p-4 flex items-center justify-center text-white ${
+                          getDifficultyGradient(course.difficulty || "1")
+                        }`}
+                      >
+                        <div className="text-center">
+                          <h3 className="text-xl font-bold mb-2">
+                            {course.name}
+                          </h3>
+                          <span className="bg-white/20 px-3 py-1 rounded-full text-sm">
+                            {getDifficultyText(course.difficulty || "1")}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Contenido */}
+                      <div className="p-6">
+                        <div className="mb-4">
+                          <p className="text-sm text-blue-600 font-medium mb-2">
+                            {course.name}
+                          </p>
+                          <p className="text-gray-600 text-sm">
+                            {course.description}
+                          </p>
+                        </div>
+
+                        {/* Estadísticas */}
+                        <div className="flex justify-between text-sm text-gray-500 mb-4">
+                          <div className="flex items-center">
+                            <span className="fas fa-clock mr-1"></span>
+                            <span>2h</span>
+                          </div>
+                          <div className="flex space-x-3">
+                            <span>
+                              <span className="fas fa-video mr-1"></span>
+                              <span>5</span>
+                            </span>
+                            <span>
+                              <span className="fas fa-puzzle-piece mr-1"></span>
+                              <span>{course.modules.length}</span>
+                            </span>
+                            <span>
+                              <span className="fas fa-question-circle mr-1">
+                              </span>
+                              <span>3</span>
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Botones de acción */}
+                        <div className="flex space-x-2">
+                          <a
+                            disabled={fakeLoading}
+                            onClick={() => {
+                              setFakeLoading(true);
+                              setTimeout(() => {
+                                setFakeLoading(false);
+                              }, 2000);
+                            }}
+                            href={`/courses/${course.id}`}
+                            className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm text-center"
+                          >
+                            {fakeLoading
+                              ? <ButtonSpinnerLoading />
+                              : "Inscribirse"}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+              : (
+                <div className="text-center py-12">
+                  <i className="fas fa-book text-gray-400 text-6xl mb-4"></i>
+                  <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                    No se encontraron Cursos
+                  </h3>
+                  <p className="text-gray-500">
+                    Aún no hay cursos disponibles
+                  </p>
+                </div>
+              )}
           </div>
         )}
     </div>
