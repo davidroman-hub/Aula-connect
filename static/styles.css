@@ -4,9 +4,14 @@
   themes: light --default, dark --prefersdark, cupcake;
 }
 
-/* * {
-  color: #3c3a40;
-} */
+/* Clases adicionales para el curso */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
 .gradient-text {
   background: linear-gradient(

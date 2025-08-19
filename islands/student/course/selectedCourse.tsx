@@ -1,10 +1,22 @@
 import { useEffect, useState } from "preact/hooks";
+import { palette } from "../../../assets/colors.ts";
+
+interface ModuleData {
+  _id?: string;
+  name?: string;
+  description?: string;
+  content?: {
+    text?: string;
+    html?: string;
+  };
+  duration?: number;
+}
 
 interface CourseData {
   _id?: string;
   name?: string;
   description?: string;
-  modules?: Array<{ name?: string; description?: string; _id?: string }>;
+  modules?: Array<ModuleData>;
   students?: Array<unknown>;
   error?: boolean;
 }
@@ -14,138 +26,228 @@ interface CoursePreviewProps {
   courseId: string;
 }
 
-const CoursePreview = ({ course, courseId }: CoursePreviewProps) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
+  const [selectedModule, setSelectedModule] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Función para obtener datos adicionales si es necesario
-  // const getAdditionalCourseData = (id: string) => {
-  //   try {
-  //     setLoading(true);
-  //     setError("");
-  //     // Si necesitas hacer fetch adicional, úsalo aquí
-  //     console.log("Course ID:", id);
-  //     console.log("Course data received:", course);
-  //   } catch (error) {
-  //     console.error("Error processing course data:", error);
-  //     setError("Error al procesar datos del curso");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  // Seleccionar el primer módulo por defecto
+  useEffect(() => {
+    if (course?.modules && course.modules.length > 0 && !selectedModule) {
+      setSelectedModule("intro");
+    }
+  }, [course?.modules, selectedModule]);
 
-  console.log(course, "Course data in CoursePreview");
-  // useEffect(() => {
-  //   if (courseId) {
-  //     getAdditionalCourseData(courseId);
-  //   }
-  // }, [courseId]);
+  // Obtener datos del módulo seleccionado
+  const selectedModuleData = course?.modules?.find((m) =>
+    m._id === selectedModule
+  );
+
+  if (!course) {
+    return <div className="p-4">Curso no encontrado</div>;
+  }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Course Preview</h1>
+    <div className="h-screen flex relative">
+      {/* Overlay para móviles */}
+      {sidebarOpen && (
+        <button
+          type="button"
+          className="fixed inset-0 bg-opacity-50 z-20 lg:hidden cursor-default"
+          onClick={() => setSidebarOpen(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setSidebarOpen(false);
+            }
+          }}
+          aria-label="Cerrar menú"
+        />
+      )}
 
-      {loading && (
-        <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500">
+      <aside
+        style={{
+          width: "280px",
+        }}
+        className={`
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0 lg:static fixed inset-y-0 left-0 z-30
+        w-70 lg:w-1/3 bg-[${palette.primary}] text-white overflow-y-auto
+        transition-transform duration-300 ease-in-out
+      `}
+      >
+        {/* Header del sidebar */}
+        <div className="mt-17 p-4 border-b border-gray-700 flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="bg-accent rounded-lg p-2 mr-3">
+              <i className="fas fa-book text-white text-xl"></i>
+            </div>
+            <div>
+              <h2 className="text-lg font-bold">{course.name}</h2>
+              <p className="text-gray-300 text-sm">{course.description}</p>
+            </div>
           </div>
-          <p className="mt-2">Cargando datos adicionales...</p>
+          {/* Botón para cerrar en móviles */}
+          <button
+            type="button"
+            className="lg:hidden text-white"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <i className="fas fa-times"></i>
+          </button>
         </div>
-      )}
 
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
+        {/* Lista de módulos */}
+        <nav className="p-4">
+          <ul>
+            <li>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedModule("intro");
+                  // Cerrar sidebar en móviles después de seleccionar
+                  if (globalThis.innerWidth && globalThis.innerWidth < 1024) {
+                    setSidebarOpen(false);
+                  }
+                }}
+                className={`w-full text-left flex items-center p-3 rounded-lg transition ${
+                  selectedModule === "intro"
+                    ? "bg-primary text-white"
+                    : "hover:bg-gray-700"
+                }`}
+              >
+                <div className="flex-1">
+                  <div className="font-medium">
+                    {"Bienvenido al curso"}
+                  </div>
+                </div>
+              </button>
+            </li>
+            {course.modules?.map((module, index) => (
+              <li key={module._id || `module-${index}`} className="mb-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedModule(module._id || null);
+                    // Cerrar sidebar en móviles después de seleccionar
+                    if (globalThis.innerWidth && globalThis.innerWidth < 1024) {
+                      setSidebarOpen(false);
+                    }
+                  }}
+                  className={`w-full text-left flex items-center p-3 rounded-lg transition ${
+                    selectedModule === module._id
+                      ? "bg-primary text-white"
+                      : "hover:bg-gray-700"
+                  }`}
+                >
+                  <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center mr-3 text-sm font-bold">
+                    {index + 1}
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-medium">
+                      {module.name || `Módulo ${index + 1}`}
+                    </div>
+                    <div className="text-gray-300 text-sm truncate">
+                      {module.description}
+                    </div>
+                  </div>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Footer del sidebar */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+          <div className="flex items-center">
+            <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center mr-3">
+              <i className="fas fa-user text-white"></i>
+            </div>
+            <div>
+              <p className="font-medium">Estudiante</p>
+              <p className="text-gray-400 text-sm">Aprendiendo</p>
+            </div>
+          </div>
         </div>
-      )}
+      </aside>
 
-      {course && (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Información del Curso</h2>
+      {/* Contenido principal */}
+      <div className="mt-17 flex-1 flex flex-col overflow-hidden">
+        {/* Header para móviles con botón de menú */}
+        <header className="lg:hidden bg-white shadow-sm border-b border-gray-200 flex items-center justify-between p-4">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          >
+            <i className="fas fa-bars text-xl"></i>
+          </button>
+          <h1 className="text-lg font-semibold text-gray-900">
+            {selectedModuleData?.name || "Selecciona un módulo"}
+          </h1>
+          <div className="w-10"></div> {/* Spacer para centrar el título */}
+        </header>
 
-          {course.error
+        {/* Contenido del módulo */}
+        <div className="flex-1 overflow-y-auto">
+          {selectedModuleData
             ? (
-              <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
-                <p className="font-semibold">{course.name}</p>
-                <p>{course.description}</p>
+              <div className="p-6">
+                <h1 className="text-2xl font-bold mb-4">
+                  {selectedModuleData.name}
+                </h1>
+
+                {selectedModuleData.description && (
+                  <div className="mb-6">
+                    <h3 className="font-semibold mb-2">Descripción:</h3>
+                    <p className="text-gray-700">
+                      {selectedModuleData.description}
+                    </p>
+                  </div>
+                )}
+
+                {selectedModuleData.duration && (
+                  <div className="mb-6">
+                    <h3 className="font-semibold mb-2">Duración:</h3>
+                    <p className="text-gray-700">
+                      {selectedModuleData.duration} minutos
+                    </p>
+                  </div>
+                )}
+
+                {selectedModuleData.content?.text && (
+                  <div className="mb-6">
+                    <h3 className="font-semibold mb-2">Contenido (Texto):</h3>
+                    <div className="bg-gray-50 p-4 rounded border">
+                      <pre className="whitespace-pre-wrap text-sm">{selectedModuleData.content.text}</pre>
+                    </div>
+                  </div>
+                )}
+
+                {selectedModuleData.content?.html && (
+                  <div className="mb-6">
+                    <h3 className="font-semibold mb-2">Contenido (HTML):</h3>
+                    <div className="bg-gray-50 p-4 rounded border">
+                      <pre className="whitespace-pre-wrap text-sm">{selectedModuleData.content.html}</pre>
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-8 pt-4 border-t">
+                  <h3 className="font-semibold mb-2">
+                    Datos del módulo (JSON):
+                  </h3>
+                  <pre className="bg-gray-100 p-4 rounded text-xs overflow-auto">
+                {JSON.stringify(selectedModuleData, null, 2)}
+                  </pre>
+                </div>
               </div>
             )
             : (
-              <div>
-                <div className="mb-4">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                    {course.name || "Sin nombre"}
-                  </h3>
-                  <p className="text-gray-600 mb-2">
-                    {course.description || "Sin descripción"}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    ID:{" "}
-                    <span className="font-mono bg-gray-100 px-2 py-1 rounded">
-                      {courseId}
-                    </span>
-                  </p>
-                </div>
-
-                {course.modules && course.modules.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-lg font-semibold mb-2">
-                      Módulos ({course.modules.length})
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {course.modules.slice(0, 4).map((module, index) => (
-                        <div
-                          key={module._id || `module-${index}`}
-                          className="bg-gray-50 p-3 rounded border"
-                        >
-                          <p className="font-medium">
-                            {module.name || `Módulo ${index + 1}`}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {module.description || "Sin descripción"}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                    {course.modules.length > 4 && (
-                      <p className="text-sm text-gray-500 mt-2">
-                        Y {course.modules.length - 4} módulos más...
-                      </p>
-                    )}
-                  </div>
-                )}
-
-                {course.students && course.students.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-lg font-semibold mb-2">
-                      Estudiantes Inscritos ({course.students.length})
-                    </h4>
-                    <div className="text-sm text-gray-600">
-                      {course.students.length}{" "}
-                      estudiante{course.students.length > 1 ? "s" : ""}{" "}
-                      inscrito{course.students.length > 1 ? "s" : ""}
-                    </div>
-                  </div>
-                )}
-
-                <details className="mt-4">
-                  <summary className="cursor-pointer text-sm text-gray-600 hover:text-gray-800">
-                    Ver datos completos (JSON)
-                  </summary>
-                  <pre className="bg-gray-50 p-4 rounded overflow-auto text-xs mt-2">
-                  {JSON.stringify(course, null, 2)}
-                  </pre>
-                </details>
+              <div className="p-6 text-center text-gray-500">
+                Selecciona un módulo para ver su contenido
               </div>
             )}
         </div>
-      )}
-
-      {!course && (
-        <div className="text-center py-8 text-gray-500">
-          <p>No se pudo cargar la información del curso.</p>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
