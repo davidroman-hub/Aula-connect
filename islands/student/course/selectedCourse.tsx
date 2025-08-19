@@ -22,7 +22,7 @@ interface CourseData {
 }
 
 interface CoursePreviewProps {
-  course: CourseData;
+  course: { courseData: CourseData[]; modules: ModuleData[] };
   courseId: string;
 }
 
@@ -81,8 +81,12 @@ const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
               <i className="fas fa-book text-white text-xl"></i>
             </div>
             <div>
-              <h2 className="text-lg font-bold">{course.name}</h2>
-              <p className="text-gray-300 text-sm">{course.description}</p>
+              <h2 className="text-l font-bold">
+                {course.courseData[0].name}
+              </h2>
+              <p className="text-gray-300 text-sm">
+                {course.courseData[0].description}
+              </p>
             </div>
           </div>
           {/* Botón para cerrar en móviles */}
@@ -98,7 +102,7 @@ const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
         {/* Lista de módulos */}
         <nav className="p-4">
           <ul>
-            <li>
+            <li className="mb-2">
               <button
                 type="button"
                 onClick={() => {

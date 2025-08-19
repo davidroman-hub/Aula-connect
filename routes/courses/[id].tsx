@@ -44,7 +44,7 @@ export const handler: Handlers = {
       });
 
       const newData = {
-        ...courseData,
+        courseData,
         modules: modulesData.filter((module: Module) => module.course === id),
       };
 
