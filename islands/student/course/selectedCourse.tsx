@@ -291,14 +291,44 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                   </div>
                 )}
 
-                <div className="mt-8 pt-4 border-t">
-                  <h3 className="font-semibold mb-2">
-                    Datos del módulo (JSON):
-                  </h3>
-                  <pre className="bg-gray-100 p-4 rounded text-xs overflow-auto">
-                {JSON.stringify(selectedModuleData, null, 2)}
-                  </pre>
-                </div>
+                {newUserObject.currentLesson?.find((lesson) =>
+                    lesson.moduleId === selectedModuleData._id
+                  )
+                  ? (
+                    <div className="mt-8 pt-4 border-t">
+                      <h3 className="font-semibold mb-2">
+                        Datos del módulo (JSON):
+                      </h3>
+                      <pre className="bg-gray-100 p-4 rounded text-xs overflow-auto">
+                      {JSON.stringify(selectedModuleData, null, 2)}
+                      </pre>
+                    </div>
+                  )
+                  : (
+                    <div>
+                      <div>Activa el modulo!</div>
+                      <div className="mt-8 pt-4 border-t">
+                        <div className="fixed inset-0  backdrop-blur-[3px] bg-opacity-50 z-50 flex items-center justify-center p-4">
+                          <div>Activa el módulo para ver los datos</div>
+                          <button
+                            type="button"
+                            className={`flex items-center justify-center mt-20 h-15 p-2 rounded-lg bg-[${[
+                              palette.primary,
+                            ]}] hover:bg-gray-200 transition-colors`}
+                            onClick={() => setSelectedModule("intro")}
+                            onKeyDown={(e) =>
+                              e.key === "Escape" && setSelectedModule("intro")}
+                            aria-label="Close modal"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                        <pre className="bg-gray-100 p-4 rounded text-xs overflow-auto">
+                      {JSON.stringify(selectedModuleData, null, 2)}
+                        </pre>
+                      </div>
+                    </div>
+                  )}
               </div>
             )
             : (
