@@ -4,8 +4,10 @@ import { hash } from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 import { requireAdmin } from "../../../middleware/auth.ts";
 
 import { db } from "../../../lib/mongo.ts";
-import { Course } from "../courses/course.tsx";
+
 import { ObjectId } from "https://deno.land/x/web_bson@v0.3.0/mod.js";
+import { Course } from "../../../types/course.ts";
+
 const usersCollection = db.collection("users");
 
 export type Student = {
@@ -40,6 +42,7 @@ export const handler: Handlers = {
       type: role || "student",
       createdAt: new Date(),
       updatedAt: null,
+      currentLesson: [],
     });
 
     return new Response("User created", { status: 201 });

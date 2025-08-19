@@ -1,5 +1,7 @@
+import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { useEffect, useState } from "preact/hooks";
 import { palette } from "../../../assets/colors.ts";
+import { authenticatedGet } from "../../../lib/apiHelpers.ts";
 
 interface ModuleData {
   _id?: string;
@@ -27,13 +29,32 @@ interface CoursePreviewProps {
 }
 
 const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const searchCurrentLessonInUser = async () => {
+    try {
+      const url = `/api/student/user?id=${userInfo.id}`;
+
+      const response = await authenticatedGet(url);
+
+      if (response.status !== 200) {
+        throw new Error(`Failed to fetch user: ${response.status}`);
+      }
+      const userData = response.data;
+      console.log("User data:", userData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   // Seleccionar el primer módulo por defecto
   useEffect(() => {
     if (course?.modules && course.modules.length > 0 && !selectedModule) {
       setSelectedModule("intro");
+      searchCurrentLessonInUser();
     }
   }, [course?.modules, selectedModule]);
 
