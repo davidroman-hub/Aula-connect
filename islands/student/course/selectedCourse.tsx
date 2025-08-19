@@ -2,6 +2,9 @@ import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { useEffect, useState } from "preact/hooks";
 import { palette } from "../../../assets/colors.ts";
 import { authenticatedGet } from "../../../lib/apiHelpers.ts";
+import CourseDetails from "./courseProgress.tsx";
+import { Course } from "../../../types/course.ts";
+import { CurrentLesson } from "../../../types/users.ts";
 
 interface ModuleData {
   _id?: string;
@@ -28,11 +31,25 @@ interface CoursePreviewProps {
   courseId: string;
 }
 
+interface CurrentUser {
+  currentLesson?: CurrentLesson[] | null;
+  _id: string;
+  username: string;
+  password: string;
+  courses: string[];
+  type: string;
+  updatedAt: string;
+}
+
 const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [activeTab, setActiveTab] = useState<"modules" | "overview">(
+    "overview",
+  );
 
   const searchCurrentLessonInUser = async () => {
     try {
@@ -44,7 +61,8 @@ const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
         throw new Error(`Failed to fetch user: ${response.status}`);
       }
       const userData = response.data;
-      console.log("User data:", userData);
+
+      setCurrentUser(userData);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -66,6 +84,23 @@ const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
   if (!course) {
     return <div className="p-4">Curso no encontrado</div>;
   }
+
+  const newCourseObject = {
+    ...course.courseData[0],
+    modules: course.modules,
+  };
+
+  const newUserObject = {
+    _id: currentUser?._id || "",
+    username: currentUser?.username || "",
+    password: currentUser?.password || "",
+    courses: currentUser?.courses || [],
+    type: currentUser?.type || "student",
+    updatedAt: currentUser?.updatedAt || new Date().toISOString(),
+    currentLesson: currentUser?.currentLesson || null,
+  };
+
+  console.log("Current user:", newUserObject);
 
   return (
     <div className="h-screen flex relative">
@@ -141,7 +176,7 @@ const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
               >
                 <div className="flex-1">
                   <div className="font-medium">
-                    {"Bienvenido al curso"}
+                    {"Progreso del curso"}
                   </div>
                 </div>
               </button>
@@ -269,6 +304,13 @@ const CoursePreview = ({ course, courseId: _courseId }: CoursePreviewProps) => {
             : (
               <div className="p-6 text-center text-gray-500">
                 Selecciona un módulo para ver su contenido
+                <CourseDetails
+                  newCourseObject={newCourseObject as Course}
+                  courseName={course.courseData[0].name || "Curso"}
+                  currentUser={newUserObject}
+                  setActiveTab={setActiveTab}
+                  activeTab={activeTab}
+                />
               </div>
             )}
         </div>

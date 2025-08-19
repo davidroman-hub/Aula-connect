@@ -32,7 +32,9 @@ import * as $admin_adminActions_studentsAsyncActions_studentAsyncActions from ".
 import * as $admin_courses_courseDetails from "./islands/admin/courses/courseDetails.tsx";
 import * as $admin_courses_courses from "./islands/admin/courses/courses.tsx";
 import * as $admin_courses_createCourse from "./islands/admin/courses/createCourse.tsx";
+import * as $admin_courses_partsOfCourseDetails_modulesTab from "./islands/admin/courses/partsOfCourseDetails/modulesTab.tsx";
 import * as $admin_courses_partsOfCourseDetails_overviewCards from "./islands/admin/courses/partsOfCourseDetails/overviewCards.tsx";
+import * as $admin_courses_partsOfCourseDetails_students from "./islands/admin/courses/partsOfCourseDetails/students.tsx";
 import * as $admin_createUser from "./islands/admin/createUser.tsx";
 import * as $admin_dashboardAdmin from "./islands/admin/dashboardAdmin.tsx";
 import * as $admin_editModule from "./islands/admin/editModule.tsx";
@@ -67,6 +69,7 @@ import * as $main_testimonials from "./islands/main/testimonials.tsx";
 import * as $modal_index from "./islands/modal/index.tsx";
 import * as $portafolio_index from "./islands/portafolio/index.tsx";
 import * as $showOrders_showOrders from "./islands/showOrders/showOrders.tsx";
+import * as $student_course_courseProgress from "./islands/student/course/courseProgress.tsx";
 import * as $student_course_selectedCourse from "./islands/student/course/selectedCourse.tsx";
 import * as $student_dashboardParts_renderCourses from "./islands/student/dashboardParts/renderCourses.tsx";
 import * as $student_moduleCard from "./islands/student/moduleCard.tsx";
@@ -109,8 +112,12 @@ const manifest = {
     "./islands/admin/courses/courseDetails.tsx": $admin_courses_courseDetails,
     "./islands/admin/courses/courses.tsx": $admin_courses_courses,
     "./islands/admin/courses/createCourse.tsx": $admin_courses_createCourse,
+    "./islands/admin/courses/partsOfCourseDetails/modulesTab.tsx":
+      $admin_courses_partsOfCourseDetails_modulesTab,
     "./islands/admin/courses/partsOfCourseDetails/overviewCards.tsx":
       $admin_courses_partsOfCourseDetails_overviewCards,
+    "./islands/admin/courses/partsOfCourseDetails/students.tsx":
+      $admin_courses_partsOfCourseDetails_students,
     "./islands/admin/createUser.tsx": $admin_createUser,
     "./islands/admin/dashboardAdmin.tsx": $admin_dashboardAdmin,
     "./islands/admin/editModule.tsx": $admin_editModule,
@@ -148,6 +155,8 @@ const manifest = {
     "./islands/modal/index.tsx": $modal_index,
     "./islands/portafolio/index.tsx": $portafolio_index,
     "./islands/showOrders/showOrders.tsx": $showOrders_showOrders,
+    "./islands/student/course/courseProgress.tsx":
+      $student_course_courseProgress,
     "./islands/student/course/selectedCourse.tsx":
       $student_course_selectedCourse,
     "./islands/student/dashboardParts/renderCourses.tsx":

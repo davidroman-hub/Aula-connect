@@ -1,18 +1,19 @@
 import { palette } from "../../../../assets/colors.ts";
-import { Course } from "../../../../routes/api/courses/course.tsx";
+import { Course } from "../../../../types/course.ts";
 
 type OverviewCardsProps = {
   newCourseObject: Course | null;
   formatDuration: (minutes: number) => string;
+  isAdmin: "admin" | "user";
 };
 
 const OverviewCards = (
-  { newCourseObject, formatDuration }: OverviewCardsProps,
+  { newCourseObject, formatDuration, isAdmin }: OverviewCardsProps,
 ) => {
   return (
     <div className="space-y-6">
       {/* Course Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg">
           <div className="flex items-center justify-between">
             <div>
@@ -27,19 +28,21 @@ const OverviewCards = (
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-green-600 text-sm font-medium">
-                Estudiantes
-              </p>
-              <p className="text-2xl font-bold text-green-800">
-                {newCourseObject?.students.length}
-              </p>
+        {isAdmin === "admin" && (
+          <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-green-600 text-sm font-medium">
+                  Estudiantes
+                </p>
+                <p className="text-2xl font-bold text-green-800">
+                  {newCourseObject?.students.length}
+                </p>
+              </div>
+              <i className="fas fa-users text-green-500 text-xl"></i>
             </div>
-            <i className="fas fa-users text-green-500 text-xl"></i>
           </div>
-        </div>
+        )}
 
         <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg">
           <div className="flex items-center justify-between">
@@ -64,48 +67,55 @@ const OverviewCards = (
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-orange-600 text-sm font-medium">
-                Completados
-              </p>
-              <p className="text-2xl font-bold text-orange-800">
-                {newCourseObject?.modules.filter((module) => module.isFinished)
-                  .length}
-              </p>
+        {isAdmin === "user" && (
+          <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-orange-600 text-sm font-medium">
+                  Completados
+                </p>
+                <p className="text-2xl font-bold text-orange-800">
+                  {newCourseObject?.modules.filter((module) =>
+                    module.isFinished
+                  )
+                    .length}
+                </p>
+              </div>
+              <i className="fas fa-check-circle text-orange-500 text-xl">
+              </i>
             </div>
-            <i className="fas fa-check-circle text-orange-500 text-xl">
-            </i>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Progress Chart */}
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4">
-          Progreso del Curso
-        </h3>
-        <div className="w-full bg-gray-200 rounded-full h-4">
-          <div
-            className={`h-4 rounded-full bg-gradient-to-r from-[${palette.primary}] to-[${palette.hover}]`}
-            style={{
-              width: `${
-                newCourseObject && newCourseObject.modules.length > 0
-                  ? (newCourseObject.modules.filter((m) => m.isFinished)
-                    .length /
-                    newCourseObject.modules.length) * 100
-                  : 0
-              }%`,
-            }}
-          >
+      {isAdmin === "user" && (
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <h3 className="text-lg font-semibold mb-4">
+            Progreso del Curso
+          </h3>
+          <div className="w-full bg-gray-200 rounded-full h-4">
+            <div
+              className={`h-4 rounded-full bg-gradient-to-r from-[${palette.primary}] to-[${palette.hover}]`}
+              style={{
+                width: `${
+                  newCourseObject && newCourseObject.modules.length > 0
+                    ? (newCourseObject.modules.filter((m) => m.isFinished)
+                      .length /
+                      newCourseObject.modules.length) * 100
+                    : 0
+                }%`,
+              }}
+            >
+            </div>
           </div>
+          <p className="text-sm text-gray-600 mt-2">
+            {newCourseObject?.modules.filter((m) => m.isFinished).length} de
+            {" "}
+            {newCourseObject?.modules.length} módulos completados
+          </p>
         </div>
-        <p className="text-sm text-gray-600 mt-2">
-          {newCourseObject?.modules.filter((m) => m.isFinished).length} de{" "}
-          {newCourseObject?.modules.length} módulos completados
-        </p>
-      </div>
+      )}
     </div>
   );
 };
