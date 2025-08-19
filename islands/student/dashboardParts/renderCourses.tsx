@@ -1,7 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
-
 import { getCourses } from "../../admin/adminActions/studentsAsyncActions/studentAsyncActions.ts";
-import { diff } from "$std/assert/_diff.ts";
 import { Course, CourseRawInfo } from "../../../types/course.ts";
 
 export interface RenderCoursesProps {
