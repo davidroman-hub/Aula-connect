@@ -11,8 +11,7 @@ import CreateCourse from "./courses/createCourse.tsx";
 import ModulesView from "./module/modulesView.tsx";
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { updateCourseModuleOptions } from "./adminActions/index.ts";
-import { Course } from "../../routes/api/courses/course.tsx";
-import { Student } from "../../routes/api/users/user.tsx";
+
 import { authenticatedGet } from "../../lib/apiHelpers.ts";
 
 // Para el tipo del módulo

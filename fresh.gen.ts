@@ -11,9 +11,11 @@ import * as $api_jwt_refresh from "./routes/api/jwt/refresh.tsx";
 import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
 import * as $api_modules_module from "./routes/api/modules/module.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
+import * as $api_user_user from "./routes/api/user/user.tsx";
 import * as $api_users_user from "./routes/api/users/user.tsx";
 import * as $auth_redirect_index from "./routes/auth-redirect/index.tsx";
 import * as $checkout_index from "./routes/checkout/index.tsx";
+import * as $courses_id_ from "./routes/courses/[id].tsx";
 import * as $index from "./routes/index.tsx";
 import * as $login_index from "./routes/login/index.tsx";
 import * as $orders_index from "./routes/orders/index.tsx";
@@ -64,6 +66,7 @@ import * as $main_testimonials from "./islands/main/testimonials.tsx";
 import * as $modal_index from "./islands/modal/index.tsx";
 import * as $portafolio_index from "./islands/portafolio/index.tsx";
 import * as $showOrders_showOrders from "./islands/showOrders/showOrders.tsx";
+import * as $student_course_selectedCourse from "./islands/student/course/selectedCourse.tsx";
 import * as $student_dashboardParts_renderCourses from "./islands/student/dashboardParts/renderCourses.tsx";
 import * as $student_moduleCard from "./islands/student/moduleCard.tsx";
 import * as $student_modulePreview from "./islands/student/modulePreview.tsx";
@@ -81,9 +84,11 @@ const manifest = {
     "./routes/api/jwt/token.tsx": $api_jwt_token,
     "./routes/api/modules/module.tsx": $api_modules_module,
     "./routes/api/orders/create.tsx": $api_orders_create,
+    "./routes/api/user/user.tsx": $api_user_user,
     "./routes/api/users/user.tsx": $api_users_user,
     "./routes/auth-redirect/index.tsx": $auth_redirect_index,
     "./routes/checkout/index.tsx": $checkout_index,
+    "./routes/courses/[id].tsx": $courses_id_,
     "./routes/index.tsx": $index,
     "./routes/login/index.tsx": $login_index,
     "./routes/orders/index.tsx": $orders_index,
@@ -141,6 +146,8 @@ const manifest = {
     "./islands/modal/index.tsx": $modal_index,
     "./islands/portafolio/index.tsx": $portafolio_index,
     "./islands/showOrders/showOrders.tsx": $showOrders_showOrders,
+    "./islands/student/course/selectedCourse.tsx":
+      $student_course_selectedCourse,
     "./islands/student/dashboardParts/renderCourses.tsx":
       $student_dashboardParts_renderCourses,
     "./islands/student/moduleCard.tsx": $student_moduleCard,

@@ -185,3 +185,17 @@
   position: relative;
   height: 300px;
 }
+
+.module-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.collapse-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+.collapse-content.show {
+  max-height: 1000px;
+  transition: max-height 0.5s ease-in;
+}

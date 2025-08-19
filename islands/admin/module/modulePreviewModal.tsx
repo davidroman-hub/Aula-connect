@@ -1,6 +1,7 @@
 import type { Module } from "../../../routes/api/modules/module.tsx";
-import type { Course } from "../../../routes/api/courses/course.tsx";
+
 import { renderFormattedNotesPreview } from "../../../lib/notesRenderer.tsx";
+import { Course } from "../../../types/course.ts";
 
 interface ModulePreviewModalProps {
   module: Module;

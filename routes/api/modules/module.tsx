@@ -130,9 +130,6 @@ export const handler: Handlers = {
   },
 
   async GET(req) {
-    const admin = await requireAdmin(req);
-    if (admin instanceof Response) return admin;
-
     const modules = await modulesCollection.find({}).toArray();
     return new Response(JSON.stringify(modules), {
       status: STATUS_CODE.OK,

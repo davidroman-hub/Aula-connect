@@ -99,6 +99,12 @@ const Navbar = () => {
       link: userInfo.type === "admin" ? "admin-dash" : "user-dash",
       icon: "fa-gauge",
     },
+    {
+      id: 3,
+      label: "Student Dashboard",
+      link: "user-dash",
+      icon: "fa-gauge",
+    },
     { id: 2, label: "Profile", link: "profile", icon: "fa-user" },
     { id: 6, label: "Logout", link: null, icon: "fa-right-from-bracket" },
   ];
@@ -144,6 +150,13 @@ const Navbar = () => {
   ];
 
   const buttonLog = () => {
+    const menuToshow = () => {
+      if (userInfo.type === "admin") {
+        return menuOptions;
+      } else {
+        return menuOptions.filter((option) => option.id !== 3);
+      }
+    };
     return (
       <div className="flex items-center space-x-4">
         {isAuth === "false"
@@ -180,8 +193,37 @@ const Navbar = () => {
               {isOpen && (
                 <div className="absolute  mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none menu-transition">
                   <div className="py-1">
-                    {menuOptions.map((option) => {
+                    {menuToshow().map((option) => {
                       if (option.link) {
+                        if (option.id === 3 && userInfo.type === "admin") {
+                          return (
+                            <a
+                              key={option.id}
+                              type="button"
+                              href={`/${option.link.toLowerCase()}`}
+                              onClick={() => handleOptionClick(option)}
+                              className={`flex items-center w-full text-left px-4 py-2 text-sm cursor-pointer ${
+                                selectedOption?.id === option.id
+                                  ? "bg-indigo-100 text-indigo-900"
+                                  : "text-gray-700 hover:bg-gray-100"
+                              }`}
+                              role="menuitem"
+                              tabIndex={0}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  handleOptionClick(option);
+                                }
+                              }}
+                            >
+                              <i
+                                className={`fas ${option.icon} mr-3 text-[${palette.primary}]`}
+                              >
+                              </i>
+                              {option.label}
+                            </a>
+                          );
+                        }
+
                         return (
                           <a
                             key={option.id}

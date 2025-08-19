@@ -1,9 +1,10 @@
 import { useState } from "preact/hooks";
 import { palette } from "../../../assets/colors.ts";
-import { Course } from "../../../routes/api/courses/course.tsx";
+
 import CourseDetails from "./courseDetails.tsx";
 import { Student } from "../../../routes/api/users/user.tsx";
 import { Module } from "../../../routes/api/modules/module.tsx";
+import { Course } from "../../../types/course.ts";
 
 export interface CoursesProps {
   courses: Course[];

@@ -5,28 +5,9 @@ import { db } from "../../../lib/mongo.ts";
 import { Student } from "../users/user.tsx";
 import { Module } from "../modules/module.tsx";
 import { ObjectId } from "https://deno.land/x/mongo@v0.32.0/mod.ts";
+import { Course } from "../../../types/course.ts";
 
 const coursesCollection = db.collection("courses");
-
-export type Course = {
-  _id: string;
-  id: string;
-  name: string;
-  slug: string;
-  modules: Module[];
-  students: Student[];
-  difficulty?: string;
-  description?: string;
-  progress?: number;
-};
-
-export type CourseRawInfo = {
-  _id: string;
-  name: string;
-  slug: string;
-  modules: string[];
-  students: string[];
-};
 
 export const handler: Handlers = {
   async POST(req) {

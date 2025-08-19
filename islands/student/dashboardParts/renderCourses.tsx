@@ -1,7 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
-import { Course, CourseRawInfo } from "../../../routes/api/courses/course.tsx";
+
 import { getCourses } from "../../admin/adminActions/studentsAsyncActions/studentAsyncActions.ts";
 import { diff } from "$std/assert/_diff.ts";
+import { Course, CourseRawInfo } from "../../../types/course.ts";
 
 export interface RenderCoursesProps {
   userInfo: {
@@ -208,21 +209,23 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
 
                   {/* Botones de acción */}
                   <div className="flex space-x-2">
-                    <button
+                    {
+                      /* <button
                       type="button"
                       className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
                       onClick={() => {}}
                     >
                       <span className="fas fa-eye mr-2"></span>
                       <span>Vista previa</span>
-                    </button>
-                    <button
-                      type="button"
+                    </button> */
+                    }
+
+                    <a
+                      href={`/courses/${course.id}`}
                       className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm"
                     >
-                      <span className="fas fa-plus mr-2"></span>
-                      <span>Inscribirsessss</span>
-                    </button>
+                      Inscribirse
+                    </a>
                   </div>
                 </div>
               </div>
