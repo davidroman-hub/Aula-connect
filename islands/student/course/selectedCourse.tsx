@@ -5,6 +5,7 @@ import { authenticatedGet } from "../../../lib/apiHelpers.ts";
 import CourseDetails from "./courseProgress.tsx";
 import { Course } from "../../../types/course.ts";
 import { CurrentLesson } from "../../../types/users.ts";
+import { ErrorAlert } from "../../alerts/index.tsx";
 
 interface ModuleData {
   _id?: string;
@@ -45,6 +46,7 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [errors, setErrors] = useState<string>("");
 
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [activeTab, setActiveTab] = useState<"modules" | "overview">(
@@ -52,19 +54,81 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
   );
 
   const searchCurrentLessonInUser = async () => {
+    setErrors("");
     try {
       const url = `/api/student/user?id=${userInfo.id}`;
 
       const response = await authenticatedGet(url);
 
       if (response.status !== 200) {
-        throw new Error(`Failed to fetch user: ${response.status}`);
+        setErrors(`Failed to fetch user: ${response.status}`);
       }
       const userData = response.data;
 
       setCurrentUser(userData);
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      setErrors(`Failed to fetch user: ${error}`);
+    }
+  };
+
+  const activeModuleForStudent = async (CurrentLesson: CurrentLesson) => {
+    try {
+      if (currentUser !== null) {
+        const response = await axiod.patch("/api/users/user", {
+          id: currentUser._id,
+          username: currentUser.username,
+          currentLesson: [
+            ...(currentUser.currentLesson ?? []),
+            CurrentLesson,
+          ],
+        });
+
+        if (response.status !== 200) {
+          throw new Error(`Failed to update user: ${response.status}`);
+        }
+        setCurrentUser((prev) => ({
+          ...prev!,
+          currentLesson: [
+            ...(prev!.currentLesson ?? []),
+            CurrentLesson,
+          ],
+        }));
+      } else {
+        console.error("Failed to update user data");
+      }
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
+  };
+
+  const putModuleToDone = async (moduleId: string) => {
+    try {
+      if (currentUser !== null) {
+        const response = await axiod.patch("/api/users/user", {
+          id: currentUser._id,
+          username: currentUser.username,
+          currentLesson: currentUser.currentLesson?.map((lesson) =>
+            lesson.moduleId === moduleId
+              ? { ...lesson, status: "done" }
+              : lesson
+          ),
+        });
+        if (response.status !== 200) {
+          throw new Error(`Failed to update user: ${response.status}`);
+        }
+        setCurrentUser((prev) => ({
+          ...prev!,
+          currentLesson: prev!.currentLesson?.map((lesson) =>
+            lesson.moduleId === moduleId
+              ? { ...lesson, status: "done" }
+              : lesson
+          ),
+        }));
+      } else {
+        console.error("Failed to update user data");
+      }
+    } catch (error) {
+      console.error("Error updating user data:", error);
     }
   };
 
@@ -100,7 +164,20 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
     currentLesson: currentUser?.currentLesson || null,
   };
 
-  console.log("Current user:", newUserObject);
+  const CurrentLesson = {
+    moduleId: selectedModuleData?._id || "",
+    courseId: newCourseObject._id || "",
+    moduleName: selectedModuleData?.name || "",
+    status: "in-progress",
+  };
+
+  const isCompleted = newUserObject.currentLesson?.some((lesson) =>
+    lesson.moduleId === selectedModuleData?._id &&
+    lesson.status === "done"
+  );
+  console.log(isCompleted);
+
+  console.log("Current User:", newUserObject);
 
   return (
     <div className="h-screen flex relative">
@@ -252,7 +329,12 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
             ? (
               <div className="p-6">
                 <h1 className="text-2xl font-bold mb-4">
-                  {selectedModuleData.name}
+                  {selectedModuleData.name}{" "}
+                  <span className="text-gray-500 text-sm">
+                    ({currentUser?.currentLesson?.find((lesson) =>
+                      lesson.moduleId === selectedModuleData._id
+                    )?.status || "No iniciado"})
+                  </span>
                 </h1>
 
                 {selectedModuleData.description && (
@@ -302,26 +384,64 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                       <pre className="bg-gray-100 p-4 rounded text-xs overflow-auto">
                       {JSON.stringify(selectedModuleData, null, 2)}
                       </pre>
+                      <div>
+                        <button
+                          type="button"
+                          disabled={isCompleted}
+                          className={`${
+                            !isCompleted
+                              ? "cursor-pointer"
+                              : "cursor-not-allowed"
+                          } mt-4 items-center justify-center h-15 p-2 rounded-lg bg-[${[
+                            isCompleted
+                              ? palette.backgroundSoft
+                              : palette.primary,
+                          ]}] hover:bg-gray-200 transition-colors`}
+                          onClick={() =>
+                            putModuleToDone(selectedModuleData._id || "")}
+                        >
+                          {isCompleted
+                            ? "Módulo completado"
+                            : "Marcar como completados"}
+                        </button>
+                      </div>
                     </div>
                   )
                   : (
                     <div>
                       <div>Activa el modulo!</div>
                       <div className="mt-8 pt-4 border-t">
-                        <div className="fixed inset-0  backdrop-blur-[3px] bg-opacity-50 z-50 flex items-center justify-center p-4">
+                        <div className="fixed inset-0  backdrop-blur-[3px] bg-opacity-50 z-50 flex flex-col items-center justify-center p-4">
+                          {errors && <ErrorAlert message={errors} />}
                           <div>Activa el módulo para ver los datos</div>
-                          <button
-                            type="button"
-                            className={`flex items-center justify-center mt-20 h-15 p-2 rounded-lg bg-[${[
-                              palette.primary,
-                            ]}] hover:bg-gray-200 transition-colors`}
-                            onClick={() => setSelectedModule("intro")}
-                            onKeyDown={(e) =>
-                              e.key === "Escape" && setSelectedModule("intro")}
-                            aria-label="Close modal"
-                          >
-                            Cancelar
-                          </button>
+
+                          <div>
+                            <button
+                              type="button"
+                              className={`cursor-pointer mr-5 items-center justify-center mt-20 h-15 p-2 rounded-lg bg-[${[
+                                palette.primary,
+                              ]}] hover:bg-gray-200 transition-colors`}
+                              onClick={() =>
+                                activeModuleForStudent(CurrentLesson)}
+                              onKeyDown={(e) => e.key === "Escape" &&
+                                setSelectedModule("intro")}
+                              aria-label="Close modal"
+                            >
+                              Activar clase
+                            </button>
+                            <button
+                              type="button"
+                              className={`cursor-pointer  items-center justify-center mt-20 h-15 p-2 rounded-lg bg-[${[
+                                palette.backgroundSoft,
+                              ]}] hover:bg-gray-200 transition-colors`}
+                              onClick={() => setSelectedModule("intro")}
+                              onKeyDown={(e) => e.key === "Escape" &&
+                                setSelectedModule("intro")}
+                              aria-label="Close modal"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
                         </div>
                         <pre className="bg-gray-100 p-4 rounded text-xs overflow-auto">
                       {JSON.stringify(selectedModuleData, null, 2)}

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "preact/hooks";
 import type { Module } from "../../../routes/api/modules/module.tsx";
-import type { Course } from "../../../routes/api/courses/course.tsx";
+
 import EditModule from "./editModule.tsx";
 import ModuleModal from "./modalToCreateModule.tsx";
 import ModulePreviewModal from "./modulePreviewModal.tsx";
+import { Course } from "../../../types/course.ts";
 
 interface ModuleData {
   name: string;

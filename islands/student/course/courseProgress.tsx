@@ -98,7 +98,7 @@ const CourseDetails = (
                 <thead>
                   <tr>
                     <th></th>
-                    <th>Nombre de la clase</th>
+                    <th>Nombre de la clase activada</th>
                     <th>Curso</th>
                     <th>Status</th>
                   </tr>

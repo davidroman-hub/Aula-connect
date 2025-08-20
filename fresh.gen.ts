@@ -12,7 +12,6 @@ import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
 import * as $api_modules_module from "./routes/api/modules/module.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
 import * as $api_student_user from "./routes/api/student/user.ts";
-import * as $api_user_user from "./routes/api/user/user.tsx";
 import * as $api_users_user from "./routes/api/users/user.tsx";
 import * as $auth_redirect_index from "./routes/auth-redirect/index.tsx";
 import * as $checkout_index from "./routes/checkout/index.tsx";
@@ -90,7 +89,6 @@ const manifest = {
     "./routes/api/modules/module.tsx": $api_modules_module,
     "./routes/api/orders/create.tsx": $api_orders_create,
     "./routes/api/student/user.ts": $api_student_user,
-    "./routes/api/user/user.tsx": $api_user_user,
     "./routes/api/users/user.tsx": $api_users_user,
     "./routes/auth-redirect/index.tsx": $auth_redirect_index,
     "./routes/checkout/index.tsx": $checkout_index,

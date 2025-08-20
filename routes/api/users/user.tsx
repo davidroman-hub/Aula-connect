@@ -62,10 +62,8 @@ export const handler: Handlers = {
   },
 
   async PATCH(req) {
-    const admin = await requireAdmin(req);
-    if (admin instanceof Response) return admin;
-
-    const { id, username, password, role, courses } = await req.json();
+    const { id, username, password, role, courses, currentLesson } = await req
+      .json();
 
     if (!username) {
       return new Response("Missing fields", { status: 400 });
@@ -91,6 +89,10 @@ export const handler: Handlers = {
 
     if (courses) {
       updateData.courses = courses;
+    }
+
+    if (currentLesson) {
+      updateData.currentLesson = currentLesson;
     }
 
     const result = await usersCollection.updateOne({ _id: new ObjectId(id) }, {
