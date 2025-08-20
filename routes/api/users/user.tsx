@@ -39,7 +39,7 @@ export const handler: Handlers = {
       username,
       password,
       courses: [],
-      type: role || "student",
+      type: role || "user",
       createdAt: new Date(),
       updatedAt: null,
       currentLesson: [],

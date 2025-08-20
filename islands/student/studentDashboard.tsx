@@ -159,7 +159,7 @@ const StudentDashboard = () => {
 
         {/* Contenido principal */}
         <div className="p-6 overflow-y-auto">
-          {userInfo.type === "student" || userInfo.type === "admin"
+          {userInfo.type === "user" || userInfo.type === "admin"
             ? renderContent()
             : null}
         </div>

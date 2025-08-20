@@ -188,7 +188,7 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
     username: currentUser?.username || "",
     password: currentUser?.password || "",
     courses: currentUser?.courses || [],
-    type: currentUser?.type || "student",
+    type: currentUser?.type || "user",
     updatedAt: currentUser?.updatedAt || new Date().toISOString(),
     currentLesson: currentUser?.currentLesson?.filter(
       (lesson) => lesson.courseId === (newCourseObject._id || ""),

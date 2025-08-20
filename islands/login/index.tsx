@@ -54,7 +54,7 @@ const LoginPage = () => {
         // Redirigir según el rol
         if (payload.type === "admin") {
           globalThis.location.href = "/admin-dash";
-        } else if (payload.type === "student") {
+        } else if (payload.type === "user") {
           globalThis.location.href = "/user-dash";
         } else {
           globalThis.location.href = "/user-dash";
