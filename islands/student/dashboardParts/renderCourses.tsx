@@ -15,7 +15,6 @@ export interface RenderCoursesProps {
 
 const easy = "1";
 const medium = "2";
-const hard = "3";
 
 const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
   // Función para obtener el gradiente según dificultad
@@ -31,8 +30,8 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
 
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const [fakeLoading, setFakeLoading] = useState(false);
+  const [filteredCourses, setFilteredCourses] = useState("all");
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -111,14 +110,15 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
         <h2 className="text-2xl mr-2 mb-2 font-bold text-gray-800">
           Cursos Disponibles
         </h2>
+
         <div className="flex mr-2 mb-2 space-x-4">
-          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-            <option value="">Todos los cursos</option>
-          </select>
-        </div>
-        <div className="flex mr-2 mb-2 space-x-4">
-          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-            <option value="">Toda dificultad</option>
+          <select
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            value={filteredCourses}
+            onChange={(e) =>
+              setFilteredCourses((e.target as HTMLSelectElement).value)}
+          >
+            <option value="all">Toda dificultad</option>
             <option value="Principiante">Principiante</option>
             <option value="Intermedio">Intermedio</option>
             <option value="Avanzado">Avanzado</option>
@@ -142,7 +142,11 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
             {coursesObject.length > 0
               ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {coursesObject.map((course) => (
+                  {coursesObject.filter((course) => (
+                    filteredCourses === "all" ||
+                    getDifficultyText(course.difficulty || easy) ===
+                      filteredCourses
+                  )).map((course) => (
                     <div
                       key={course.id}
                       className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
@@ -176,24 +180,36 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
 
                         {/* Estadísticas */}
                         <div className="flex justify-between text-sm text-gray-500 mb-4">
-                          <div className="flex items-center">
+                          {
+                            /* <div className="flex items-center">
                             <span className="fas fa-clock mr-1"></span>
                             <span>2h</span>
-                          </div>
+                          </div> */
+                          }
                           <div className="flex space-x-3">
-                            <span>
+                            {
+                              /* <span>
                               <span className="fas fa-video mr-1"></span>
                               <span>5</span>
-                            </span>
+                            </span> */
+                            }
                             <span>
                               <span className="fas fa-puzzle-piece mr-1"></span>
-                              <span>{course.modules.length}</span>
+                              <span>
+                                {`${course.modules.length} ${
+                                  course.modules.length === 1
+                                    ? "clase"
+                                    : "clases"
+                                }`}
+                              </span>
                             </span>
-                            <span>
+                            {
+                              /* <span>
                               <span className="fas fa-question-circle mr-1">
                               </span>
                               <span>3</span>
-                            </span>
+                            </span> */
+                            }
                           </div>
                         </div>
 
@@ -212,7 +228,7 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
                           >
                             {fakeLoading
                               ? <ButtonSpinnerLoading />
-                              : "Inscribirse"}
+                              : "Iniciar/Continuar"}
                           </a>
                         </div>
                       </div>
