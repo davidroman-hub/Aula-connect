@@ -8,14 +8,16 @@ import {
 } from "../../admin/module/modulePreviewModal.tsx";
 import { ModuleData } from "./selectedCourse.tsx";
 import { palette } from "../../../assets/colors.ts";
+import ClickOk from "./clickOk.tsx";
 
 type ModuleContentViewProps = {
   module: ModuleData | undefined;
   isCompleted: boolean;
   putModuleToDone: (moduleId: string) => void;
+  isOk?: boolean;
 };
 const ModuleContentView = (
-  { module, isCompleted, putModuleToDone }: ModuleContentViewProps,
+  { module, isCompleted, putModuleToDone, isOk }: ModuleContentViewProps,
 ) => {
   const renderFormattedNotes = (notes?: string) => {
     if (!notes) return null;
@@ -176,6 +178,9 @@ const ModuleContentView = (
               )}
 
               <div>
+                <div class="w-10 h-10 ml-2">
+                  <ClickOk isOk={isOk as boolean} />
+                </div>
                 <button
                   type="button"
                   disabled={isCompleted}
@@ -184,7 +189,7 @@ const ModuleContentView = (
                   } mt-4 items-center justify-center h-15 p-2 rounded-lg bg-[${[
                     isCompleted ? palette.backgroundSoft : palette.primary,
                   ]}] hover:bg-gray-200 transition-colors`}
-                  onClick={() => putModuleToDone(module?._id || "")}
+                  onClick={() => putModuleToDone(module?._id as string)}
                 >
                   {isCompleted ? "Módulo completado" : "Marcar como completado"}
                 </button>

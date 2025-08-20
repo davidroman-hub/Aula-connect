@@ -72,6 +72,7 @@ import * as $main_testimonials from "./islands/main/testimonials.tsx";
 import * as $modal_index from "./islands/modal/index.tsx";
 import * as $portafolio_index from "./islands/portafolio/index.tsx";
 import * as $showOrders_showOrders from "./islands/showOrders/showOrders.tsx";
+import * as $student_course_clickOk from "./islands/student/course/clickOk.tsx";
 import * as $student_course_courseProgress from "./islands/student/course/courseProgress.tsx";
 import * as $student_course_moduleView from "./islands/student/course/moduleView.tsx";
 import * as $student_course_selectedCourse from "./islands/student/course/selectedCourse.tsx";
@@ -161,6 +162,7 @@ const manifest = {
     "./islands/modal/index.tsx": $modal_index,
     "./islands/portafolio/index.tsx": $portafolio_index,
     "./islands/showOrders/showOrders.tsx": $showOrders_showOrders,
+    "./islands/student/course/clickOk.tsx": $student_course_clickOk,
     "./islands/student/course/courseProgress.tsx":
       $student_course_courseProgress,
     "./islands/student/course/moduleView.tsx": $student_course_moduleView,

@@ -77,11 +77,12 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
     "overview",
   );
 
+  const [isOk, setIsOk] = useState(false);
+
   const currentCourse = course.courseData.find(
     (c) => c._id === _courseId,
   );
 
-  console.log("Current Course:", currentCourse);
   const searchCurrentLessonInUser = async () => {
     setErrors("");
     try {
@@ -153,6 +154,8 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
               : lesson
           ),
         }));
+        setIsOk(true);
+        setTimeout(() => setIsOk(false), 2000);
       } else {
         console.error("Failed to update user data");
       }
@@ -402,6 +405,7 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                         module={selectedModuleData}
                         isCompleted={isCompleted || false}
                         putModuleToDone={putModuleToDone}
+                        isOk={isOk as boolean}
                       />
                     </div>
                   )
