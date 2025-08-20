@@ -73,10 +73,10 @@ import * as $modal_index from "./islands/modal/index.tsx";
 import * as $portafolio_index from "./islands/portafolio/index.tsx";
 import * as $showOrders_showOrders from "./islands/showOrders/showOrders.tsx";
 import * as $student_course_courseProgress from "./islands/student/course/courseProgress.tsx";
+import * as $student_course_moduleView from "./islands/student/course/moduleView.tsx";
 import * as $student_course_selectedCourse from "./islands/student/course/selectedCourse.tsx";
 import * as $student_dashboardParts_renderCourses from "./islands/student/dashboardParts/renderCourses.tsx";
 import * as $student_moduleCard from "./islands/student/moduleCard.tsx";
-import * as $student_modulePreview from "./islands/student/modulePreview.tsx";
 import * as $student_studentDashboard from "./islands/student/studentDashboard.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -163,12 +163,12 @@ const manifest = {
     "./islands/showOrders/showOrders.tsx": $showOrders_showOrders,
     "./islands/student/course/courseProgress.tsx":
       $student_course_courseProgress,
+    "./islands/student/course/moduleView.tsx": $student_course_moduleView,
     "./islands/student/course/selectedCourse.tsx":
       $student_course_selectedCourse,
     "./islands/student/dashboardParts/renderCourses.tsx":
       $student_dashboardParts_renderCourses,
     "./islands/student/moduleCard.tsx": $student_moduleCard,
-    "./islands/student/modulePreview.tsx": $student_modulePreview,
     "./islands/student/studentDashboard.tsx": $student_studentDashboard,
   },
   baseUrl: import.meta.url,

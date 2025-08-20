@@ -73,8 +73,6 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
     return "Avanzado";
   };
 
-  console.log("Courses:", courses);
-
   const coursesObject = courses.map((course) => ({
     id: course.id,
     name: course.name,
@@ -84,7 +82,6 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
     description: course.description || "No description available",
   }));
 
-  console.log("Courses Object:", coursesObject);
   // Componente de loading para las tarjetas
   const CourseCardSkeleton = () => (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden animate-pulse">

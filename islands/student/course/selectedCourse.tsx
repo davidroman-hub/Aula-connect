@@ -6,15 +6,39 @@ import CourseDetails from "./courseProgress.tsx";
 import { Course } from "../../../types/course.ts";
 import { CurrentLesson } from "../../../types/users.ts";
 import { ErrorAlert } from "../../alerts/index.tsx";
+import ModuleContentView from "./moduleView.tsx";
+import { getDifficultyGradient } from "../../admin/module/modulePreviewModal.tsx";
 
-interface ModuleData {
+type Materials = {
+  type: string;
+  title: string;
+  url: string;
+  description: string;
+};
+
+type Exercises = {
+  title: string;
+  description: string;
+  instructions: string;
+  solution: string;
+};
+
+export interface Content {
+  description: string;
+  objectives: any[];
+  duration: string;
+  difficulty: string;
+  videoUrl: string;
+  materials: Materials[];
+  exercises: Exercises[];
+  notes: string;
+}
+
+export interface ModuleData {
   _id?: string;
   name?: string;
   description?: string;
-  content?: {
-    text?: string;
-    html?: string;
-  };
+  content?: Content;
   duration?: number;
 }
 
@@ -53,6 +77,11 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
     "overview",
   );
 
+  const currentCourse = course.courseData.find(
+    (c) => c._id === _courseId,
+  );
+
+  console.log("Current Course:", currentCourse);
   const searchCurrentLessonInUser = async () => {
     setErrors("");
     try {
@@ -150,7 +179,7 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
   }
 
   const newCourseObject = {
-    ...course.courseData[0],
+    ...currentCourse,
     modules: course.modules,
   };
 
@@ -161,7 +190,9 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
     courses: currentUser?.courses || [],
     type: currentUser?.type || "student",
     updatedAt: currentUser?.updatedAt || new Date().toISOString(),
-    currentLesson: currentUser?.currentLesson || null,
+    currentLesson: currentUser?.currentLesson?.filter(
+      (lesson) => lesson.courseId === (newCourseObject._id || ""),
+    ) || null,
   };
 
   const CurrentLesson = {
@@ -212,10 +243,10 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
             </div>
             <div>
               <h2 className="text-l font-bold">
-                {course.courseData[0].name}
+                {currentCourse?.name}
               </h2>
               <p className="text-gray-300 text-sm">
-                {course.courseData[0].description}
+                {currentCourse?.description}
               </p>
             </div>
           </div>
@@ -326,90 +357,58 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
         <div className="flex-1 overflow-y-auto">
           {selectedModuleData
             ? (
-              <div className="p-6">
-                <h1 className="text-2xl font-bold mb-4">
-                  {selectedModuleData.name}{" "}
-                  <span className="text-gray-500 text-sm">
-                    ({currentUser?.currentLesson?.find((lesson) =>
-                      lesson.moduleId === selectedModuleData._id
-                    )?.status || "No iniciado"})
-                  </span>
-                </h1>
-
-                {selectedModuleData.description && (
-                  <div className="mb-6">
-                    <h3 className="font-semibold mb-2">Descripción:</h3>
-                    <p className="text-gray-700">
-                      {selectedModuleData.description}
-                    </p>
-                  </div>
-                )}
-
-                {selectedModuleData.duration && (
-                  <div className="mb-6">
-                    <h3 className="font-semibold mb-2">Duración:</h3>
-                    <p className="text-gray-700">
-                      {selectedModuleData.duration} minutos
-                    </p>
-                  </div>
-                )}
-
-                {selectedModuleData.content?.text && (
-                  <div className="mb-6">
-                    <h3 className="font-semibold mb-2">Contenido (Texto):</h3>
-                    <div className="bg-gray-50 p-4 rounded border">
-                      <pre className="whitespace-pre-wrap text-sm">{selectedModuleData.content.text}</pre>
+              <div className="">
+                <div className="p-6 bg-gray-50">
+                  <div className="max-w-1xl mx-auto">
+                    <div
+                      style={{ position: "sticky", top: 0 }}
+                      className="bg-white rounded-xl shadow-lg overflow-hidden"
+                    >
+                      <div
+                        className={`h-40 p-6 flex items-center justify-center text-white ${
+                          getDifficultyGradient(
+                            selectedModuleData?.content?.difficulty,
+                          )
+                        }`}
+                      >
+                        <div className="text-center">
+                          <h3 className="text-2xl font-bold mb-2">
+                            {selectedModuleData?.name}
+                          </h3>
+                          <div className="flex items-center justify-center space-x-4 text-sm">
+                            <span className="flex items-center">
+                              <i className="fas fa-book mr-1"></i>
+                              {selectedModuleData?.name}
+                            </span>
+                            {Boolean(selectedModuleData?.content?.duration) && (
+                              <span className="flex items-center">
+                                <i className="fas fa-clock mr-1"></i>
+                                {selectedModuleData?.content?.duration} min
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                )}
-
-                {selectedModuleData.content?.html && (
-                  <div className="mb-6">
-                    <h3 className="font-semibold mb-2">Contenido (HTML):</h3>
-                    <div className="bg-gray-50 p-4 rounded border">
-                      <pre className="whitespace-pre-wrap text-sm">{selectedModuleData.content.html}</pre>
-                    </div>
-                  </div>
-                )}
+                </div>
 
                 {newUserObject.currentLesson?.find((lesson) =>
                     lesson.moduleId === selectedModuleData._id
                   )
                   ? (
-                    <div className="mt-8 pt-4 border-t">
-                      <h3 className="font-semibold mb-2">
-                        Datos del módulo (JSON):
-                      </h3>
-                      <pre className="bg-gray-100 p-4 rounded text-xs overflow-auto">
-                      {JSON.stringify(selectedModuleData, null, 2)}
-                      </pre>
-                      <div>
-                        <button
-                          type="button"
-                          disabled={isCompleted}
-                          className={`${
-                            !isCompleted
-                              ? "cursor-pointer"
-                              : "cursor-not-allowed"
-                          } mt-4 items-center justify-center h-15 p-2 rounded-lg bg-[${[
-                            isCompleted
-                              ? palette.backgroundSoft
-                              : palette.primary,
-                          ]}] hover:bg-gray-200 transition-colors`}
-                          onClick={() =>
-                            putModuleToDone(selectedModuleData._id || "")}
-                        >
-                          {isCompleted
-                            ? "Módulo completado"
-                            : "Marcar como completados"}
-                        </button>
-                      </div>
+                    <div>
+                      <ModuleContentView
+                        module={selectedModuleData}
+                        isCompleted={isCompleted || false}
+                        putModuleToDone={putModuleToDone}
+                      />
                     </div>
                   )
                   : (
                     <div>
                       <div>Activa el modulo!</div>
-                      <div className="mt-8 pt-4 border-t">
+                      <div>
                         <div className="fixed inset-0  backdrop-blur-[3px] bg-opacity-50 z-50 flex flex-col items-center justify-center p-4">
                           {errors && <ErrorAlert message={errors} />}
                           <div>Activa el módulo para ver los datos</div>
@@ -422,7 +421,8 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                               ]}] hover:bg-gray-200 transition-colors`}
                               onClick={() =>
                                 activeModuleForStudent(CurrentLesson)}
-                              onKeyDown={(e) => e.key === "Escape" &&
+                              onKeyDown={(e) =>
+                                e.key === "Escape" &&
                                 setSelectedModule("intro")}
                               aria-label="Close modal"
                             >
@@ -434,7 +434,8 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                                 palette.backgroundSoft,
                               ]}] hover:bg-gray-200 transition-colors`}
                               onClick={() => setSelectedModule("intro")}
-                              onKeyDown={(e) => e.key === "Escape" &&
+                              onKeyDown={(e) =>
+                                e.key === "Escape" &&
                                 setSelectedModule("intro")}
                               aria-label="Close modal"
                             >
@@ -455,7 +456,7 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                 Selecciona un módulo para ver su contenido
                 <CourseDetails
                   newCourseObject={newCourseObject as Course}
-                  courseName={course.courseData[0].name || "Curso"}
+                  courseName={currentCourse?.name || "Curso"}
                   currentUser={newUserObject}
                   setActiveTab={setActiveTab}
                   activeTab={activeTab}

@@ -66,7 +66,7 @@ const CourseLoader = ({ course, courseId }: CourseLoaderProps) => {
     );
   }
 
-  return <CourseView course={course} courseId={courseId} />;
+  return <CourseView course={course as any} courseId={courseId} />;
 };
 
 export default CourseLoader;

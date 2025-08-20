@@ -11,6 +11,40 @@ interface ModulePreviewModalProps {
   courses: Course[];
 }
 
+// Función para obtener el gradiente según dificultad
+export const getDifficultyGradient = (difficulty?: string) => {
+  switch (difficulty) {
+    case "beginner":
+    case "Principiante":
+      return "bg-gradient-to-r from-green-400 to-green-600";
+    case "intermediate":
+    case "Intermedio":
+      return "bg-gradient-to-r from-yellow-400 to-orange-500";
+    case "advanced":
+    case "Avanzado":
+      return "bg-gradient-to-r from-red-400 to-pink-600";
+    default:
+      return "bg-gradient-to-r from-gray-400 to-gray-600";
+  }
+};
+
+// Función para obtener el color del badge de dificultad
+export const getDifficultyBadgeClass = (difficulty?: string) => {
+  switch (difficulty) {
+    case "beginner":
+    case "Principiante":
+      return "bg-green-100 text-green-800";
+    case "intermediate":
+    case "Intermedio":
+      return "bg-yellow-100 text-yellow-800";
+    case "advanced":
+    case "Avanzado":
+      return "bg-red-100 text-red-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
 const ModulePreviewModal = (
   { module, isOpen, onClose, courses }: ModulePreviewModalProps,
 ) => {
@@ -49,40 +83,6 @@ const ModulePreviewModal = (
   const getCourseName = (courseId: string) => {
     const course = courses.find((c) => c._id === courseId);
     return course?.name || courseId;
-  };
-
-  // Función para obtener el gradiente según dificultad
-  const getDifficultyGradient = (difficulty?: string) => {
-    switch (difficulty) {
-      case "beginner":
-      case "Principiante":
-        return "bg-gradient-to-r from-green-400 to-green-600";
-      case "intermediate":
-      case "Intermedio":
-        return "bg-gradient-to-r from-yellow-400 to-orange-500";
-      case "advanced":
-      case "Avanzado":
-        return "bg-gradient-to-r from-red-400 to-pink-600";
-      default:
-        return "bg-gradient-to-r from-gray-400 to-gray-600";
-    }
-  };
-
-  // Función para obtener el color del badge de dificultad
-  const getDifficultyBadgeClass = (difficulty?: string) => {
-    switch (difficulty) {
-      case "beginner":
-      case "Principiante":
-        return "bg-green-100 text-green-800";
-      case "intermediate":
-      case "Intermedio":
-        return "bg-yellow-100 text-yellow-800";
-      case "advanced":
-      case "Avanzado":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
   };
 
   return (
