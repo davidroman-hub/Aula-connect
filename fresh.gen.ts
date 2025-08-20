@@ -35,13 +35,13 @@ import * as $admin_courses_createCourse from "./islands/admin/courses/createCour
 import * as $admin_courses_partsOfCourseDetails_modulesTab from "./islands/admin/courses/partsOfCourseDetails/modulesTab.tsx";
 import * as $admin_courses_partsOfCourseDetails_overviewCards from "./islands/admin/courses/partsOfCourseDetails/overviewCards.tsx";
 import * as $admin_courses_partsOfCourseDetails_students from "./islands/admin/courses/partsOfCourseDetails/students.tsx";
-import * as $admin_createUser from "./islands/admin/createUser.tsx";
 import * as $admin_dashboardAdmin from "./islands/admin/dashboardAdmin.tsx";
 import * as $admin_editModule from "./islands/admin/editModule.tsx";
 import * as $admin_header from "./islands/admin/header.tsx";
 import * as $admin_index from "./islands/admin/index.tsx";
 import * as $admin_modalToCreateModule from "./islands/admin/modalToCreateModule.tsx";
 import * as $admin_module_editModule from "./islands/admin/module/editModule.tsx";
+import * as $admin_module_editorTools from "./islands/admin/module/editorTools.ts";
 import * as $admin_module_modalToCreateModule from "./islands/admin/module/modalToCreateModule.tsx";
 import * as $admin_module_modulePreviewModal from "./islands/admin/module/modulePreviewModal.tsx";
 import * as $admin_module_modulesView from "./islands/admin/module/modulesView.tsx";
@@ -118,13 +118,13 @@ const manifest = {
       $admin_courses_partsOfCourseDetails_overviewCards,
     "./islands/admin/courses/partsOfCourseDetails/students.tsx":
       $admin_courses_partsOfCourseDetails_students,
-    "./islands/admin/createUser.tsx": $admin_createUser,
     "./islands/admin/dashboardAdmin.tsx": $admin_dashboardAdmin,
     "./islands/admin/editModule.tsx": $admin_editModule,
     "./islands/admin/header.tsx": $admin_header,
     "./islands/admin/index.tsx": $admin_index,
     "./islands/admin/modalToCreateModule.tsx": $admin_modalToCreateModule,
     "./islands/admin/module/editModule.tsx": $admin_module_editModule,
+    "./islands/admin/module/editorTools.ts": $admin_module_editorTools,
     "./islands/admin/module/modalToCreateModule.tsx":
       $admin_module_modalToCreateModule,
     "./islands/admin/module/modulePreviewModal.tsx":

@@ -2,6 +2,7 @@ import type { Module } from "../../../routes/api/modules/module.tsx";
 
 import { renderFormattedNotesPreview } from "../../../lib/notesRenderer.tsx";
 import { Course } from "../../../types/course.ts";
+import { renderEditorJSContent } from "../../../lib/editorJSRenderer.tsx";
 
 interface ModulePreviewModalProps {
   module: Module;
@@ -18,6 +19,17 @@ const ModulePreviewModal = (
   // Función para renderizar las notas con formato
   const renderFormattedNotes = (notes?: string) => {
     if (!notes) return null;
+
+    // Detectar si el contenido es JSON de EditorJS
+    try {
+      const parsed = JSON.parse(notes);
+      if (parsed.blocks && Array.isArray(parsed.blocks)) {
+        // Es contenido de EditorJS
+        return renderEditorJSContent(parsed);
+      }
+    } catch {
+      // No es JSON válido, continuar con el procesamiento original
+    }
 
     // Detectar si el contenido es HTML
     const isHTML = notes.includes("<h1>") || notes.includes("<h2>") ||
@@ -252,7 +264,7 @@ const ModulePreviewModal = (
                         <span>Contenido de la Clase</span>
                       </h5>
                       <div className="bg-white rounded-lg p-4 border border-gray-200">
-                        {renderFormattedNotes(module.content.notes)}
+                        {renderFormattedNotes(module.content?.notes)}
                       </div>
                     </div>
                   )}
