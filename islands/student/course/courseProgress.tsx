@@ -25,6 +25,8 @@ const CourseDetails = (
   { newCourseObject, setActiveTab, activeTab, courseName, currentUser }:
     CourseDetailsProps,
 ) => {
+  console.log("Course Details Rendered", newCourseObject);
+  console.log("Current User:", currentUser);
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       {/* Header */}
@@ -86,6 +88,7 @@ const CourseDetails = (
               newCourseObject={newCourseObject}
               formatDuration={formatDuration}
               isAdmin="user"
+              currentUser={currentUser}
             />
           )}
 

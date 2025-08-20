@@ -1,14 +1,24 @@
 import { palette } from "../../../../assets/colors.ts";
 import { Course } from "../../../../types/course.ts";
+import { CurrentLesson } from "../../../../types/users.ts";
 
 type OverviewCardsProps = {
   newCourseObject: Course | null;
   formatDuration: (minutes: number) => string;
   isAdmin: "admin" | "user";
+  currentUser?: {
+    _id: string;
+    username: string;
+    password: string;
+    courses: Array<string>;
+    type: string;
+    updatedAt: string;
+    currentLesson: Array<CurrentLesson> | null;
+  };
 };
 
 const OverviewCards = (
-  { newCourseObject, formatDuration, isAdmin }: OverviewCardsProps,
+  { newCourseObject, formatDuration, isAdmin, currentUser }: OverviewCardsProps,
 ) => {
   return (
     <div className="space-y-6">
@@ -75,8 +85,9 @@ const OverviewCards = (
                   Completados
                 </p>
                 <p className="text-2xl font-bold text-orange-800">
-                  {newCourseObject?.modules.filter((module) =>
-                    module.isFinished
+                  {(currentUser?.currentLesson ?? []).filter((lesson) =>
+                    lesson.status === "done" &&
+                    lesson.courseId === newCourseObject?._id
                   )
                     .length}
                 </p>
@@ -95,24 +106,32 @@ const OverviewCards = (
             Progreso del Curso
           </h3>
           <div className="w-full bg-gray-200 rounded-full h-4">
-            <div
-              className={`h-4 rounded-full bg-gradient-to-r from-[${palette.primary}] to-[${palette.hover}]`}
-              style={{
-                width: `${
-                  newCourseObject && newCourseObject.modules.length > 0
-                    ? (newCourseObject.modules.filter((m) => m.isFinished)
-                      .length /
-                      newCourseObject.modules.length) * 100
-                    : 0
-                }%`,
-              }}
-            >
-            </div>
+            {(() => {
+              const completed = (currentUser?.currentLesson ?? []).filter(
+                (lesson) =>
+                  lesson.status === "done" &&
+                  lesson.courseId === newCourseObject?._id,
+              ).length;
+              const total = newCourseObject?.modules.length ?? 0;
+              const percent = total > 0 ? (completed / total) * 100 : 0;
+              return (
+                <div
+                  className="h-4 rounded-full bg-gradient-to-r"
+                  style={{
+                    width: `${percent}%`,
+                    backgroundImage:
+                      `linear-gradient(to right, ${palette.primary}, ${palette.hover})`,
+                  }}
+                >
+                </div>
+              );
+            })()}
           </div>
           <p className="text-sm text-gray-600 mt-2">
-            {newCourseObject?.modules.filter((m) => m.isFinished).length} de
-            {" "}
-            {newCourseObject?.modules.length} módulos completados
+            {(currentUser?.currentLesson ?? []).filter((lesson) =>
+              lesson.status === "done" &&
+              lesson.courseId === newCourseObject?._id
+            ).length} de {newCourseObject?.modules.length} módulos completados
           </p>
         </div>
       )}
