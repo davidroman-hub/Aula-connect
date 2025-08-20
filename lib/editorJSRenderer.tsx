@@ -9,6 +9,27 @@ interface EditorData {
   blocks?: EditorBlock[];
 }
 
+interface LinkMeta {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+interface LinkData {
+  link?: string;
+  meta?: LinkMeta;
+}
+
+interface ImageFile {
+  url?: string;
+}
+
+interface ImageData {
+  file?: ImageFile;
+  url?: string;
+  caption?: string;
+}
+
 // Función para renderizar contenido de EditorJS en formato de vista previa
 export function renderEditorJSContent(editorData: EditorData) {
   if (!editorData?.blocks) {
@@ -129,6 +150,67 @@ export function renderEditorJSContent(editorData: EditorData) {
             );
           }
 
+          case "linkTool": {
+            const linkData = block.data as LinkData;
+            return (
+              <div
+                key={blockKey}
+                className="mb-4 p-4 border border-blue-200 bg-blue-50 rounded-lg"
+              >
+                <a
+                  href={linkData.link || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:bg-blue-100 transition-colors rounded p-2"
+                >
+                  <div className="flex items-start gap-3">
+                    {linkData.meta?.image && (
+                      <img
+                        src={linkData.meta.image}
+                        alt="Link preview"
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                    )}
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-blue-800 mb-1">
+                        {linkData.meta?.title || linkData.link}
+                      </h4>
+                      {linkData.meta?.description && (
+                        <p className="text-sm text-gray-600 mb-1">
+                          {linkData.meta.description}
+                        </p>
+                      )}
+                      <span className="text-xs text-blue-600 font-mono">
+                        🔗 {linkData.link}
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            );
+          }
+
+          case "image": {
+            const imageData = block.data as ImageData;
+            return (
+              <div key={blockKey} className="mb-4">
+                <figure className="text-center">
+                  <img
+                    src={imageData.file?.url || imageData.url || ""}
+                    alt={imageData.caption || "Imagen"}
+                    className="max-w-full h-auto rounded-lg shadow-md mx-auto"
+                    style={{ maxHeight: "500px" }}
+                  />
+                  {imageData.caption && (
+                    <figcaption className="mt-2 text-sm text-gray-600 italic">
+                      {imageData.caption}
+                    </figcaption>
+                  )}
+                </figure>
+              </div>
+            );
+          }
+
           default: {
             return (
               <div
@@ -167,6 +249,14 @@ export function getPlainTextFromEditorJS(editorData: EditorData): string {
           return (block.data.code as string) || "";
         case "raw":
           return (block.data.html as string) || "";
+        case "linkTool": {
+          const linkData = block.data as LinkData;
+          return linkData.meta?.title || linkData.link || "";
+        }
+        case "image": {
+          const imageData = block.data as ImageData;
+          return imageData.caption || "Imagen";
+        }
         default:
           return "";
       }

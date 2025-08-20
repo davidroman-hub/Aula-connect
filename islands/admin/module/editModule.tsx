@@ -175,6 +175,12 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
           const { default: CodeTool } = await import(
             "https://esm.sh/@editorjs/code@2.9.0"
           );
+          const { default: LinkTool } = await import(
+            "https://esm.sh/@editorjs/link@2.6.2"
+          );
+          const { default: ImageTool } = await import(
+            "https://esm.sh/@editorjs/image@2.9.0"
+          );
 
           // Configurar herramientas con casting para evitar problemas de tipos
           const tools = {
@@ -211,6 +217,25 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
               class: CodeTool,
               config: {
                 placeholder: "Ingresa tu código aquí...",
+              },
+            },
+            linkTool: {
+              class: LinkTool,
+              config: {
+                endpoint: "/api/link-preview", // Endpoint para obtener vista previa de links (opcional)
+              },
+            },
+            image: {
+              class: ImageTool,
+              config: {
+                endpoints: {
+                  byUrl: "/api/upload-image-by-url", // Endpoint para subir por URL
+                },
+                field: "image",
+                types: "image/*",
+                additionalRequestHeaders: {
+                  "Authorization": `Bearer ${token}`,
+                },
               },
             },
           };
@@ -562,6 +587,12 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
           </span>
           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
             💻 Bloques de código
+          </span>
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+            🔗 Enlaces/URLs
+          </span>
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+            🖼️ Imágenes
           </span>
         </div>
       </div>

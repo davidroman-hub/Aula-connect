@@ -9,9 +9,12 @@ import * as $api_auth_set_cookie from "./routes/api/auth/set-cookie.tsx";
 import * as $api_courses_course from "./routes/api/courses/course.tsx";
 import * as $api_jwt_refresh from "./routes/api/jwt/refresh.tsx";
 import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
+import * as $api_link_preview from "./routes/api/link-preview.ts";
 import * as $api_modules_module from "./routes/api/modules/module.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
 import * as $api_student_user from "./routes/api/student/user.ts";
+import * as $api_upload_image_by_url from "./routes/api/upload-image-by-url.ts";
+import * as $api_upload_image from "./routes/api/upload-image.ts";
 import * as $api_users_user from "./routes/api/users/user.tsx";
 import * as $auth_redirect_index from "./routes/auth-redirect/index.tsx";
 import * as $checkout_index from "./routes/checkout/index.tsx";
@@ -86,9 +89,12 @@ const manifest = {
     "./routes/api/courses/course.tsx": $api_courses_course,
     "./routes/api/jwt/refresh.tsx": $api_jwt_refresh,
     "./routes/api/jwt/token.tsx": $api_jwt_token,
+    "./routes/api/link-preview.ts": $api_link_preview,
     "./routes/api/modules/module.tsx": $api_modules_module,
     "./routes/api/orders/create.tsx": $api_orders_create,
     "./routes/api/student/user.ts": $api_student_user,
+    "./routes/api/upload-image-by-url.ts": $api_upload_image_by_url,
+    "./routes/api/upload-image.ts": $api_upload_image,
     "./routes/api/users/user.tsx": $api_users_user,
     "./routes/auth-redirect/index.tsx": $auth_redirect_index,
     "./routes/checkout/index.tsx": $checkout_index,

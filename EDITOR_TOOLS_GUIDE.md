@@ -28,6 +28,36 @@ Este documento explica todas las herramientas disponibles en el editor de notas 
 
 - Para destacar frases importantes o citas textuales
 - Incluye campo para autor de la cita
+- Ideal para testimonios y referencias
+
+### 5. **🔧 HTML Personalizado**
+
+- Permite insertar código HTML personalizado
+- Útil para elementos especiales no cubiertos por otras herramientas
+- **Precaución**: Usar solo HTML válido y seguro
+
+### 6. **💻 Bloques de Código**
+
+- Para mostrar código fuente con formato
+- Fuente monoespaciada y fondo oscuro
+- Ideal para ejemplos de programación
+
+### 7. **🔗 Enlaces/URLs (Nuevo)**
+
+- Enlaces enriquecidos con vista previa automática
+- Extrae título, descripción e imagen de la URL
+- Se muestra como tarjeta informativa
+- **Uso**: Simplemente pega una URL válida
+
+### 8. **🖼️ Imágenes (Nuevo)**
+
+- Inserción de imágenes desde archivo o URL
+- **Opciones**:
+  - Subir archivo local (arrastra y suelta)
+  - Insertar desde URL externa
+- **Formatos**: JPG, PNG, GIF, WebP, SVG
+- **Tamaño máximo**: 5MB
+- Incluye pie de foto opcional
 - Ideal para testimonios o referencias
 
 ## 🔧 Herramientas Avanzadas
