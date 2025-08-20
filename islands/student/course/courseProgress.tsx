@@ -25,14 +25,21 @@ const CourseDetails = (
   { newCourseObject, setActiveTab, activeTab, courseName, currentUser }:
     CourseDetailsProps,
 ) => {
-  console.log("Course Details Rendered", newCourseObject);
-  console.log("Current User:", currentUser);
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       {/* Header */}
       <div className="bg-white rounded-xl shadow-md p-4 md:p-6 mb-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-4">
+            <a
+              type="button"
+              href={`/user-dash`}
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
+            >
+              <i className="fas fa-arrow-left text-gray-600"></i>
+            </a>
+            <div>
+            </div>
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
                 {newCourseObject?.name}

@@ -78,12 +78,14 @@ const StudentDashboard = () => {
                 Bienvenido {userInfo.username || "Estudiante"} !
               </p>
             </div>
-            <div className="flex items-center space-x-4">
+            {
+              /* <div className="flex items-center space-x-4">
               <div className="flex items-center text-sm text-gray-500">
                 <i className="fas fa-graduation-cap mr-2"></i>
                 <span>{0} cursos</span>
               </div>
-            </div>
+            </div> */
+            }
           </div>
         </div>
       </div>

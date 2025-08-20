@@ -50,6 +50,8 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
           name: course.name,
           slug: course.slug,
           modules: course.modules,
+          difficulty: course.difficulty,
+          description: course.description || "No description available",
         }));
 
         setCourses(filteredCourses);
@@ -71,15 +73,18 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
     return "Avanzado";
   };
 
+  console.log("Courses:", courses);
+
   const coursesObject = courses.map((course) => ({
     id: course.id,
     name: course.name,
     slug: course.slug,
     modules: course.modules,
-    difficulty: course.difficulty || "1",
+    difficulty: course.difficulty,
     description: course.description || "No description available",
   }));
 
+  console.log("Courses Object:", coursesObject);
   // Componente de loading para las tarjetas
   const CourseCardSkeleton = () => (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden animate-pulse">

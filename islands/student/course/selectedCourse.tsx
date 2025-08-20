@@ -175,9 +175,6 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
     lesson.moduleId === selectedModuleData?._id &&
     lesson.status === "done"
   );
-  console.log(isCompleted);
-
-  console.log("Current User:", newUserObject);
 
   return (
     <div className="h-screen flex relative">
@@ -299,7 +296,9 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
               <i className="fas fa-user text-white"></i>
             </div>
             <div>
-              <p className="font-medium">Estudiante</p>
+              <p className="font-medium">
+                {currentUser?.username || "Usuario"}
+              </p>
               <p className="text-gray-400 text-sm">Aprendiendo</p>
             </div>
           </div>

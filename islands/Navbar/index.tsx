@@ -144,7 +144,6 @@ const Navbar = () => {
 
   const sections = [
     { id: "home", label: "Home", link: "" },
-    { id: "courses", label: "Courses", link: "courses" },
     { id: "pricing", label: "   Pricing", link: "pricing" },
     { id: "work-with-me", label: " Work with me!", link: "work-with-me" },
   ];
