@@ -9,6 +9,7 @@ export interface RenderCoursesProps {
     id: string;
     name: string;
     email: string;
+    adminOrg: string;
     // Add any other relevant user info fields
   };
 }
@@ -41,6 +42,7 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const response = await getCourses();
+        console.log("Courses fetched:", response);
 
         const filteredCourses = response.filter((course: CourseRawInfo) =>
           course.students.find((student: string) => student === userInfo.id)
@@ -53,6 +55,7 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
           description: course.description || "No description available",
         }));
 
+        console.log("Filtered courses:", filteredCourses);
         setCourses(filteredCourses);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -223,7 +226,7 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
                                 setFakeLoading(false);
                               }, 2000);
                             }}
-                            href={`/courses/${course.id}`}
+                            href={`/courses/${course.id}?${userInfo.adminOrg}`}
                             className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm text-center"
                           >
                             {fakeLoading

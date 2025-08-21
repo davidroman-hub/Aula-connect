@@ -95,15 +95,44 @@ export const handler: Handlers = {
   async GET(req) {
     const url = new URL(req.url);
     const adminOrg = url.searchParams.get("adminOrg");
+    const id = url.searchParams.get("id");
 
     if (!adminOrg) {
       return new Response("Missing adminOrg parameter", { status: 400 });
     }
+
     try {
-      const courses = await coursesCollection.find({
+      const query: { adminOrg: number; _id?: ObjectId } = {
         adminOrg: parseInt(adminOrg),
-      })
-        .toArray();
+      };
+
+      // Si se proporciona un ID, buscar ese curso específico
+      if (id) {
+        try {
+          query._id = new ObjectId(id);
+        } catch (_error) {
+          return new Response("Invalid ID format", { status: 400 });
+        }
+      }
+
+      const courses = await coursesCollection.find(query).toArray();
+
+      // Si se buscaba un curso específico y no se encontró
+      if (id && courses.length === 0) {
+        return new Response("Course not found", { status: 404 });
+      }
+
+      // Si se buscaba un curso específico, devolver solo ese curso (no un array)
+      if (id && courses.length > 0) {
+        return new Response(JSON.stringify(courses[0]), {
+          status: STATUS_CODE.OK,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
+
+      // Si no se especificó ID, devolver todos los cursos del adminOrg
       return new Response(JSON.stringify(courses), {
         status: STATUS_CODE.OK,
         headers: {
@@ -111,6 +140,7 @@ export const handler: Handlers = {
         },
       });
     } catch (error) {
+      console.error("Error fetching courses:", error);
       return new Response("Internal Server Error", { status: 500 });
     }
   },

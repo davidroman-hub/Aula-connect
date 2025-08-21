@@ -79,7 +79,7 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
 
   const [isOk, setIsOk] = useState(false);
 
-  const currentCourse = course.courseData.find(
+  const currentCourse = course?.courseData?.find(
     (c) => c._id === _courseId,
   );
 

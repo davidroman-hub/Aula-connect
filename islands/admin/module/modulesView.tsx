@@ -62,6 +62,8 @@ const ModulesView = (
       if (response.ok) {
         const data = await response.json();
         setModules(data);
+
+        console.log(data, "Modules fetched successfully");
       } else {
         console.error("Error fetching modules");
       }

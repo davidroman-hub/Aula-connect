@@ -43,3 +43,38 @@ export async function requireAdmin(req: Request) {
     );
   }
 }
+
+export async function getCurrentUser(req: Request) {
+  let token = "";
+
+  // Primero intentar obtener el token del header Authorization
+  const auth = req.headers.get("Authorization");
+  if (auth?.startsWith("Bearer ")) {
+    token = auth.substring(7).trim();
+  }
+
+  // Si no hay token en el header, intentar obtenerlo de las cookies
+  if (!token) {
+    const cookies = req.headers.get("Cookie");
+    if (cookies) {
+      const jwtCookie = cookies
+        .split("; ")
+        .find((cookie) => cookie.startsWith("jwtToken="));
+      if (jwtCookie) {
+        token = jwtCookie.split("=")[1];
+      }
+    }
+  }
+
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const payload = await verifyJWT(token);
+    return payload; // datos del usuario (admin o user)
+  } catch (_error) {
+    console.warn("Token verification failed for getCurrentUser:", _error);
+    return null;
+  }
+}

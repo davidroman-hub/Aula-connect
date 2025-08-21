@@ -2,6 +2,8 @@ import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { updateMultipleCourses } from "../index.ts";
 import { authenticatedGet } from "../../../../lib/apiHelpers.ts";
 
+const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+
 export const editStudent = async (
   studentId: string,
   username: string,
@@ -40,8 +42,9 @@ export const editStudent = async (
 
 export const getCourses = async () => {
   try {
-    // Usar el helper autenticado con refresh automático
-    const response = await authenticatedGet("api/courses/course");
+    const response = await authenticatedGet(
+      `api/courses/course?adminOrg=${userInfo.adminOrg}`,
+    );
 
     return response.data;
   } catch (error) {

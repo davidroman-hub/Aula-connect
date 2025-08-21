@@ -135,16 +135,26 @@ export const handler: Handlers = {
   async GET(req) {
     const url = new URL(req.url);
     const adminOrg = url.searchParams.get("adminOrg");
+    console.log("Fetching modules for adminOrg:", adminOrg);
 
-    const modules = await modulesCollection.find({
-      adminOrg: parseInt(adminOrg as string),
-    });
+    if (!adminOrg) {
+      return new Response("Missing adminOrg parameter", { status: 400 });
+    }
 
-    return new Response(JSON.stringify(modules), {
-      status: STATUS_CODE.OK,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const modules = await modulesCollection.find({
+        adminOrg: parseInt(adminOrg),
+      }).toArray(); // ¡Agregar .toArray()!
+
+      return new Response(JSON.stringify(modules), {
+        status: STATUS_CODE.OK,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching modules:", error);
+      return new Response("Internal Server Error", { status: 500 });
+    }
   },
 };
