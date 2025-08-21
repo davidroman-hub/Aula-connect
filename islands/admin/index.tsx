@@ -70,6 +70,7 @@ export function AdminDashboards() {
       const response = await authenticatedGet(
         `api/courses/course?adminOrg=${UserInfo.adminOrg}`,
       );
+
       setCourses(response.data);
       return response.data;
     } catch (error) {
@@ -134,6 +135,10 @@ export function AdminDashboards() {
     getStudents();
     getCourses();
   }, []);
+
+  useEffect(() => {
+    getCourses();
+  }, [isModuleCreated]);
 
   return (
     <div className={`dashboard-grid ${sidebarOpen ? "sidebar-open" : ""}`}>

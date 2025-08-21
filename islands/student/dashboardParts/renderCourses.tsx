@@ -42,7 +42,6 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const response = await getCourses();
-        console.log("Courses fetched:", response);
 
         const filteredCourses = response.filter((course: CourseRawInfo) =>
           course.students.find((student: string) => student === userInfo.id)
@@ -55,7 +54,6 @@ const RenderCourses = ({ userInfo }: RenderCoursesProps) => {
           description: course.description || "No description available",
         }));
 
-        console.log("Filtered courses:", filteredCourses);
         setCourses(filteredCourses);
       } catch (error) {
         console.error("Error fetching courses:", error);

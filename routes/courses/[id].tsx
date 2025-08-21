@@ -26,8 +26,6 @@ export const handler: Handlers = {
       // Obtener la URL base
       const url = new URL(req.url);
 
-      console.log(url);
-
       // Extraer adminOrg correctamente del query string
       const adminOrg = url.search.replace("?", "");
       const adminOrgTransformed = parseInt(adminOrg);

@@ -14,7 +14,6 @@ function CreateCourse({ getCourses, token, setView }: any) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  console.log(formData);
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
