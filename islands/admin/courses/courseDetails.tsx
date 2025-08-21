@@ -82,16 +82,18 @@ function CourseDetails(
     _id: updatedCourse?._id || "",
     name: updatedCourse?.name || "",
     slug: updatedCourse?.slug || "",
-    modules: modules?.filter((m) => {
-      if (!m._id) return false;
-      // updatedCourse.modules puede ser un array de strings o Module[]
-      const moduleIds = Array.isArray(updatedCourse?.modules)
-        ? updatedCourse.modules.map((mod) =>
-          typeof mod === "string" ? mod : mod._id
-        )
-        : [];
-      return moduleIds.includes(m._id);
-    }) || [],
+    modules: modules.length > 0
+      ? modules?.filter((m) => {
+        if (!m._id) return false;
+        // updatedCourse.modules puede ser un array de strings o Module[]
+        const moduleIds = Array.isArray(updatedCourse?.modules)
+          ? updatedCourse.modules.map((mod) =>
+            typeof mod === "string" ? mod : mod._id
+          )
+          : [];
+        return moduleIds.includes(m._id);
+      })
+      : [],
     students: students?.filter((s) => {
       if (!s._id) return false;
       // updatedCourse.students puede ser un array de strings o Student[]

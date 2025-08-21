@@ -23,6 +23,8 @@ interface ModuleData {
 
 export function AdminDashboards() {
   const token = localStorage.getItem("jwtToken") || "{}";
+  const UserInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+
   const [view, setView] = useState("dashboard");
   const [students, setStudents] = useState([] as any[]);
   const [courses, setCourses] = useState([] as any[]);
@@ -35,7 +37,9 @@ export function AdminDashboards() {
   const getStudents = async () => {
     try {
       // Usar el helper autenticado con refresh automático
-      const response = await authenticatedGet("api/users/user");
+      const response = await authenticatedGet(
+        "api/users/user?adminOrg=" + UserInfo.adminOrg,
+      );
       setStudents(response.data);
       return response.data;
     } catch (error) {
@@ -45,11 +49,14 @@ export function AdminDashboards() {
 
   const getAllModules = async () => {
     try {
-      const response = await axiod.get("/api/modules/module", {
-        headers: {
-          "Authorization": `Bearer ${token}`,
+      const response = await axiod.get(
+        `/api/modules/module?adminOrg=${UserInfo.adminOrg}`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       return response.data;
     } catch (error) {
@@ -60,7 +67,9 @@ export function AdminDashboards() {
   const getCourses = async () => {
     try {
       // Usar el helper autenticado con refresh automático
-      const response = await authenticatedGet("api/courses/course");
+      const response = await authenticatedGet(
+        `api/courses/course?adminOrg=${UserInfo.adminOrg}`,
+      );
       setCourses(response.data);
       return response.data;
     } catch (error) {
@@ -71,7 +80,7 @@ export function AdminDashboards() {
   const createModule = async (module: any) => {
     try {
       const response = await axiod.post(
-        `/api/modules/module`,
+        `/api/modules/module?adminOrg=${UserInfo.adminOrg}`,
         {
           name: module.name,
           course: module.course,
@@ -177,6 +186,7 @@ export function AdminDashboards() {
           <ModulesView
             token={token}
             courses={courses}
+            userInfo={UserInfo}
             createModule={createModule}
             isModuleCreated={isModuleCreated}
             isModuleError={isModuleError}

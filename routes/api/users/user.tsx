@@ -1,6 +1,5 @@
 import { Handlers, STATUS_CODE } from "$fresh/server.ts";
 
-import { hash } from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 import { requireAdmin } from "../../../middleware/auth.ts";
 
 import { db } from "../../../lib/mongo.ts";
@@ -36,6 +35,7 @@ export const handler: Handlers = {
     }
 
     await usersCollection.insertOne({
+      adminOrg: admin.adminOrg,
       username,
       password,
       courses: [],
@@ -51,8 +51,13 @@ export const handler: Handlers = {
   async GET(req) {
     const admin = await requireAdmin(req);
     if (admin instanceof Response) return admin; // si no es admin, corta aquí
+    const url = new URL(req.url);
+    const adminOrg = url.searchParams.get("adminOrg");
 
-    const users = await usersCollection.find({}).toArray();
+    const users = await usersCollection.find({
+      adminOrg: parseInt(adminOrg as string),
+    })
+      .toArray();
     return new Response(JSON.stringify(users), {
       status: STATUS_CODE.OK,
       headers: {

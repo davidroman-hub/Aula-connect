@@ -48,6 +48,8 @@ export const handler: Handlers = {
     if (!name || !course) {
       return new Response("Missing fields", { status: 400 });
     }
+    const url = new URL(req.url);
+    const adminOrg = url.searchParams.get("adminOrg");
 
     const exists = await modulesCollection.findOne({ name, course });
     if (exists) {
@@ -59,6 +61,7 @@ export const handler: Handlers = {
     const result = await modulesCollection.insertOne({
       _id: customId,
       id: customId,
+      adminOrg: parseInt(adminOrg as string),
       name,
       course,
       isFinished: isFinished || false,
@@ -130,7 +133,13 @@ export const handler: Handlers = {
   },
 
   async GET(req) {
-    const modules = await modulesCollection.find({}).toArray();
+    const url = new URL(req.url);
+    const adminOrg = url.searchParams.get("adminOrg");
+
+    const modules = await modulesCollection.find({
+      adminOrg: parseInt(adminOrg as string),
+    });
+
     return new Response(JSON.stringify(modules), {
       status: STATUS_CODE.OK,
       headers: {

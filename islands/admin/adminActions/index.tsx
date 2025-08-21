@@ -1,6 +1,7 @@
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
-import { Course } from "../../../routes/api/courses/course.tsx";
+
 import { Module } from "../../../routes/api/modules/module.tsx";
+import { Course } from "../../../types/course.ts";
 
 export const updateCourseModuleOptions = async (
   courseSlug: string,

@@ -22,11 +22,17 @@ export const handler: Handlers = {
       return new Response("Contraseña incorrecta", { status: 401 });
     }
 
-    const accessToken = await createJWT(user.username, user.type, user._id);
+    const accessToken = await createJWT(
+      user.username,
+      user.type,
+      user._id,
+      user.adminOrg,
+    );
     const refreshToken = await createRefreshToken(
       user.username,
       user.type,
       user._id,
+      user.adminOrg,
     );
 
     return new Response(

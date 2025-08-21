@@ -22,12 +22,14 @@ export async function createJWT(
   username: string,
   type: string,
   id: { $oid: string },
+  adminOrg: any,
 ) {
   const payload: Payload = {
     iss: "fresh-app",
     username,
     type,
     id,
+    adminOrg,
     exp: getNumericDate(15 * 60), // Expira en 15 minutos
   };
   return await create({ alg: "HS256", typ: "JWT" } as Header, payload, key);
@@ -38,6 +40,7 @@ export async function createRefreshToken(
   username: string,
   type: string,
   id: { $oid: string },
+  adminOrg: any,
 ) {
   const payload: Payload = {
     iss: "fresh-app",
@@ -45,6 +48,7 @@ export async function createRefreshToken(
     type,
     id,
     tokenType: "refresh",
+    adminOrg,
     exp: getNumericDate(7 * 24 * 60 * 60), // Expira en 7 días
   };
   return await create({ alg: "HS256", typ: "JWT" } as Header, payload, key);

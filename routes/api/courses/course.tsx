@@ -34,6 +34,7 @@ export const handler: Handlers = {
       difficulty,
       description,
       createdAt: new Date(),
+      adminOrg: admin.adminOrg,
     });
 
     return new Response(
@@ -92,15 +93,25 @@ export const handler: Handlers = {
   },
 
   async GET(req) {
-    // const admin = await requireAdmin(req);
-    // if (admin instanceof Response) return admin;
+    const url = new URL(req.url);
+    const adminOrg = url.searchParams.get("adminOrg");
 
-    const courses = await coursesCollection.find({}).toArray();
-    return new Response(JSON.stringify(courses), {
-      status: STATUS_CODE.OK,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (!adminOrg) {
+      return new Response("Missing adminOrg parameter", { status: 400 });
+    }
+    try {
+      const courses = await coursesCollection.find({
+        adminOrg: parseInt(adminOrg),
+      })
+        .toArray();
+      return new Response(JSON.stringify(courses), {
+        status: STATUS_CODE.OK,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      return new Response("Internal Server Error", { status: 500 });
+    }
   },
 };

@@ -17,10 +17,13 @@ interface ModulesViewProps {
   createModule: (moduleData: ModuleData) => void;
   isModuleCreated: boolean;
   isModuleError: string;
+  userInfo: {
+    adminOrg: string;
+  };
 }
 
 const ModulesView = (
-  { token, courses, createModule, isModuleCreated, isModuleError }:
+  { token, courses, createModule, isModuleCreated, isModuleError, userInfo }:
     ModulesViewProps,
 ) => {
   const [modules, setModules] = useState<Module[]>([]);
@@ -47,11 +50,14 @@ const ModulesView = (
     try {
       setLoading(true);
       // Obtener todos los módulos desde el API
-      const response = await fetch("/api/modules/module", {
-        headers: {
-          "Authorization": `Bearer ${token}`,
+      const response = await fetch(
+        `/api/modules/module?adminOrg=${userInfo.adminOrg}`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -101,14 +107,16 @@ const ModulesView = (
   };
 
   // Filtrar módulos basado en búsqueda y curso
-  const filteredModules = modules.filter((module) => {
-    const matchesSearch =
-      module.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      module.course.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCourse = filterCourse === "all" ||
-      module.course === filterCourse;
-    return matchesSearch && matchesCourse;
-  });
+  const filteredModules = modules.length > 0
+    ? modules?.filter((module) => {
+      const matchesSearch =
+        module.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        module.course.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCourse = filterCourse === "all" ||
+        module.course === filterCourse;
+      return matchesSearch && matchesCourse;
+    })
+    : [];
 
   const findCourse = (courseId: string) => {
     return courses.find((course) => course._id === courseId);

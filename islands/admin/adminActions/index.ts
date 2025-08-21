@@ -1,16 +1,17 @@
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { Course } from "../../../types/course.ts";
+import { authenticatedGet } from "../../../lib/apiHelpers.ts";
+
+const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
 export const updateCourseModuleOptions = async (
   courseId: string,
   newModule: string,
 ) => {
   try {
-    const getCourseResponse = await axiod.get(`/api/courses/course`, {
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`,
-      },
-    });
+    const getCourseResponse = await authenticatedGet(
+      `/api/courses/course?adminOrg=${userInfo.adminOrg}`,
+    );
 
     const currentCourse = getCourseResponse.data.find((course: Course) =>
       course._id === courseId
@@ -47,11 +48,14 @@ export const updateCourseStudentOptions = async (
   newStudent: string,
 ) => {
   try {
-    const getCourseResponse = await axiod.get(`/api/courses/course`, {
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`,
+    const getCourseResponse = await axiod.get(
+      `/api/courses/course?adminOrg=${userInfo.adminOrg}`,
+      {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
       },
-    });
+    );
 
     const currentCourse = getCourseResponse.data.find((course: Course) =>
       course._id === courseId
