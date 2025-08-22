@@ -15,6 +15,7 @@ export interface CoursesProps {
   getAllModules: () => Promise<Module[]>;
   getCourses: () => Promise<Course[]>;
   resetModuleCreated: () => void;
+  students: Student[];
 }
 
 function Courses(
@@ -27,6 +28,7 @@ function Courses(
     isModuleError,
     getCourses,
     resetModuleCreated,
+    students,
   }: CoursesProps,
 ) {
   const [selectedCourse, setSelectedCourse] = useState<any | null>(null);

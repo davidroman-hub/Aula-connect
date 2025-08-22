@@ -74,15 +74,27 @@ function CourseDetails(
   const [modules, setModules] = useState<Module[]>([]);
   const [editingModule, setEditingModule] = useState<Module | null>(null);
   const [previewModule, setPreviewModule] = useState<Module | null>(null);
-  const [openAddStudent, setOpenAddStudent] = useState(false);
+  const [openAddStudent, setOpenAddStudent] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessageUpdateStudent, setSuccessMessageUpdateStudent] =
+    useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const removeStudentFromCourse = async (studentId: string) => {
+    setLoading(true);
+    setError(null); // Clear previous errors
+
     try {
+      // Get current students from updated course state
+      const currentStudents = [
+        ...(updatedCourse?.students || course.students || []),
+      ];
+
       const response = await axiod.patch(
         `/api/courses/course`,
         {
           _id: course._id,
-          students: course.students.filter((id) => id !== studentId),
+          students: currentStudents.filter((s) => s !== studentId),
         },
         {
           headers: {
@@ -90,34 +102,72 @@ function CourseDetails(
           },
         },
       );
+
       if (response.status === 200) {
-        setStudents((prev) => prev.filter((s) => s._id !== studentId));
+        // Refresh data after student is removed
+        await getCourses(); // Update courses list
+        const updatedStudents = await getStudents();
+        setStudents(updatedStudents);
+        setSuccessMessageUpdateStudent("Student removed successfully");
+        setLoading(false);
+      } else {
+        throw new Error(`Failed to remove student. Status: ${response.status}`);
       }
     } catch (error) {
-      console.error("Error removing student from course:", error);
+      setLoading(false);
+      const errorMessage = error instanceof Error
+        ? error.message
+        : JSON.stringify(error);
+      setError(`Error removing student from course: ${errorMessage}`);
     }
   };
 
-  const addStudentToCourse = async (studentId: string) => {
+  const addMultipleStudentsToCourse = async (studentIds: string[]) => {
+    setLoading(true);
+    setError(null); // Clear previous errors
+
     try {
-      const response = await axiod.patch(
-        `/api/courses/course`,
-        {
-          _id: course._id,
-          students: [...course.students, studentId],
-        },
-        {
-          headers: {
-            "Authorization": `Bearer ${token}`,
+      // Get the current course state
+      let currentStudents = [
+        ...(updatedCourse?.students || course.students || []),
+      ];
+
+      // Add each student sequentially to avoid conflicts
+      for (const studentId of studentIds) {
+        const response = await axiod.patch(
+          `/api/courses/course`,
+          {
+            _id: course._id,
+            students: [...currentStudents, studentId],
           },
-        },
-      );
-      if (response.status === 200) {
-        const updatedStudents = await getStudents();
-        setStudents(updatedStudents);
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+            },
+          },
+        );
+
+        if (response.status === 200) {
+          // Update the current students array for the next iteration
+          currentStudents = [...currentStudents, studentId];
+        } else {
+          throw new Error(`Failed to add student ${studentId}`);
+        }
       }
+
+      // Refresh data after all students are added
+      await getCourses(); // Update courses list
+      const updatedStudents = await getStudents();
+      setStudents(updatedStudents);
+      setSuccessMessageUpdateStudent("Students added successfully");
+
+      setLoading(false);
     } catch (error) {
-      console.error("Error adding student to course:", error);
+      setLoading(false);
+      const errorMessage = error instanceof Error
+        ? error.message
+        : JSON.stringify(error);
+      setError(`Error adding students to course: ${errorMessage}`);
     }
   };
 
@@ -213,6 +263,13 @@ function CourseDetails(
         token={token}
       />
     );
+  }
+
+  if (successMessageUpdateStudent) {
+    setTimeout(() => {
+      setSuccessMessageUpdateStudent(null);
+      setOpenAddStudent(false);
+    }, 3000);
   }
 
   return (
@@ -322,8 +379,16 @@ function CourseDetails(
           {/* Students Tab */}
           {activeTab === "students" && (
             <StudentsTab
+              successMessageUpdateStudent={successMessageUpdateStudent}
               newCourseObject={newCourseObject}
+              setOpenAddStudent={setOpenAddStudent}
               removeStudentFromCourse={removeStudentFromCourse}
+              openAddStudent={openAddStudent}
+              error={error}
+              courses={courses}
+              students={students}
+              loading={loading}
+              addStudentToCourse={addMultipleStudentsToCourse}
             />
           )}
         </div>
