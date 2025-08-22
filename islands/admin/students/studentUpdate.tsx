@@ -135,13 +135,11 @@ const StudentUpdate = (
     } catch (error) {
       setLoading(false);
       setErrorMessage(
-        `Failed to edit user: ${
-          (error instanceof Error) ? error.message : String(error)
-        }`,
-      );
-      throw new Error(
-        `Failed to edit user: ${
-          (error instanceof Error) ? error.message : String(error)
+        `${
+          typeof error === "object" && error !== null && "response" in error &&
+            typeof (error as any).response?.data === "string"
+            ? (error as any).response.data
+            : String(error)
         }`,
       );
     }

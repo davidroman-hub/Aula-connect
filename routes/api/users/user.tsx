@@ -77,11 +77,30 @@ export const handler: Handlers = {
     }
 
     const user = await usersCollection.findOne({ _id: new ObjectId(id) });
+
     if (!user) {
       return new Response("User not found", { status: 404 });
     }
 
-    const updateData: any = { username, updatedAt: new Date() };
+    const existingUser = await usersCollection.findOne({
+      username,
+      _id: { $ne: new ObjectId(id) },
+    });
+
+    if (existingUser) {
+      return new Response("Username is already taken by another user", {
+        status: 400,
+      });
+    }
+
+    const updateData: {
+      username: string;
+      updatedAt: Date;
+      password?: string;
+      type?: string;
+      courses?: Course[];
+      currentLesson?: unknown[];
+    } = { username, updatedAt: new Date() };
 
     if (username) {
       updateData.username = username;
