@@ -1,5 +1,11 @@
 # Changelog
 
+**v1.2.1**
+
+- As an admin is possible to add/ remove users from a course in the course detail option
+
+# Features
+
 **v1.0.0**
 
 # Features

@@ -171,6 +171,7 @@ export function AdminDashboards() {
         )}
         {view === "studentDetail" && (
           <StudentDetail
+            courses={courses}
             student={selectedStudent}
             closeDetail={closeStudentDetail}
           />

@@ -6,6 +6,8 @@ import { db } from "../../../lib/mongo.ts";
 
 import { ObjectId } from "https://deno.land/x/web_bson@v0.3.0/mod.js";
 import { Course } from "../../../types/course.ts";
+import { Module } from "../modules/module.tsx";
+import { CurrentLesson } from "../../../types/users.ts";
 
 const usersCollection = db.collection("users");
 
@@ -14,6 +16,7 @@ export type Student = {
   _id: string;
   username: string;
   courses: Course[];
+  currentLesson: CurrentLesson[];
   password?: string;
   type: string;
 };

@@ -1,12 +1,40 @@
 import type { Student } from "../../../routes/api/users/user.tsx";
+import { Course } from "../../../types/course.ts";
+
+type StudentDetailProps = {
+  student: Student | null;
+  closeDetail: () => void;
+  courses: Course[];
+};
 
 function StudentDetail(
-  { student, closeDetail }: {
-    student: Student | null;
-    closeDetail: () => void;
-  },
+  { student, closeDetail, courses }: StudentDetailProps,
 ) {
   if (!student) return null;
+
+  const currentCoursesIds = [
+    ...new Set(student.currentLesson.map((module) => module.courseId)),
+  ];
+
+  const coursesResults = courses.filter((course) =>
+    currentCoursesIds.includes(course._id)
+  );
+
+  const elcomponente = () => {
+    return (
+      <div className="collapse bg-base-100 border-base-300 border">
+        <input type="checkbox" />
+        <div className="collapse-title font-semibold">
+          How do I create an account?
+        </div>
+        <div className="collapse-content text-sm">
+          Click the "Sign Up" button in the top right corner and follow the
+          registration process.
+        </div>
+      </div>
+    );
+  };
+  console.log(coursesResults);
 
   return (
     <div>
@@ -51,7 +79,7 @@ function StudentDetail(
 
       <div className="bg-white rounded-xl shadow p-6">
         <h3 className="text-lg font-bold text-gray-800 mb-4">
-          Progreso por Módulo
+          Progreso por Curso
         </h3>
 
         {
