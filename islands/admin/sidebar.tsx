@@ -60,6 +60,7 @@ function DashboardSidebar({ view, setView, sidebarOpen, setSidebarOpen }: any) {
           <div>
             <p className="font-medium">Administrador</p>
             <p className="text-gray-400 text-sm">admin@codemaster.com</p>
+            <p className="text-gray-400 text-sm">Version 1.0.0</p>
           </div>
         </div>
       </div>
