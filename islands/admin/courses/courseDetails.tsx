@@ -9,6 +9,7 @@ import ModulePreviewModal from "../module/modulePreviewModal.tsx";
 import { Course, CourseRawInfo } from "../../../types/course.ts";
 import ModulesTab from "./partsOfCourseDetails/modulesTab.tsx";
 import StudentsTab from "./partsOfCourseDetails/students.tsx";
+import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 
 interface ModuleData {
   name: string;
@@ -73,6 +74,52 @@ function CourseDetails(
   const [modules, setModules] = useState<Module[]>([]);
   const [editingModule, setEditingModule] = useState<Module | null>(null);
   const [previewModule, setPreviewModule] = useState<Module | null>(null);
+  const [openAddStudent, setOpenAddStudent] = useState(false);
+
+  const removeStudentFromCourse = async (studentId: string) => {
+    try {
+      const response = await axiod.patch(
+        `/api/courses/course`,
+        {
+          _id: course._id,
+          students: course.students.filter((id) => id !== studentId),
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        },
+      );
+      if (response.status === 200) {
+        setStudents((prev) => prev.filter((s) => s._id !== studentId));
+      }
+    } catch (error) {
+      console.error("Error removing student from course:", error);
+    }
+  };
+
+  const addStudentToCourse = async (studentId: string) => {
+    try {
+      const response = await axiod.patch(
+        `/api/courses/course`,
+        {
+          _id: course._id,
+          students: [...course.students, studentId],
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        },
+      );
+      if (response.status === 200) {
+        const updatedStudents = await getStudents();
+        setStudents(updatedStudents);
+      }
+    } catch (error) {
+      console.error("Error adding student to course:", error);
+    }
+  };
 
   // Buscar el curso actualizado en la lista de cursos
   const updatedCourse = courses.find((c) => c._id === course._id) || course;
@@ -274,7 +321,10 @@ function CourseDetails(
 
           {/* Students Tab */}
           {activeTab === "students" && (
-            <StudentsTab newCourseObject={newCourseObject} />
+            <StudentsTab
+              newCourseObject={newCourseObject}
+              removeStudentFromCourse={removeStudentFromCourse}
+            />
           )}
         </div>
       </div>

@@ -4,9 +4,13 @@ import { Course } from "../../../../types/course.ts";
 
 type StudentsProps = {
   newCourseObject: Course;
+  removeStudentFromCourse: (studentId: string) => void;
 };
 
-const StudentsTab = ({ newCourseObject }: StudentsProps) => {
+const StudentsTab = (
+  { newCourseObject, removeStudentFromCourse }: StudentsProps,
+) => {
+  console.log("newCourseObject in StudentsTab:", newCourseObject);
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
@@ -49,20 +53,12 @@ const StudentsTab = ({ newCourseObject }: StudentsProps) => {
                       {student?.username}
                     </h4>
                     <p className="text-sm text-gray-600">
-                      ID: {student.id}
+                      ID: {student._id.slice(-6)}
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">
-                      Cursos totales:
-                    </span>
-                    <span className="font-medium">
-                      {student.courses?.length || 0}
-                    </span>
-                  </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Tipo:</span>
                     <span
@@ -85,8 +81,14 @@ const StudentsTab = ({ newCourseObject }: StudentsProps) => {
                     <i className="fas fa-eye mr-2"></i> Ver Perfil
                   </button>
                   <button
+                    onClick={() => removeStudentFromCourse(student._id)}
+                    disabled={student.type === "admin"}
                     type="button"
-                    className="px-3 py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded text-sm transition-colors"
+                    className={`px-3 py-2 ${
+                      student.type === "admin"
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-red-50 hover:bg-red-100 text-red-700"
+                    } rounded text-sm transition-colors`}
                   >
                     <i className="fas fa-user-minus"></i>
                   </button>

@@ -21,8 +21,10 @@ export type Student = {
 export const handler: Handlers = {
   async POST(req) {
     const admin = await requireAdmin(req);
-
     if (admin instanceof Response) return admin;
+
+    const url = new URL(req.url);
+    const adminOrg = url.searchParams.get("adminOrg");
 
     const { username, password, role } = await req.json();
     if (!username || !password) {
@@ -35,7 +37,7 @@ export const handler: Handlers = {
     }
 
     await usersCollection.insertOne({
-      adminOrg: admin.adminOrg,
+      adminOrg: parseInt(adminOrg as string),
       username,
       password,
       courses: [],

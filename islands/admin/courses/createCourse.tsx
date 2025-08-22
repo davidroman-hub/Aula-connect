@@ -4,6 +4,7 @@ import { axiod } from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { ErrorAlert, SuccessAlert } from "../../alerts/index.tsx";
 
 function CreateCourse({ getCourses, token, setView }: any) {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
   const [formData, setFormData] = useState({
     name: "",
     modules: [],
@@ -22,19 +23,23 @@ function CreateCourse({ getCourses, token, setView }: any) {
   async function createCourse(e: any) {
     e.preventDefault();
     try {
-      const response = await axiod.post("/api/courses/course", {
-        name: formData.name,
-        slug: formData.name.toLowerCase().replace(/\s+/g, "-"),
-        description: formData.description,
-        difficulty: formData.difficulty,
-        modules: [],
-        students: [],
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+      const response = await axiod.post(
+        `/api/courses/course?adminOrg=${userInfo?.adminOrg}`,
+        {
+          name: formData.name,
+          slug: formData.name.toLowerCase().replace(/\s+/g, "-"),
+          description: formData.description,
+          difficulty: formData.difficulty,
+          modules: [],
+          students: [],
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        },
+      );
 
       if (response.status === 201) {
         setSuccess(true);

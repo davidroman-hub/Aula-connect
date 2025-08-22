@@ -4,6 +4,7 @@ import { palette } from "../../../assets/colors.ts";
 import { ErrorAlert, SuccessAlert } from "../../alerts/index.tsx";
 
 function CreateUser({ setView, token, getStudents }: any) {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
   const [formData, setFormData] = useState({
     name: "",
     password: "",
@@ -20,16 +21,20 @@ function CreateUser({ setView, token, getStudents }: any) {
   async function createUser(e: any) {
     e.preventDefault();
     try {
-      const response = await axiod.post("/api/users/user", {
-        username: formData.name,
-        password: formData.password,
-        role: "user",
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+      const response = await axiod.post(
+        `/api/users/user?adminOrg=${userInfo?.adminOrg}`,
+        {
+          username: formData.name,
+          password: formData.password,
+          role: "user",
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        },
+      );
 
       setSuccess(true);
       setFormData({ name: "", password: "" });

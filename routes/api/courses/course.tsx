@@ -2,8 +2,7 @@ import { Handlers, STATUS_CODE } from "$fresh/server.ts";
 
 import { requireAdmin } from "../../../middleware/auth.ts";
 import { db } from "../../../lib/mongo.ts";
-import { Student } from "../users/user.tsx";
-import { Module } from "../modules/module.tsx";
+
 import { ObjectId } from "https://deno.land/x/mongo@v0.32.0/mod.ts";
 import { Course } from "../../../types/course.ts";
 
@@ -14,6 +13,8 @@ export const handler: Handlers = {
     const admin = await requireAdmin(req);
 
     if (admin instanceof Response) return admin;
+    const url = new URL(req.url);
+    const adminOrg = url.searchParams.get("adminOrg");
 
     const { name, slug, modules, students, difficulty, description } = await req
       .json();
@@ -34,7 +35,7 @@ export const handler: Handlers = {
       difficulty,
       description,
       createdAt: new Date(),
-      adminOrg: admin.adminOrg,
+      adminOrg: parseInt(adminOrg as string),
     });
 
     return new Response(
