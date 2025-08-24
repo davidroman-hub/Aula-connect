@@ -9,6 +9,8 @@ import Head from "./head.tsx";
 import LearnWithMe from "./learnWithMe.tsx";
 import Testimonials from "./testimonials.tsx";
 import Pricing from "./aulaConnect/Pricing.tsx";
+import Ready from "./aulaConnect/Ready.tsx";
+import Contact from "./aulaConnect/Contact.tsx";
 
 const Main = () => {
   return (
@@ -18,6 +20,8 @@ const Main = () => {
       <HowItWorks />
       <JoinAsAProfessor />
       <Pricing />
+      <Ready />
+      <Contact />
       <Footer />
     </>
   );
