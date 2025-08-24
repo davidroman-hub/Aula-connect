@@ -131,10 +131,10 @@
   grid-area: sidebar;
   transform: translateX(0);
   position: fixed;
-  z-index: 40;
-  top: 0;
+  z-index: 30; /* Menor que el navbar */
+  top: 64px; /* Altura del navbar */
   left: 0;
-  height: 100vh;
+  height: calc(100vh - 64px); /* Altura total menos navbar */
   transition: width 0.3s ease;
 }
 
@@ -151,12 +151,12 @@
 .overlay {
   display: none;
   position: fixed;
-  top: 0;
+  top: 64px; /* Respeta el navbar */
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 30;
+  z-index: 25; /* Menor que el sidebar */
   border: none;
   cursor: pointer;
 }
@@ -173,6 +173,8 @@
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     width: 280px !important;
+    top: 64px; /* Respeta el navbar en móvil también */
+    height: calc(100vh - 64px);
   }
 
   .sidebar-open .sidebar {
@@ -181,6 +183,8 @@
 
   .sidebar-open .overlay {
     display: block;
+    top: 64px; /* El overlay también debe respetar el navbar */
+    height: calc(100vh - 64px);
   }
 }
 

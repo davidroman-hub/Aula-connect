@@ -11,7 +11,7 @@ function DashboardSidebar(
   { view, setView, sidebarOpen, setSidebarOpen }: DashboardSidebarProps,
 ) {
   const menuItems = [
-    { id: "dashboard", label: "Dashboard", icon: "grid" },
+    { id: "dashboard", label: "Dashboard", icon: "chart-simple" },
     { id: "students", label: "Estudiantes", icon: "users" },
     { id: "courses", label: "Cursos", icon: "book" },
     { id: "modules", label: "Módulos", icon: "puzzle-piece" },
@@ -39,7 +39,10 @@ function DashboardSidebar(
       <aside
         style={{
           position: "fixed",
-          height: "-webkit-fill-available",
+          top: "64px", // Altura del navbar (h-16 = 64px)
+          left: "0",
+          height: "calc(100vh - 64px)", // Altura total menos la altura del navbar
+          zIndex: 30, // Menor que el navbar (z-40)
         }}
         className={`sidebar bg-[${palette.primary}] text-white transition-all duration-300 ${
           sidebarOpen ? "w-64" : "w-16"
@@ -61,7 +64,7 @@ function DashboardSidebar(
                 </div>
                 <button
                   type="button"
-                  className="text-white hover:bg-gray-700 p-2 rounded-lg transition"
+                  className="cursor-pointer text-white hover:bg-gray-700 p-2 rounded-lg transition"
                   onClick={() => setSidebarOpen(false)}
                   aria-label="Minimizar sidebar"
                 >
@@ -72,7 +75,7 @@ function DashboardSidebar(
             : (
               <button
                 type="button"
-                className="text-white hover:bg-gray-700 p-2 rounded-lg transition"
+                className="cursor-pointer text-white hover:bg-gray-700 p-2 rounded-lg transition"
                 onClick={() => setSidebarOpen(true)}
                 aria-label="Expandir sidebar"
               >
@@ -94,7 +97,7 @@ function DashboardSidebar(
                       setSidebarOpen(false);
                     }
                   }}
-                  className={`w-full text-left flex items-center ${
+                  className={`cursor-pointer w-full text-left flex items-center ${
                     sidebarOpen ? "p-3" : "p-3 justify-center"
                   } rounded-lg transition ${
                     view === item.id
