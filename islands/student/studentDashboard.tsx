@@ -21,6 +21,27 @@ const StudentDashboard = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
   const [activeView, setActiveView] = useState("courses");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const menuItems = [
+    { id: "courses", label: "Explorar Cursos", icon: "fa-file-alt", number: 1 },
+    { id: "progress", label: "Mi Progreso", icon: "fa-chart-line", number: 2 },
+    // {
+    //   id: "certificates",
+    //   label: "Mis Certificados",
+    //   icon: "fa-certificate",
+    //   number: 3,
+    // },
+    { id: "assignments", label: "Tareas", icon: "fa-tasks", number: 4 },
+    { id: "calendar", label: "Calendario", icon: "fa-calendar", number: 5 },
+    // { id: "forums", label: "Foros", icon: "fa-comments", number: 6 },
+    // { id: "resources", label: "Recursos", icon: "fa-folder", number: 7 },
+    // { id: "grades", label: "Calificaciones", icon: "fa-star", number: 8 },
+    // { id: "messages", label: "Mensajes", icon: "fa-envelope", number: 9 },
+    // { id: "settings", label: "Configuración", icon: "fa-cog", number: 10 },
+    // { id: "help", label: "Ayuda", icon: "fa-question-circle", number: 11 },
+    // { id: "library", label: "Biblioteca", icon: "fa-book", number: 12 },
+  ];
 
   const renderContent = () => {
     switch (activeView) {
@@ -52,8 +73,21 @@ const StudentDashboard = () => {
             </div>
           </div>
         );
-      default:
-        return <RenderCourses userInfo={userInfo} />;
+      default: {
+        const selectedItem = menuItems.find((item) => item.id === activeView);
+        return (
+          <div className="p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              {selectedItem?.label || "Sección"}
+            </h2>
+            <div className="bg-white rounded-lg shadow p-6">
+              <p className="text-gray-600">
+                Esta sección está en desarrollo...
+              </p>
+            </div>
+          </div>
+        );
+      }
     }
   };
 
@@ -91,70 +125,109 @@ const StudentDashboard = () => {
       </div>
 
       <div className="max-w-7xl mx-auto flex">
-        {/* Sidebar de navegación */}
-        <div className="w-64 bg-white shadow-sm min-h-screen">
-          <nav className="p-4">
-            <ul className="space-y-2">
-              <li>
-                <button
-                  type="button"
-                  onClick={() => setActiveView("modules")}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center ${
-                    activeView === "modules"
-                      ? "bg-blue-100 text-blue-700 border border-blue-200"
-                      : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  <span className="fas fa-file-alt mr-3" aria-hidden="true">
-                  </span>
-                  <span>Explorar Cursos</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => setActiveView("progress")}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center ${
-                    activeView === "progress"
-                      ? "bg-blue-100 text-blue-700 border border-blue-200"
-                      : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  <span className="fas fa-chart-line mr-3" aria-hidden="true">
-                  </span>
-                  <span>Mi Progreso</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => setActiveView("certificates")}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center ${
-                    activeView === "certificates"
-                      ? "bg-blue-100 text-blue-700 border border-blue-200"
-                      : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  <span className="fas fa-certificate mr-3" aria-hidden="true">
-                  </span>
-                  <span>Mis Certificados</span>
-                </button>
-              </li>
+        {/* Sidebar de navegación colapsable */}
+        <div
+          className={`bg-white shadow-sm min-h-screen transition-all duration-300 ${
+            sidebarOpen ? "w-64" : "w-25"
+          } flex flex-col`}
+        >
+          {/* Header del sidebar con botón toggle */}
+          <div
+            className={`p-4 border-b border-gray-200 flex items-center ${
+              sidebarOpen ? "justify-between" : "justify-center"
+            }`}
+          >
+            {sidebarOpen && (
+              <h2 className="text-lg font-semibold text-gray-800">
+                Navegación
+              </h2>
+            )}
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              aria-label={sidebarOpen ? "Cerrar sidebar" : "Abrir sidebar"}
+            >
+              <i
+                className={`fas ${
+                  sidebarOpen ? "fa-chevron-left" : "fa-chevron-right"
+                } text-gray-600`}
+              >
+              </i>
+            </button>
+          </div>
+
+          {/* Navegación */}
+          <nav className={`p-4 flex-1 ${!sidebarOpen ? "px-2" : ""}`}>
+            <ul
+              className={`space-y-2 ${
+                !sidebarOpen && menuItems.length > 10
+                  ? "overflow-y-auto max-h-96"
+                  : ""
+              }`}
+            >
+              {menuItems.map((item) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    onClick={() => setActiveView(item.id)}
+                    className={`w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center ${
+                      activeView === item.id
+                        ? "bg-blue-100 text-blue-700 border border-blue-200"
+                        : "text-gray-700 hover:bg-gray-100"
+                    } ${
+                      !sidebarOpen ? "justify-center relative group px-2" : ""
+                    }`}
+                    title={!sidebarOpen ? item.label : ""}
+                  >
+                    {!sidebarOpen
+                      ? (
+                        <>
+                          <div className="relative">
+                            <span
+                              className={`fas ${item.icon}`}
+                              aria-hidden="true"
+                            >
+                            </span>
+                          </div>
+                          {/* Tooltip */}
+                          <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                            {item.label}
+                            <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800">
+                            </div>
+                          </div>
+                        </>
+                      )
+                      : (
+                        <>
+                          <span
+                            className={`fas ${item.icon} mr-3`}
+                            aria-hidden="true"
+                          >
+                          </span>
+                          <span>{item.label}</span>
+                        </>
+                      )}
+                  </button>
+                </li>
+              ))}
             </ul>
           </nav>
 
           {/* Información adicional en el sidebar */}
-          <div className="p-4 border-t border-gray-200 mt-8">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-blue-800 mb-2">
-                💡 Consejo del día
-              </h3>
-              <p className="text-xs text-blue-700">
-                Dedica al menos 30 minutos diarios al aprendizaje para obtener
-                mejores resultados.
-              </p>
+          {sidebarOpen && (
+            <div className="p-4 border-t border-gray-200 mt-8">
+              <div className="bg-blue-50 rounded-lg p-4">
+                <h3 className="text-sm font-semibold text-blue-800 mb-2">
+                  💡 Consejo del día
+                </h3>
+                <p className="text-xs text-blue-700">
+                  Dedica al menos 30 minutos diarios al aprendizaje para obtener
+                  mejores resultados.
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Contenido principal */}
