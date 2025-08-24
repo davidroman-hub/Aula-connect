@@ -105,7 +105,7 @@ const Navbar = () => {
       link: "user-dash",
       icon: "fa-gauge",
     },
-    { id: 2, label: "Profile", link: "profile", icon: "fa-user" },
+
     { id: 6, label: "Logout", link: null, icon: "fa-right-from-bracket" },
   ];
 

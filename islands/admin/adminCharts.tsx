@@ -309,6 +309,16 @@ const ProgressCharts = ({ courses, students }: ProgressChartsProps) => {
                 {studentData && studentData.length > 0
                   ? Math.max(...studentData.map((s) => s.progress))
                   : 0}%
+
+                {studentData && studentData.length > 0 && (
+                  <p className="text-sm uppercase text-gray-500">
+                    {studentData.find((s) =>
+                      s.progress === Math.max(...studentData.map((s) =>
+                        s.progress
+                      ))
+                    )?.username}
+                  </p>
+                )}
               </p>
             </div>
           </div>

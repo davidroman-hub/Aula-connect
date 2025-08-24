@@ -37,12 +37,6 @@ function AdminDashboard({ students, courses }: any) {
               <i className="fas fa-users text-primary text-xl"></i>
             </div>
           </div>
-          <div className="mt-4">
-            <p className="text-green-500 flex items-center">
-              <i className="fas fa-arrow-up mr-1"></i>
-              <span>12% desde el mes pasado</span>
-            </p>
-          </div>
         </div>
 
         <div className="bg-white rounded-xl shadow p-6 card-hover transition-all duration-300">
@@ -57,12 +51,6 @@ function AdminDashboard({ students, courses }: any) {
               <i className="fas fa-book text-secondary text-xl"></i>
             </div>
           </div>
-          <div className="mt-4">
-            <p className="text-green-500 flex items-center">
-              <i className="fas fa-arrow-up mr-1"></i>
-              <span>2 nuevos este mes</span>
-            </p>
-          </div>
         </div>
       </div>
 
@@ -70,7 +58,7 @@ function AdminDashboard({ students, courses }: any) {
       <div className="gap-6 mb-8">
         <div className="bg-white rounded-xl shadow p-6">
           <h3 className="text-lg font-bold text-gray-800 mb-4">
-            Progreso Mensual
+            Progreso de Estudiantes
           </h3>
           <ProgressCharts courses={courses} students={students} />
         </div>
