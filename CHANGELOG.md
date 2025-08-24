@@ -3,6 +3,9 @@
 **v1.2.1**
 
 - As an admin is possible to add/ remove users from a course in the course detail option
+- FIX UIX from student/admin dashboard
+- Add Admin dashboard chart
+- Add admin panel student real progress
 
 # Features
 
