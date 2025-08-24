@@ -5,10 +5,12 @@ interface DashboardSidebarProps {
   readonly setView: (view: string) => void;
   readonly sidebarOpen: boolean;
   readonly setSidebarOpen: (open: boolean) => void;
+  readonly userInfo: { username: string; email: string; type: string };
 }
 
 function DashboardSidebar(
-  { view, setView, sidebarOpen, setSidebarOpen }: DashboardSidebarProps,
+  { view, setView, sidebarOpen, setSidebarOpen, userInfo }:
+    DashboardSidebarProps,
 ) {
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: "chart-simple" },
@@ -57,10 +59,16 @@ function DashboardSidebar(
             ? (
               <>
                 <div className="flex items-center">
-                  <div className="bg-accent rounded-lg p-2 mr-3">
-                    <i className="fas fa-laptop-code text-white text-2xl"></i>
+                  <div
+                    className={`bg-[${palette.backgroundSoft}] rounded-full p-2 mr-3`}
+                  >
+                    <img
+                      src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1756059842/learningplat/aulaConnectNolleters_fvei4p.png"
+                      alt="Logo"
+                      className="w-15 h-15"
+                    />
                   </div>
-                  <h1 className="text-xl font-bold">CodeMaster Dashboard</h1>
+                  <h2 className="text-xl font-bold">Aula Connect</h2>
                 </div>
                 <button
                   type="button"
@@ -140,8 +148,8 @@ function DashboardSidebar(
                   <i className="fas fa-user text-white"></i>
                 </div>
                 <div>
-                  <p className="font-medium">Administrador</p>
-                  <p className="text-gray-400 text-sm">admin@codemaster.com</p>
+                  <p className="font-medium uppercase">{userInfo.username}</p>
+                  <p className="text-gray-400 text-sm">Administrador</p>
                   <p className="text-gray-400 text-sm">Version 1.1.0</p>
                 </div>
               </div>

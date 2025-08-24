@@ -1,5 +1,10 @@
 # Changelog
 
+**v1.2.0**
+
+- Add handler para cubrir el login del admin
+- Add aula connect logo en el admin dashboard
+
 **v1.1.0**
 
 - As an admin is possible to add/ remove users from a course in the course detail option
