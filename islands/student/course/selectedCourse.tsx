@@ -70,6 +70,7 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true); // Nuevo estado para expandir/contraer
   const [errors, setErrors] = useState<string>("");
 
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
@@ -228,44 +229,87 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
       )}
 
       <aside
-        style={{
-          width: "280px",
-        }}
         className={`
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0 lg:static fixed inset-y-0 left-0 z-30
-        w-70 lg:w-1/3 bg-[${palette.primary}] text-white overflow-y-auto
-        transition-transform duration-300 ease-in-out
+        ${
+          sidebarExpanded ? "w-80" : "w-20"
+        } bg-[${palette.primary}] text-white overflow-y-auto
+        transition-all duration-300 ease-in-out
       `}
       >
         {/* Header del sidebar */}
-        <div className="mt-17 p-4 border-b border-gray-700 flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="bg-accent rounded-lg p-2 mr-3">
-              <i className="fas fa-book text-white text-xl"></i>
-            </div>
-            <div>
-              <h2 className="text-l font-bold">
-                {currentCourse?.name}
-              </h2>
-              <p className="text-gray-300 text-sm">
-                {currentCourse?.description}
-              </p>
-            </div>
-          </div>
-          {/* Botón para cerrar en móviles */}
-          <button
-            type="button"
-            className="lg:hidden text-white"
-            onClick={() => setSidebarOpen(false)}
-          >
-            <i className="fas fa-times"></i>
-          </button>
+        <div
+          className={`mt-17 p-4 border-b border-gray-700 flex items-center ${
+            sidebarExpanded ? "justify-between" : "justify-center"
+          }`}
+        >
+          {sidebarExpanded
+            ? (
+              <>
+                <div className="flex items-center">
+                  <div className="bg-accent rounded-lg p-2 mr-3">
+                    <i className="fas fa-book text-white text-xl"></i>
+                  </div>
+                  <div>
+                    <h2 className="text-l font-bold">
+                      {currentCourse?.name}
+                    </h2>
+                    <p className="text-gray-300 text-sm">
+                      {currentCourse?.description}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => setSidebarExpanded(false)}
+                    className="p-2 rounded-lg hover:bg-gray-700 transition-colors"
+                    aria-label="Minimizar sidebar"
+                  >
+                    <i className="fas fa-chevron-left text-white"></i>
+                  </button>
+                  {/* Botón para cerrar en móviles */}
+                  <button
+                    type="button"
+                    className="lg:hidden text-white"
+                    onClick={() => setSidebarOpen(false)}
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
+              </>
+            )
+            : (
+              <div className="flex flex-col items-center space-y-2">
+                <button
+                  type="button"
+                  onClick={() => setSidebarExpanded(true)}
+                  className="p-2 rounded-lg hover:bg-gray-700 transition-colors"
+                  aria-label="Expandir sidebar"
+                >
+                  <i className="fas fa-chevron-right text-white"></i>
+                </button>
+                <button
+                  type="button"
+                  className="lg:hidden text-white"
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <i className="fas fa-times text-sm"></i>
+                </button>
+              </div>
+            )}
         </div>
 
         {/* Lista de módulos */}
         <nav className="p-4">
-          <ul>
+          <ul
+            className={`space-y-2 ${
+              !sidebarExpanded && course.modules && course.modules.length > 10
+                ? "overflow-y-auto max-h-96"
+                : ""
+            }`}
+          >
             <li className="mb-2">
               <button
                 type="button"
@@ -280,13 +324,24 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                   selectedModule === "intro"
                     ? "bg-primary text-white"
                     : "hover:bg-gray-700"
+                } ${
+                  !sidebarExpanded ? "justify-center relative group px-2" : ""
                 }`}
+                title={!sidebarExpanded ? "Progreso del curso" : ""}
               >
-                <div className="flex-1">
-                  <div className="font-medium">
-                    {"Progreso del curso"}
-                  </div>
-                </div>
+                {!sidebarExpanded
+                  ? (
+                    <div className="relative">
+                      <i className="fas fa-chart-line"></i>
+                    </div>
+                  )
+                  : (
+                    <div className="flex-1">
+                      <div className="font-medium">
+                        {"Progreso del curso"}
+                      </div>
+                    </div>
+                  )}
               </button>
             </li>
             {course.modules?.map((module, index) => (
@@ -304,19 +359,44 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                     selectedModule === module._id
                       ? "bg-primary text-white"
                       : "hover:bg-gray-700"
+                  } ${
+                    !sidebarExpanded ? "justify-center relative group px-2" : ""
                   }`}
+                  title={!sidebarExpanded
+                    ? module.name || `Módulo ${index + 1}`
+                    : ""}
                 >
-                  <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center mr-3 text-sm font-bold">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-medium">
-                      {module.name || `Módulo ${index + 1}`}
-                    </div>
-                    <div className="text-gray-300 text-sm truncate">
-                      {module.description}
-                    </div>
-                  </div>
+                  {!sidebarExpanded
+                    ? (
+                      <>
+                        <div className="relative">
+                          <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-sm font-bold">
+                            {index + 1}
+                          </div>
+                        </div>
+                        {/* Tooltip */}
+                        <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                          {module.name || `Módulo ${index + 1}`}
+                          <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800">
+                          </div>
+                        </div>
+                      </>
+                    )
+                    : (
+                      <>
+                        <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center mr-3 text-sm font-bold">
+                          {index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-medium">
+                            {module.name || `Módulo ${index + 1}`}
+                          </div>
+                          <div className="text-gray-300 text-sm truncate">
+                            {module.description}
+                          </div>
+                        </div>
+                      </>
+                    )}
                 </button>
               </li>
             ))}
@@ -325,17 +405,27 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
 
         {/* Footer del sidebar */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center mr-3">
-              <i className="fas fa-user text-white"></i>
-            </div>
-            <div>
-              <p className="font-medium">
-                {currentUser?.username || "Usuario"}
-              </p>
-              <p className="text-gray-400 text-sm">Aprendiendo</p>
-            </div>
-          </div>
+          {sidebarExpanded
+            ? (
+              <div className="flex items-center">
+                <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center mr-3">
+                  <i className="fas fa-user text-white"></i>
+                </div>
+                <div>
+                  <p className="font-medium">
+                    {currentUser?.username || "Usuario"}
+                  </p>
+                  <p className="text-gray-400 text-sm">Aprendiendo</p>
+                </div>
+              </div>
+            )
+            : (
+              <div className="flex justify-center">
+                <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center">
+                  <i className="fas fa-user text-white"></i>
+                </div>
+              </div>
+            )}
         </div>
       </aside>
 
