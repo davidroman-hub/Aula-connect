@@ -30,7 +30,7 @@ export function AdminDashboards() {
   const [courses, setCourses] = useState([] as any[]);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isModuleCreated, setIsModuleCreated] = useState(false);
   const [isModuleError, setIsModuleError] = useState("");
 
@@ -142,14 +142,6 @@ export function AdminDashboards() {
 
   return (
     <div className={`dashboard-grid  ${sidebarOpen ? "sidebar-open" : ""}`}>
-      {/* Overlay para móviles */}
-      <div
-        className="overlay"
-        onClick={() =>
-          setSidebarOpen(false)}
-      >
-      </div>
-
       {/* Sidebar */}
       <Sidebar
         view={view}

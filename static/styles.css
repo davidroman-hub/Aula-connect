@@ -116,15 +116,54 @@
 .dashboard-grid {
   display: grid;
   grid-template-columns: 280px 1fr;
-
   grid-template-areas:
     "sidebar header"
     "sidebar main";
+  transition: grid-template-columns 0.3s ease;
+}
+
+/* Cuando el sidebar está minimizado en desktop */
+.dashboard-grid:not(.sidebar-open) {
+  grid-template-columns: 64px 1fr;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  transform: translateX(0);
+  position: fixed;
+  z-index: 40;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  transition: width 0.3s ease;
+}
+
+/* Sidebar siempre visible en desktop */
+.sidebar-open .sidebar {
+  width: 280px;
+}
+
+.dashboard-grid:not(.sidebar-open) .sidebar {
+  width: 64px;
+}
+
+/* Overlay para móviles */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 30;
+  border: none;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
   .dashboard-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     grid-template-areas:
       "header"
       "main";
@@ -132,36 +171,17 @@
 
   .sidebar {
     transform: translateX(-100%);
-    position: fixed;
-    z-index: 40;
-    top: 0;
-    left: 0;
-    height: 100vh;
     transition: transform 0.3s ease;
+    width: 280px !important;
   }
 
   .sidebar-open .sidebar {
     transform: translateX(0);
   }
 
-  .overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 30;
-  }
-
   .sidebar-open .overlay {
     display: block;
   }
-}
-
-.sidebar {
-  grid-area: sidebar;
 }
 
 .header {
