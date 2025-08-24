@@ -1,5 +1,6 @@
 import { manageFontColorDash, palette } from "../../assets/colors.ts";
 import { Student } from "../../routes/api/users/user.tsx";
+import ProgressCharts from "./adminCharts.tsx";
 
 function AdminDashboard({ students, courses }: any) {
   // Calcular estadísticas
@@ -135,27 +136,12 @@ function AdminDashboard({ students, courses }: any) {
       </div>
 
       {/* Gráficos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="gap-6 mb-8">
         <div className="bg-white rounded-xl shadow p-6">
           <h3 className="text-lg font-bold text-gray-800 mb-4">
             Progreso Mensual
           </h3>
-          {
-            /* <div className="chart-container">
-            <ChartComponent type="line" data={progressData} />
-          </div> */
-          }
-        </div>
-
-        <div className="bg-white rounded-xl shadow p-6">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">
-            Progreso por Módulo
-          </h3>
-          {
-            /* <div className="chart-container">
-            <ChartComponent type="bar" data={moduleProgressData} />
-          </div> */
-          }
+          <ProgressCharts />
         </div>
       </div>
 

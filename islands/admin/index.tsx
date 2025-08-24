@@ -141,9 +141,14 @@ export function AdminDashboards() {
   }, [isModuleCreated]);
 
   return (
-    <div className={`dashboard-grid ${sidebarOpen ? "sidebar-open" : ""}`}>
+    <div className={`dashboard-grid  ${sidebarOpen ? "sidebar-open" : ""}`}>
       {/* Overlay para móviles */}
-      <div className="overlay" onClick={() => setSidebarOpen(false)}></div>
+      <div
+        className="overlay"
+        onClick={() =>
+          setSidebarOpen(false)}
+      >
+      </div>
 
       {/* Sidebar */}
       <Sidebar
@@ -157,7 +162,10 @@ export function AdminDashboards() {
       <HeaderAdminDashboard setSidebarOpen={setSidebarOpen} />
 
       {/* Main Content */}
-      <main className="main p-4 md:p-6 overflow-y-auto">
+      <main
+        style={{ padding: "46px" }}
+        className="main md:p-6 overflow-y-auto"
+      >
         {view === "dashboard" && (
           <AdminDashboard students={students} courses={courses} />
         )}

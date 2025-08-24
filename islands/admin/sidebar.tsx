@@ -11,7 +11,13 @@ function DashboardSidebar({ view, setView, sidebarOpen, setSidebarOpen }: any) {
   ];
 
   return (
-    <aside className={`sidebar bg-[${palette.primary}] text-white`}>
+    <aside
+      style={{
+        position: "fixed",
+        height: "-webkit-fill-available",
+      }}
+      className={`sidebar bg-[${palette.primary}] text-white`}
+    >
       <div className="p-4 border-b border-gray-700 flex items-center justify-between">
         <div className="flex items-center">
           <div className="bg-accent rounded-lg p-2 mr-3">
