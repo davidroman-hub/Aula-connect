@@ -167,6 +167,7 @@ export function AdminDashboards() {
             students={students}
             openStudentDetail={openStudentDetail}
             getStudents={getStudents}
+            courses={courses}
           />
         )}
         {view === "studentDetail" && (

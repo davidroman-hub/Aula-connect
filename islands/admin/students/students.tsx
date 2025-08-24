@@ -1,5 +1,6 @@
 import { palette } from "../../../assets/colors.ts";
 import type { Student } from "../../../routes/api/users/user.tsx";
+import { Course } from "../../../types/course.ts";
 import StudentUpdate from "./studentUpdate.tsx";
 
 type StudentsProps = {
@@ -7,11 +8,49 @@ type StudentsProps = {
   openStudentDetail: (student: Student) => void;
   getCourses: () => Promise<any[]>;
   getStudents: () => Promise<any[]>;
+  courses: Course[];
 };
 
 function Students(
-  { students, openStudentDetail, getCourses, getStudents }: StudentsProps,
+  { students, openStudentDetail, getCourses, getStudents, courses }:
+    StudentsProps,
 ) {
+  if (!students) return null;
+
+  const StudentsNewObject = students?.map((student) => {
+    const currentCoursesIds = [
+      ...new Set(student.currentLesson.map((module) => module.courseId)),
+    ];
+
+    const coursesResults = courses?.filter((course) =>
+      currentCoursesIds.includes(course._id)
+    );
+
+    const progressObject = coursesResults?.map((course) => {
+      const studentModules = student.currentLesson?.filter((module) =>
+        module.courseId === course._id
+      );
+      const totalModules = course.modules.length;
+      const completedModules = studentModules.filter((module) =>
+        module.status === "done"
+      ).length;
+
+      const progress = totalModules > 0
+        ? Math.round((completedModules / totalModules) * 100)
+        : 0;
+
+      return progress;
+    });
+
+    return {
+      ...student,
+      progress: Math.trunc(
+        progressObject.reduce((acc, val) => acc + val, 0) /
+            progressObject.length || 0,
+      ),
+    };
+  });
+
   return (
     <div>
       <div className="flex justify-between  items-center mb-6">
@@ -44,7 +83,7 @@ function Students(
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {students.map((student: Student) => (
+              {StudentsNewObject.map((student) => (
                 <tr key={student.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -61,14 +100,16 @@ function Students(
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-32 mr-3">
+                      <div className="w-16 mr-3">
                         <div className="progress-bar bg-gray-200">
-                          <div className="bg-primary h-full" // style={{ width: `${student.progress}%` }}
+                          <div
+                            className="bg-primary h-full"
+                            style={{ width: `${student.progress}%` }}
                           >
                           </div>
                         </div>
                       </div>
-                      {/* <span className="text-gray-600">{student.progress}%</span> */}
+                      <span className="text-gray-600">{student.progress}%</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -84,6 +125,11 @@ function Students(
                       student={student}
                       getStudents={getStudents}
                     />
+
+                    <div className="text-gray-400 text-sm mt-2">
+                      Ultima actividad:{" "}
+                      {new Date(student.updatedAt).toLocaleDateString()}
+                    </div>
                   </td>
                 </tr>
               ))}

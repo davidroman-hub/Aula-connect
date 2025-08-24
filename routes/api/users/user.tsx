@@ -19,6 +19,7 @@ export type Student = {
   currentLesson: CurrentLesson[];
   password?: string;
   type: string;
+  updatedAt: string | Date;
 };
 
 export const handler: Handlers = {
