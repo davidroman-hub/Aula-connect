@@ -144,7 +144,6 @@ const Navbar = () => {
 
   const sections = [
     { id: "home", label: "Home", link: "" },
-    { id: "pricing", label: "   Pricing", link: "pricing" },
     { id: "work-with-me", label: " Work with me!", link: "work-with-me" },
   ];
 
@@ -298,19 +297,18 @@ const Navbar = () => {
               onClick={() => handleSectionChange("home")}
               className="block"
             >
-              <div
-                style={{ background: palette.backgroundSoft }}
-                className="w-13 h-13 rounded-full flex items-center justify-center"
-              >
+              <div //style={{ background: palette.backgroundSoft }}
+               className="w-20 h-20 rounded-full flex items-center p-1 justify-center">
                 <img
-                  src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1754490890/learningplat/logo_qkfxhw.png"
+                  src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1756059641/learningplat/aulaconnect_pfphcz.png"
                   alt="logo"
                   className="cursor-pointer"
                 />
               </div>
             </a>
 
-            <button
+            {
+              /* <button
               onClick={() => {
                 window.location.reload();
               }}
@@ -321,7 +319,8 @@ const Navbar = () => {
               {theme === "dark"
                 ? <i className="fas fa-sun text-yellow-400"></i>
                 : <i className="fas fa-moon text-gray-700"></i>}
-            </button>
+            </button> */
+            }
           </div>
 
           {/* Desktop Navigation */}

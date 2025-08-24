@@ -60,12 +60,13 @@ function DashboardSidebar(
               <>
                 <div className="flex items-center">
                   <div
-                    className={`bg-[${palette.backgroundSoft}] rounded-full p-2 mr-3`}
+                    style={{ background: palette.backgroundSoft }}
+                    className="w-13 h-13 rounded-full flex items-center p-1 justify-center mr-2"
                   >
                     <img
                       src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1756059842/learningplat/aulaConnectNolleters_fvei4p.png"
-                      alt="Logo"
-                      className="w-15 h-15"
+                      alt="logo"
+                      className="cursor-pointer"
                     />
                   </div>
                   <h2 className="text-xl font-bold">Aula Connect</h2>
