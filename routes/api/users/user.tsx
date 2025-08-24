@@ -1,12 +1,8 @@
 import { Handlers, STATUS_CODE } from "$fresh/server.ts";
-
 import { requireAdmin } from "../../../middleware/auth.ts";
-
 import { db } from "../../../lib/mongo.ts";
-
 import { ObjectId } from "https://deno.land/x/web_bson@v0.3.0/mod.js";
 import { Course } from "../../../types/course.ts";
-import { Module } from "../modules/module.tsx";
 import { CurrentLesson } from "../../../types/users.ts";
 
 const usersCollection = db.collection("users");
@@ -20,6 +16,8 @@ export type Student = {
   password?: string;
   type: string;
   updatedAt: string | Date;
+  homework?: any[];
+  appointments?: any[];
 };
 
 export const handler: Handlers = {
@@ -49,6 +47,8 @@ export const handler: Handlers = {
       createdAt: new Date(),
       updatedAt: null,
       currentLesson: [],
+      homework: [],
+      appointments: [],
     });
 
     return new Response("User created", { status: 201 });
