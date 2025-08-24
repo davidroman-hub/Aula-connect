@@ -174,6 +174,12 @@ const StudentUpdate = (
     }, 2000);
   }
 
+  const coursesFilterdFromStudent = courses?.filter((course) =>
+    !student.currentLesson.find((studentCourse) =>
+      studentCourse.courseId === course._id
+    )
+  );
+
   return (
     <div className="flex items-center justify-center p-4">
       <button
@@ -305,7 +311,7 @@ const StudentUpdate = (
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition pr-8 text-black"
                   >
                     <option value="">Add Course...</option>
-                    {courses.filter((course) => {
+                    {coursesFilterdFromStudent.filter((course) => {
                       const isSelected = formData.course.some(
                         (selectedCourse) =>
                           typeof selectedCourse === "string"
