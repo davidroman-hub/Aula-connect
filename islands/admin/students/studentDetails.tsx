@@ -16,25 +16,86 @@ function StudentDetail(
     ...new Set(student.currentLesson.map((module) => module.courseId)),
   ];
 
-  const coursesResults = courses.filter((course) =>
+  const coursesResults = courses?.filter((course) =>
     currentCoursesIds.includes(course._id)
   );
 
-  const elcomponente = () => {
+  const progressObject = coursesResults?.map((course) => {
+    const studentModules = student.currentLesson?.filter((module) =>
+      module.courseId === course._id
+    );
+    const totalModules = course.modules.length;
+    const completedModules = studentModules.filter((module) =>
+      module.status === "done"
+    ).length;
+
+    const progress = totalModules > 0
+      ? Math.round((completedModules / totalModules) * 100)
+      : 0;
+
+    return {
+      courseId: course._id,
+      courseName: course.name,
+      studentModules,
+      progress,
+    };
+  });
+
+  const generalProgress =
+    progressObject.reduce((acc, course) => acc + course.progress, 0) /
+      progressObject.length || 0;
+
+  const RenderStudentCourses = () => {
     return (
-      <div className="collapse bg-base-100 border-base-300 border">
-        <input type="checkbox" />
-        <div className="collapse-title font-semibold">
-          How do I create an account?
-        </div>
-        <div className="collapse-content text-sm">
-          Click the "Sign Up" button in the top right corner and follow the
-          registration process.
-        </div>
-      </div>
+      <>
+        {progressObject?.map((course) => (
+          <div
+            key={course.courseId}
+            className="collapse bg-base-100 border-base-300 border mb-2"
+          >
+            <input type="checkbox" />
+            <div className="collapse-title font-semibold">
+              <div>
+                <div className="progress-bar bg-gray-200">
+                  <div
+                    className={`h-full ${
+                      course.progress >= 80
+                        ? "bg-green-500"
+                        : course.progress >= 50
+                        ? "bg-yellow-500"
+                        : "bg-red-500"
+                    }`}
+                    style={{ width: `${course.progress}%` }}
+                  >
+                  </div>
+                </div>
+              </div>
+              {course.courseName} - Progreso: {course.progress || 0} %
+            </div>
+            <div className="collapse-content text-sm">
+              {course.studentModules?.map((module) => (
+                <div
+                  key={module.moduleId}
+                  className="flex justify-between mb-2"
+                >
+                  <span>{module.moduleName}</span>
+                  <span
+                    className={`px-2 py-1 rounded text-xs ${
+                      module.status === "done"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {module.status === "done" ? "Completado" : "En progreso"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </>
     );
   };
-  console.log(coursesResults);
 
   return (
     <div>
@@ -63,13 +124,13 @@ function StudentDetail(
                 <div className="progress-bar bg-gray-200">
                   <div
                     className="bg-primary h-full"
-                    style={{ width: `${100}%` }}
+                    style={{ width: `${generalProgress}%` }}
                   >
                   </div>
                 </div>
               </div>
               <span className="text-lg font-bold text-gray-800">
-                {100}%
+                {Math.trunc(generalProgress)}%
               </span>
             </div>
             <p className="text-gray-500 mt-1">Progreso general</p>
@@ -81,58 +142,9 @@ function StudentDetail(
         <h3 className="text-lg font-bold text-gray-800 mb-4">
           Progreso por Curso
         </h3>
-
-        {
-          /* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {student.modules.map((module: any) => (
-            <div
-              key={module.id}
-              className="border rounded-lg p-4 hover:bg-gray-50 transition"
-            >
-              <div className="flex justify-between mb-3">
-                <h4 className="font-bold">{module.name}</h4>
-                <span
-                  className={`px-2 py-1 rounded text-xs ${
-                    module.progress >= 80
-                      ? "bg-green-100 text-green-800"
-                      : module.progress >= 50
-                      ? "bg-yellow-100 text-yellow-800"
-                      : "bg-red-100 text-red-800"
-                  }`}
-                >
-                  {module.progress >= 80
-                    ? "Excelente"
-                    : module.progress >= 50
-                    ? "En progreso"
-                    : "Necesita apoyo"}
-                </span>
-              </div>
-              <div className="mb-2">
-                <p className="text-gray-600 mb-1">
-                  Progreso: {module.progress}%
-                </p>
-                <div className="progress-bar bg-gray-200">
-                  <div
-                    className={`h-full ${
-                      module.progress >= 80
-                        ? "bg-green-500"
-                        : module.progress >= 50
-                        ? "bg-yellow-500"
-                        : "bg-red-500"
-                    }`}
-                    style={{ width: `${module.progress}%` }}
-                  >
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between text-sm text-gray-500">
-                <span>0%</span>
-                <span>100%</span>
-              </div>
-            </div>
-          ))}
-        </div> */
-        }
+        {coursesResults && coursesResults.length > 0
+          ? <RenderStudentCourses />
+          : <p>El estudiante no ha iniciado ningún curso.</p>}
       </div>
     </div>
   );
