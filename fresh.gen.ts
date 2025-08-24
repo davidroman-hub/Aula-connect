@@ -64,6 +64,11 @@ import * as $helpers_TokenInitializer from "./islands/helpers/TokenInitializer.t
 import * as $helpers_index from "./islands/helpers/index.tsx";
 import * as $helpers_tokenRedirect from "./islands/helpers/tokenRedirect.tsx";
 import * as $login_index_1 from "./islands/login/index.tsx";
+import * as $main_aulaConnect_AllYouNeed from "./islands/main/aulaConnect/AllYouNeed.tsx";
+import * as $main_aulaConnect_HeroAula from "./islands/main/aulaConnect/HeroAula.tsx";
+import * as $main_aulaConnect_HowItWorks from "./islands/main/aulaConnect/HowItWorks.tsx";
+import * as $main_aulaConnect_JoinAsAProfessor from "./islands/main/aulaConnect/JoinAsAProfessor.tsx";
+import * as $main_aulaConnect_Pricing from "./islands/main/aulaConnect/Pricing.tsx";
 import * as $main_courses from "./islands/main/courses.tsx";
 import * as $main_footer from "./islands/main/footer.tsx";
 import * as $main_head from "./islands/main/head.tsx";
@@ -155,6 +160,12 @@ const manifest = {
     "./islands/helpers/index.tsx": $helpers_index,
     "./islands/helpers/tokenRedirect.tsx": $helpers_tokenRedirect,
     "./islands/login/index.tsx": $login_index_1,
+    "./islands/main/aulaConnect/AllYouNeed.tsx": $main_aulaConnect_AllYouNeed,
+    "./islands/main/aulaConnect/HeroAula.tsx": $main_aulaConnect_HeroAula,
+    "./islands/main/aulaConnect/HowItWorks.tsx": $main_aulaConnect_HowItWorks,
+    "./islands/main/aulaConnect/JoinAsAProfessor.tsx":
+      $main_aulaConnect_JoinAsAProfessor,
+    "./islands/main/aulaConnect/Pricing.tsx": $main_aulaConnect_Pricing,
     "./islands/main/courses.tsx": $main_courses,
     "./islands/main/footer.tsx": $main_footer,
     "./islands/main/head.tsx": $main_head,
