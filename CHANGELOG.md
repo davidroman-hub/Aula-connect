@@ -4,6 +4,7 @@
 
 - Add handler para cubrir el login del admin
 - Add aula connect logo en el admin dashboard
+- Add patch edit users courses in admin dashboard allows duplicated course
 
 **v1.1.0**
 
