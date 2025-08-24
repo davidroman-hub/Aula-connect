@@ -13,6 +13,8 @@ import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { updateCourseModuleOptions } from "./adminActions/index.ts";
 
 import { authenticatedGet } from "../../lib/apiHelpers.ts";
+import { Course } from "../../types/course.ts";
+import { Student } from "../../routes/api/users/user.tsx";
 
 // Para el tipo del módulo
 interface ModuleData {
@@ -26,11 +28,11 @@ export function AdminDashboards() {
   const UserInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
   const [view, setView] = useState("dashboard");
-  const [students, setStudents] = useState([] as any[]);
-  const [courses, setCourses] = useState([] as any[]);
+  const [students, setStudents] = useState([] as Student[]);
+  const [courses, setCourses] = useState([] as Course[]);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isModuleCreated, setIsModuleCreated] = useState(false);
   const [isModuleError, setIsModuleError] = useState("");
 

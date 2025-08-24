@@ -97,7 +97,7 @@ function DashboardSidebar(
                       setSidebarOpen(false);
                     }
                   }}
-                  className={`cursor-pointer w-full text-left flex items-center ${
+                  className={`cursor-pointer w-full text-left flex items-center relative group ${
                     sidebarOpen ? "p-3" : "p-3 justify-center"
                   } rounded-lg transition ${
                     view === item.id
@@ -113,6 +113,15 @@ function DashboardSidebar(
                   >
                   </i>
                   {sidebarOpen && <span>{item.label}</span>}
+
+                  {/* Tooltip que aparece solo cuando está minimizado */}
+                  {!sidebarOpen && (
+                    <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                      {item.label}
+                      <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800">
+                      </div>
+                    </div>
+                  )}
                 </button>
               </li>
             ))}

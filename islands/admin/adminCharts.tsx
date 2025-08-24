@@ -9,6 +9,8 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+import { Course } from "../../types/course.ts";
+import { Student } from "../../routes/api/users/user.tsx";
 
 // Register Chart.js components including BarController
 Chart.register(
@@ -22,67 +24,83 @@ Chart.register(
 );
 
 interface StudentProgress {
-  name: string;
+  username: string;
   progress: number;
   completedModules: number;
   totalModules: number;
 }
 
-const ProgressCharts = () => {
+type ProgressChartsProps = {
+  courses: Course[];
+  students: Student[];
+};
+
+const ProgressCharts = ({ courses, students }: ProgressChartsProps) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  // Sample data - en una aplicación real, esto vendría de props o de una API
-  const studentData: StudentProgress[] = [
-    {
-      name: "Ana García",
-      progress: 85,
-      completedModules: 17,
-      totalModules: 20,
-    },
-    {
-      name: "Carlos López",
-      progress: 72,
-      completedModules: 14,
-      totalModules: 20,
-    },
-    {
-      name: "María Silva",
-      progress: 93,
-      completedModules: 19,
-      totalModules: 20,
-    },
-    {
-      name: "Pedro Ruiz",
-      progress: 60,
-      completedModules: 12,
-      totalModules: 20,
-    },
-    {
-      name: "Laura Díaz",
-      progress: 78,
-      completedModules: 15,
-      totalModules: 20,
-    },
-    {
-      name: "Juan Torres",
-      progress: 88,
-      completedModules: 18,
-      totalModules: 20,
-    },
-  ];
+  const [studentData, setStudentData] = useState<StudentProgress[]>([]);
+
+  const calculateStudentData = () => {
+    return students?.map((student) => {
+      const currentCoursesIds = [
+        ...new Set(student.currentLesson.map((module) => module.courseId)),
+      ];
+
+      const coursesResults = courses?.filter((course) =>
+        currentCoursesIds.includes(course._id)
+      );
+
+      const progressObject = coursesResults?.map((course) => {
+        const studentModules = student.currentLesson?.filter((module) =>
+          module.courseId === course._id
+        );
+        const totalModules = course.modules.length;
+        const completedModules = studentModules.filter((module) =>
+          module.status === "done"
+        ).length;
+
+        const progress = totalModules > 0
+          ? Math.round((completedModules / totalModules) * 100)
+          : 0;
+
+        return progress;
+      });
+
+      return {
+        username: student.username,
+        completedModules: student.currentLesson.filter((m) =>
+          m.status === "done"
+        )
+          .length,
+        totalModules: student.currentLesson.length,
+        progress: Math.trunc(
+          progressObject.reduce((acc, val) => acc + val, 0) /
+              progressObject.length || 0,
+        ),
+      };
+    }) || [];
+  };
 
   useEffect(() => {
-    console.log("Chart effect running...");
     setIsLoading(true);
     setHasError(false);
+
+    // Calcular y actualizar los datos de estudiantes
+    const calculatedData = calculateStudentData();
+    setStudentData(calculatedData);
+
+    // No crear el chart si no hay datos
+    if (!calculatedData || calculatedData.length === 0) {
+      setIsLoading(false);
+      return;
+    }
 
     // Delay to ensure DOM is ready
     const timer = setTimeout(() => {
       if (!chartRef.current) {
-        console.log("Chart ref not available");
         setHasError(true);
         setIsLoading(false);
         return;
@@ -90,22 +108,10 @@ const ProgressCharts = () => {
 
       const ctx = chartRef.current.getContext("2d");
       if (!ctx) {
-        console.log("Context not available");
         setHasError(true);
         setIsLoading(false);
         return;
       }
-
-      // Destroy previous instance if it exists
-      if (chartInstance.current) {
-        try {
-          chartInstance.current.destroy();
-        } catch (e) {
-          console.log("Error destroying previous chart:", e);
-        }
-      }
-
-      console.log("Creating chart with data:", studentData);
 
       try {
         // Clear the canvas
@@ -114,11 +120,13 @@ const ProgressCharts = () => {
         chartInstance.current = new Chart(ctx, {
           type: "bar",
           data: {
-            labels: studentData.map((student) => student.name.split(" ")[0]), // Solo primer nombre
+            labels: calculatedData.map((student) =>
+              student.username.split(" ")[0]
+            ), // Solo primer nombre
             datasets: [
               {
                 label: "Progreso (%)",
-                data: studentData.map((student) => student.progress),
+                data: calculatedData.map((student) => student.progress),
                 backgroundColor: [
                   "rgba(59, 130, 246, 0.7)",
                   "rgba(16, 185, 129, 0.7)",
@@ -166,11 +174,9 @@ const ProgressCharts = () => {
           },
         });
 
-        console.log("Chart created successfully");
         setIsLoading(false);
         setHasError(false);
       } catch (error) {
-        console.error("Error creating chart:", error);
         setHasError(true);
         setIsLoading(false);
 
@@ -202,7 +208,7 @@ const ProgressCharts = () => {
         }
       }
     };
-  }, []);
+  }, [students, courses]); // Agregar dependencias para recalcular cuando cambien
 
   return (
     <div className="w-full bg-white rounded-lg shadow-lg p-6">
@@ -235,7 +241,7 @@ const ProgressCharts = () => {
                 Total Estudiantes
               </p>
               <p className="text-2xl font-bold text-blue-900">
-                {studentData.length}
+                {studentData?.length || 0}
               </p>
             </div>
           </div>
@@ -264,12 +270,14 @@ const ProgressCharts = () => {
                 Progreso Promedio
               </p>
               <p className="text-2xl font-bold text-green-900">
-                {Math.round(
-                  studentData.reduce(
-                    (acc, student) => acc + student.progress,
-                    0,
-                  ) / studentData.length,
-                )}%
+                {studentData && studentData.length > 0
+                  ? Math.round(
+                    studentData.reduce(
+                      (acc, student) => acc + student.progress,
+                      0,
+                    ) / studentData.length,
+                  )
+                  : 0}%
               </p>
             </div>
           </div>
@@ -298,7 +306,9 @@ const ProgressCharts = () => {
                 Mejor Estudiante
               </p>
               <p className="text-2xl font-bold text-yellow-900">
-                {Math.max(...studentData.map((s) => s.progress))}%
+                {studentData && studentData.length > 0
+                  ? Math.max(...studentData.map((s) => s.progress))
+                  : 0}%
               </p>
             </div>
           </div>
@@ -348,71 +358,86 @@ const ProgressCharts = () => {
           Detalle de Estudiantes
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {studentData.map((student) => {
-            const getStatusColor = (progress: number) => {
-              if (
-                progress >= 90
-              ) return "bg-green-100 text-green-800 border-green-200";
-              if (
-                progress >= 70
-              ) return "bg-yellow-100 text-yellow-800 border-yellow-200";
-              return "bg-red-100 text-red-800 border-red-200";
-            };
+          {studentData && studentData.length > 0
+            ? studentData.map((student) => {
+              const getStatusColor = (progress: number) => {
+                if (
+                  progress >= 65
+                ) return "bg-green-100 text-green-800 border-green-200";
+                if (
+                  progress >= 40
+                ) return "bg-yellow-100 text-yellow-800 border-yellow-200";
+                return "bg-red-100 text-red-800 border-red-200";
+              };
 
-            const getStatusText = (progress: number) => {
-              if (progress >= 90) return "Excelente";
-              if (progress >= 70) return "En progreso";
-              return "Necesita apoyo";
-            };
+              const getStatusText = (progress: number) => {
+                if (progress >= 65) return "Excelente";
+                if (progress >= 40) return "En progreso";
+                return "Necesita apoyo";
+              };
 
-            return (
-              <div
-                key={student.name}
-                className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center mb-3">
-                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-                    {student.name.split(" ").map((n) => n[0]).join("")}
-                  </div>
-                  <div className="ml-3">
-                    <h4 className="text-sm font-medium text-gray-900">
-                      {student.name}
-                    </h4>
-                    <p className="text-xs text-gray-500">
-                      {student.completedModules}/{student.totalModules} módulos
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Progreso</span>
-                    <span className="text-sm font-semibold text-gray-900">
-                      {student.progress}%
-                    </span>
-                  </div>
-
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${student.progress}%` }}
-                    >
+              return (
+                <div
+                  key={student.username}
+                  className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-center mb-3">
+                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                      {student.username.split(" ").map((n) => n[0]).join("")}
+                    </div>
+                    <div className="ml-3">
+                      <h4 className="text-sm font-medium text-gray-900">
+                        {student.username}
+                      </h4>
+                      <p className="text-xs text-gray-500">
+                        {student.completedModules}/{student.totalModules}{" "}
+                        módulos
+                      </p>
                     </div>
                   </div>
 
-                  <div className="pt-2">
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full border ${
-                        getStatusColor(student.progress)
-                      }`}
-                    >
-                      {getStatusText(student.progress)}
-                    </span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Progreso</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {student.progress}%
+                      </span>
+                    </div>
+
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${student.progress}%` }}
+                      >
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full border ${
+                          getStatusColor(student.progress)
+                        }`}
+                      >
+                        {getStatusText(student.progress)}
+                      </span>
+                    </div>
                   </div>
                 </div>
+              );
+            })
+            : (
+              <div className="col-span-full text-center py-8">
+                <div className="text-gray-500">
+                  <i className="fas fa-users text-4xl mb-4 block"></i>
+                  <p className="text-lg font-medium">
+                    No hay datos de estudiantes
+                  </p>
+                  <p className="text-sm">
+                    Los datos aparecerán aquí cuando estén disponibles
+                  </p>
+                </div>
               </div>
-            );
-          })}
+            )}
         </div>
       </div>
     </div>

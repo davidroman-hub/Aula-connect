@@ -17,49 +17,6 @@ function AdminDashboard({ students, courses }: any) {
     .sort((a, b) => b.progress - a.progress)
     .slice(0, 3);
 
-  // Datos para gráficos
-  const progressData = {
-    labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun"],
-    datasets: [
-      {
-        label: "Progreso Promedio",
-        data: [45, 55, 60, 70, 75, 80],
-        borderColor: "#4361ee",
-        backgroundColor: "rgba(67, 97, 238, 0.1)",
-        tension: 0.4,
-        fill: true,
-      },
-    ],
-  };
-
-  const moduleProgressData = {
-    labels: [
-      "Fundamentos JS",
-      "React Básico",
-      "React Avanzado",
-      "Bases de Datos",
-    ],
-    datasets: [
-      {
-        label: "Progreso Promedio",
-        data: [90, 75, 55, 65],
-        backgroundColor: [
-          "rgba(67, 97, 238, 0.7)",
-          "rgba(76, 201, 240, 0.7)",
-          "rgba(247, 37, 133, 0.7)",
-          "rgba(72, 149, 239, 0.7)",
-        ],
-        borderColor: [
-          "#4361ee",
-          "#4cc9f0",
-          "#f72585",
-          "#4895ef",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
   return (
     <div>
       <h2 className={`text-2xl font-bold text-[${palette.primary}] mb-6`}>
@@ -67,7 +24,7 @@ function AdminDashboard({ students, courses }: any) {
       </h2>
 
       {/* Cards de estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white rounded-xl shadow p-6 card-hover transition-all duration-300">
           <div className="flex justify-between items-center">
             <div>
@@ -107,32 +64,6 @@ function AdminDashboard({ students, courses }: any) {
             </p>
           </div>
         </div>
-
-        <div className="bg-white rounded-xl shadow p-6 card-hover transition-all duration-300">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-gray-500">Progreso Promedio</p>
-              <h3 className="text-3xl font-bold text-gray-800">
-                {avgProgress}%
-              </h3>
-            </div>
-            <div className="bg-green-100 p-3 rounded-full">
-              <i className="fas fa-chart-line text-success text-xl"></i>
-            </div>
-          </div>
-          <div className="mt-4">
-            <div className="progress-bar bg-gray-200">
-              <div
-                className="bg-success h-full"
-                style={{ width: `${avgProgress}%` }}
-              >
-              </div>
-            </div>
-            <p className="text-gray-500 text-sm mt-2">
-              +5% desde la semana pasada
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* Gráficos */}
@@ -141,44 +72,7 @@ function AdminDashboard({ students, courses }: any) {
           <h3 className="text-lg font-bold text-gray-800 mb-4">
             Progreso Mensual
           </h3>
-          <ProgressCharts />
-        </div>
-      </div>
-
-      {/* Top estudiantes */}
-      <div className="bg-white rounded-xl shadow p-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">
-          Top Estudiantes
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {topStudents.map((student: Student) => (
-            <div
-              key={student.id}
-              className="border rounded-lg p-4 hover:bg-gray-50 transition"
-            >
-              <div className="flex items-center mb-3">
-                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center mr-3">
-                  <i className="fas fa-user text-white"></i>
-                </div>
-                <div>
-                  <h4 className="font-bold">{student.username}</h4>
-                  <p className="text-gray-500 text-sm">{student.password}</p>
-                </div>
-              </div>
-              <div>
-                <p className="text-gray-600 mb-1">
-                  Progreso: {100}%
-                </p>
-                <div className="progress-bar bg-gray-200">
-                  <div
-                    className="bg-primary h-full"
-                    style={{ width: `${100}%` }}
-                  >
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+          <ProgressCharts courses={courses} students={students} />
         </div>
       </div>
     </div>
