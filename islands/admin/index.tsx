@@ -36,6 +36,40 @@ export function AdminDashboards() {
   const [isModuleCreated, setIsModuleCreated] = useState(false);
   const [isModuleError, setIsModuleError] = useState("");
 
+  // Verificar si el usuario es admin
+  useEffect(() => {
+    if (!UserInfo || UserInfo.type !== "admin") {
+      // Redirigir a la página principal o login si no es admin
+      globalThis.location.href = "/";
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (UserInfo && UserInfo.type === "admin") {
+      getStudents();
+      getCourses();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (UserInfo && UserInfo.type === "admin") {
+      getCourses();
+    }
+  }, [isModuleCreated]);
+
+  // Si no es admin, no renderizar el dashboard completo
+  if (!UserInfo || UserInfo.type !== "admin") {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold mb-2">Acceso denegado</h2>
+          <p className="text-gray-600">Redirigiendo...</p>
+        </div>
+      </div>
+    );
+  }
+
   const getStudents = async () => {
     try {
       // Usar el helper autenticado con refresh automático
@@ -132,15 +166,6 @@ export function AdminDashboards() {
       setIsModuleError("");
     }, 2000);
   }
-
-  useEffect(() => {
-    getStudents();
-    getCourses();
-  }, []);
-
-  useEffect(() => {
-    getCourses();
-  }, [isModuleCreated]);
 
   return (
     <div className={`dashboard-grid  ${sidebarOpen ? "sidebar-open" : ""}`}>
