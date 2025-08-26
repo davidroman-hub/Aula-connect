@@ -1,15 +1,16 @@
 import { palette } from "../../../assets/colors.ts";
+import { MainComponentsProps } from "../index.tsx";
 
-const AllYouNeed = () => {
+const AllYouNeed = ({ t }: MainComponentsProps) => {
   return (
     <section id="features" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4">
-            Todo lo que necesitas para enseñar en línea
+            {t("main.allYouNeed.title")}
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Herramientas poderosas diseñadas específicamente para educadores.
+            {t("main.allYouNeed.sub")}
           </p>
         </div>
 
@@ -23,9 +24,11 @@ const AllYouNeed = () => {
               >
               </i>
             </div>
-            <h3 className="text-xl font-bold mb-3">Aulas virtuales</h3>
+            <h3 className="text-xl font-bold mb-3">
+              {t("main.allYouNeed.list.item1.title")}
+            </h3>
             <p className="text-gray-600">
-              Soporte para múltiples participantes simultáneos.
+              {t("main.allYouNeed.list.item1.desc")}
             </p>
           </div>
 
@@ -36,10 +39,11 @@ const AllYouNeed = () => {
               <i className={`fas fa-file-alt text-[${palette.hover}] text-2xl`}>
               </i>
             </div>
-            <h3 className="text-xl font-bold mb-3">Gestión de materiales</h3>
+            <h3 className="text-xl font-bold mb-3">
+              {t("main.allYouNeed.list.item2.title")}
+            </h3>
             <p className="text-gray-600">
-              Sube y organiza tus materiales de clase. Comparte documentos,
-              presentaciones y recursos con tus estudiantes.
+              {t("main.allYouNeed.list.item2.desc")}
             </p>
           </div>
 
@@ -50,10 +54,11 @@ const AllYouNeed = () => {
               <i className={`fas fa-tasks text-[${palette.hover}] text-2xl`}>
               </i>
             </div>
-            <h3 className="text-xl font-bold mb-3">Tareas y evaluaciones</h3>
+            <h3 className="text-xl font-bold mb-3">
+              {t("main.allYouNeed.list.item3.title")}
+            </h3>
             <p className="text-gray-600">
-              Crea y califica tareas fácilmente. Sistema de retroalimentación
-              integrado para cada estudiante.
+              {t("main.allYouNeed.list.item3.desc")}
             </p>
           </div>
 
@@ -66,10 +71,11 @@ const AllYouNeed = () => {
               >
               </i>
             </div>
-            <h3 className="text-xl font-bold mb-3">Reportes y análisis</h3>
+            <h3 className="text-xl font-bold mb-3">
+              {t("main.allYouNeed.list.item4.title")}
+            </h3>
             <p className="text-gray-600">
-              Seguimiento del progreso de tus estudiantes. Estadísticas
-              detalladas para mejorar tu enseñanza.
+              {t("main.allYouNeed.list.item4.desc")}
             </p>
           </div>
 
@@ -80,10 +86,11 @@ const AllYouNeed = () => {
               <i className={`fas fa-comments text-[${palette.hover}] text-2xl`}>
               </i>
             </div>
-            <h3 className="text-xl font-bold mb-3">Foros de discusión</h3>
+            <h3 className="text-xl font-bold mb-3">
+              {t("main.allYouNeed.list.item5.title")}
+            </h3>
             <p className="text-gray-600">
-              Espacios colaborativos para preguntas y debates. Mantén la
-              comunicación fuera del horario de clase.
+              {t("main.allYouNeed.list.item5.desc")}
             </p>
           </div>
 
@@ -96,9 +103,11 @@ const AllYouNeed = () => {
               >
               </i>
             </div>
-            <h3 className="text-xl font-bold mb-3">Calendario integrado</h3>
+            <h3 className="text-xl font-bold mb-3">
+              {t("main.allYouNeed.list.item6.title")}
+            </h3>
             <p className="text-gray-600">
-              Programa tus clases y envía recordatorios automáticos.
+              {t("main.allYouNeed.list.item6.desc")}
             </p>
           </div>
         </div>

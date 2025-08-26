@@ -1,6 +1,7 @@
 import { palette } from "../../../assets/colors.ts";
+import { MainComponentsProps } from "../index.tsx";
 
-const Footer = () => {
+const Footer = ({ t }: MainComponentsProps) => {
   return (
     <footer className="bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4">
@@ -17,8 +18,7 @@ const Footer = () => {
               <h3 className="text-xl font-bold text-white">Aula Connect</h3>
             </div>
             <p className="text-gray-400 mb-4">
-              La plataforma líder para profesores que quieren enseñar en línea
-              de manera efectiva y profesional.
+              {t("main.footer.description")}
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white transition">
@@ -40,98 +40,6 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-lg font-bold mb-4">Plataforma</h4>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Características
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Cómo funciona
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Planes y precios
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Aplicación móvil
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Novedades
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-bold mb-4">Recursos</h4>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Centro de ayuda
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Tutoriales
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Webinars
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Comunidad
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
             <h4 className="text-lg font-bold mb-4">Legal</h4>
             <ul className="space-y-3">
               <li>
@@ -139,7 +47,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-400 hover:text-white transition"
                 >
-                  Términos de servicio
+                  {t("main.footer.legal.terms")}
                 </a>
               </li>
               <li>
@@ -147,7 +55,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-400 hover:text-white transition"
                 >
-                  Política de privacidad
+                  {t("main.footer.legal.privacy")}
                 </a>
               </li>
               <li>
@@ -155,7 +63,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-400 hover:text-white transition"
                 >
-                  Política de cookies
+                  {t("main.footer.legal.cookies")}
                 </a>
               </li>
               <li>
@@ -163,7 +71,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-400 hover:text-white transition"
                 >
-                  Contrato del profesor
+                  {t("main.footer.legal.contract")}
                 </a>
               </li>
               <li>
@@ -171,7 +79,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-400 hover:text-white transition"
                 >
-                  Preguntas frecuentes
+                  {t("main.footer.legal.terms")}
                 </a>
               </li>
             </ul>
@@ -179,7 +87,7 @@ const Footer = () => {
         </div>
 
         <div className="pt-8 border-t border-gray-800 text-center text-gray-400">
-          <p>&copy; 2023 Aula Connect. Todos los derechos reservados.</p>
+          <p>&copy; {t("main.footer.rights")}</p>
         </div>
       </div>
     </footer>

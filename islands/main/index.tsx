@@ -8,18 +8,24 @@ import Pricing from "./aulaConnect/Pricing.tsx";
 import Ready from "./aulaConnect/Ready.tsx";
 import Contact from "./aulaConnect/Contact.tsx";
 import Footer from "./aulaConnect/Footer.tsx";
+import { i18n } from "../../i18next.ts";
+
+export type MainComponentsProps = {
+  t: (...args: any[]) => any;
+};
 
 const Main = () => {
+  const { t } = i18n;
   return (
     <>
-      <HeroAula />
-      <AllYouNeed />
-      <HowItWorks />
-      <JoinAsAProfessor />
-      <Pricing />
-      <Ready />
-      <Contact />
-      <Footer />
+      <HeroAula t={t} />
+      <AllYouNeed t={t} />
+      <HowItWorks t={t} />
+      <JoinAsAProfessor t={t} />
+      <Pricing t={t} />
+      <Ready t={t} />
+      <Contact t={t} />
+      <Footer t={t} />
     </>
   );
 };

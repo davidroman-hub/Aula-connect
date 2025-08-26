@@ -1,6 +1,7 @@
 import { palette } from "../../../assets/colors.ts";
+import { MainComponentsProps } from "../index.tsx";
 
-const HowItWorks = () => {
+const HowItWorks = ({ t }: MainComponentsProps) => {
   return (
     <section
       style={{ backgroundColor: palette.primary }}
@@ -10,10 +11,10 @@ const HowItWorks = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4">
-            Cómo funciona Aula Connect
+            {t("main.howItWorks.title")}
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Empieza a enseñar en línea en solo 3 sencillos pasos.
+            {t("main.howItWorks.desc")}
           </p>
         </div>
 
@@ -25,11 +26,10 @@ const HowItWorks = () => {
               </span>
             </div>
             <h3 className="text-2xl font-bold mb-4">
-              Crea tu perfil de profesor
+              {t("main.howItWorks.steps.step1.title")}
             </h3>
             <p className="text-gray-600 mb-6">
-              Regístrate en minutos y completa tu perfil profesional. Añade tu
-              experiencia, especialidades y métodos de enseñanza.
+              {t("main.howItWorks.steps.step1.sub")}
             </p>
             <ul className="space-y-3">
               <li className="flex items-start">
@@ -37,18 +37,12 @@ const HowItWorks = () => {
                   className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}
                 >
                 </i>
-                <span>Verificación de credenciales opcional</span>
+                <span>{t("main.howItWorks.steps.step1.pnt1")}</span>
               </li>
               <li className="flex items-start">
                 <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
                 </i>
-                <span>Sube tu foto y video de presentación</span>
-              </li>
-
-              <li className="flex items-start">
-                <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
-                </i>
-                <span>Define tu disponibilidad horaria</span>
+                <span>{t("main.howItWorks.steps.step1.pnt2")}</span>
               </li>
             </ul>
           </div>
@@ -68,26 +62,42 @@ const HowItWorks = () => {
                 2
               </span>
             </div>
-            <h3 className="text-2xl font-bold mb-4">Configura tus cursos</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              {t("main.howItWorks.steps.step2.title")}
+            </h3>
             <p className="text-gray-600 mb-6">
-              Diseña el plan de estudios, carga tus materiales y establece los
-              objetivos de aprendizaje para cada curso.
+              {t("main.howItWorks.steps.step2.desc")}
             </p>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
                 </i>
-                <span>Estructura por módulos y lecciones</span>
+                <span>{t("main.howItWorks.steps.step2.pnt1")}</span>
               </li>
               <li className="flex items-start">
                 <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
                 </i>
-                <span>Sube videos, PDFs, presentaciones y más</span>
+                <span>{t("main.howItWorks.steps.step2.pnt2")}</span>
               </li>
               <li className="flex items-start">
                 <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
                 </i>
-                <span>Establece requisitos y certificados</span>
+                <span>{t("main.howItWorks.steps.step2.pnt3")}</span>
+              </li>
+              <li className="flex items-start">
+                <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
+                </i>
+                <span>{t("main.howItWorks.steps.step2.pnt4")}</span>
+              </li>
+              <li className="flex items-start">
+                <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
+                </i>
+                <span>{t("main.howItWorks.steps.step2.pnt5")}</span>
+              </li>
+              <li className="flex items-start">
+                <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
+                </i>
+                <span>{t("main.howItWorks.steps.step2.pnt6")}</span>
               </li>
             </ul>
           </div>
@@ -107,27 +117,37 @@ const HowItWorks = () => {
                 3
               </span>
             </div>
-            <h3 className="text-2xl font-bold mb-4">Comienza a enseñar</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              {t("main.howItWorks.steps.step3.title")}
+            </h3>
             <p className="text-gray-600 mb-6">
-              Conecta con tus estudiantes en tiempo real o graba clases para que
-              las vean cuando puedan. Interactúa mediante chat, pizarras
-              digitales y más.
+              {t("main.howItWorks.steps.step3.desc")}
             </p>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
                 </i>
-                <span>Sesiones en vivo con hasta 50 estudiantes</span>
+                <span>{t("main.howItWorks.steps.step3.pnt1")}</span>
               </li>
               <li className="flex items-start">
                 <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
                 </i>
-                <span>Grabación automática de clases</span>
+                <span>{t("main.howItWorks.steps.step3.pnt2")}</span>
               </li>
               <li className="flex items-start">
                 <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
                 </i>
-                <span>Herramientas interactivas integradas</span>
+                <span>{t("main.howItWorks.steps.step3.pnt3")}</span>
+              </li>
+              <li className="flex items-start">
+                <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
+                </i>
+                <span>{t("main.howItWorks.steps.step3.pnt4")}</span>
+              </li>
+              <li className="flex items-start">
+                <i className={`fas fa-check text-[${palette.hover}] mt-1 mr-2`}>
+                </i>
+                <span>{t("main.howItWorks.steps.step3.pnt5")}</span>
               </li>
             </ul>
           </div>

@@ -1,6 +1,7 @@
 import { palette } from "../../../assets/colors.ts";
+import { MainComponentsProps } from "../index.tsx";
 
-const JoinAsAProfessor = () => {
+const JoinAsAProfessor = ({ t }: MainComponentsProps) => {
   const testimonials = [
     {
       name: "María González",
@@ -30,10 +31,10 @@ const JoinAsAProfessor = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4">
-            Únete a nuestra comunidad de profesores
+            {t("main.joinAsAProfessor.title")}
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Educadores de todo el mundo ya están usando Aula Connect.
+            {t("main.joinAsAProfessor.desc")}
           </p>
         </div>
 
@@ -75,7 +76,7 @@ const JoinAsAProfessor = () => {
             type="button"
             className={`inline-block bg-[${palette.primary}] hover:bg-[${palette.hover}] cursor-pointer text-white px-8 py-4 rounded-lg font-bold text-lg transition`}
           >
-            Únete como profesor
+            {t("main.joinAsAProfessor.register")}
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { palette } from "../../../assets/colors.ts";
+import { MainComponentsProps } from "../index.tsx";
 
-const HeroAula = () => {
+const HeroAula = ({ t }: MainComponentsProps) => {
   return (
     <section
       style={{
@@ -11,24 +12,23 @@ const HeroAula = () => {
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 mb-10 md:mb-0">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Conecta con tus estudiantes en línea
+            {t("main.title")}
           </h1>
           <p className="text-xl mb-8 opacity-90">
-            La plataforma perfecta para profesores que quieren enseñar de manera
-            efectiva y flexible.
+            {t("main.subtitle")}
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <a
               href="#"
               className="bg-white text-[#F77DA9] px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition duration-300"
             >
-              Empezar ahora
+              {t("main.btn1")}
             </a>
             <a
               href="#"
               className="border-2 border-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-[#F77DA9] transition duration-300"
             >
-              Ver demo
+              {t("main.btn2")}
             </a>
           </div>
         </div>
