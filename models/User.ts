@@ -9,4 +9,4 @@ export interface UserSchema {
   adminOrg?: number; // ID de la organización del administrador
 }
 
-export const Users = db.collection<UserSchema>("users");
+export const Users = db?.collection<UserSchema>("users");
