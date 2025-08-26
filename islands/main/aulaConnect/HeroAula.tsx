@@ -34,14 +34,21 @@ const HeroAula = ({ t }: MainComponentsProps) => {
         </div>
         <div className="md:w-1/2 relative">
           <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
-            <div className="video-container">
-              <iframe
+            <div className="">
+              {
+                /* <iframe
                 src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&controls=0"
                 frameBorder="0"
                 allowFullScreen
                 title="Demo Video"
               >
-              </iframe>
+              </iframe> */
+              }
+              <img
+                src="https://res.cloudinary.com/dm8dxwvix/image/upload/v1756059641/learningplat/aulaconnect_pfphcz.png"
+                alt="Demo Video"
+                className="w-full h-auto"
+              />
             </div>
           </div>
         </div>

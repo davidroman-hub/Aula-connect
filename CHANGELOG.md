@@ -1,5 +1,11 @@
 # Changelog
 
+**v1.3.0**
+
+- ADD translations
+- Language button
+- Fixing mongo db
+
 **v1.2.0**
 
 - Add handler para cubrir el login del admin
