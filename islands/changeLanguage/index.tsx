@@ -79,7 +79,7 @@ export default function ChangeToSpanish() {
         </button>
 
         {isOpen && (
-          <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+          <div className="origin-top-right absolute mr-10px mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
             <div className="py-1">
               <div className="px-4 py-2 text-xs text-gray-500 border-b">
                 Select Language
