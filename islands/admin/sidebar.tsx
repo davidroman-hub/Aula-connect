@@ -151,7 +151,7 @@ function DashboardSidebar(
                 <div>
                   <p className="font-medium uppercase">{userInfo.username}</p>
                   <p className="text-gray-400 text-sm">Administrador</p>
-                  <p className="text-gray-400 text-sm">Version 1.1.0</p>
+                  <p className="text-gray-400 text-sm">Version 1.2.0</p>
                 </div>
               </div>
             )

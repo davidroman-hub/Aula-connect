@@ -28,11 +28,13 @@ export const handler: Handlers = {
         payload.username as string,
         payload.type as string,
         payload.id as { $oid: string },
+        payload.adminOrg, // Pass adminOrg as the fourth argument
       );
       const newRefreshToken = await createRefreshToken(
         payload.username as string,
         payload.type as string,
         payload.id as { $oid: string },
+        payload.adminOrg, // Pass adminOrg as the fourth argument
       );
 
       return new Response(
