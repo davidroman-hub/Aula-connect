@@ -184,6 +184,7 @@ export function AdminDashboards() {
         )}
         {view === "courses" && (
           <Courses
+            loadingCreateModule={loadingCreateModule}
             students={students}
             getStudents={getStudents}
             courses={courses}

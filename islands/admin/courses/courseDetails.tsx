@@ -27,6 +27,7 @@ export interface CourseDetailsProps {
   isModuleCreated: boolean;
   isModuleError: string;
   resetModuleCreated: () => void;
+  loadingCreateModule: boolean;
 }
 
 export const getDifficultyColor = (difficulty: string) => {
@@ -64,6 +65,7 @@ function CourseDetails(
     isModuleError,
     getCourses,
     resetModuleCreated,
+    loadingCreateModule,
   }: CourseDetailsProps,
 ) {
   const [activeTab, setActiveTab] = useState<
@@ -365,6 +367,7 @@ function CourseDetails(
           {/* Modules Tab */}
           {activeTab === "modules" && (
             <ModulesTab
+              loadingCreateModule={loadingCreateModule}
               createModule={createModule}
               isModuleCreated={isModuleCreated}
               newCourseObjectSelect={newCourseObjectSelect}

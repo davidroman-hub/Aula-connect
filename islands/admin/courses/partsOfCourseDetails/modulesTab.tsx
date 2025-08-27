@@ -12,6 +12,7 @@ type ModuleProps = {
   setPreviewModule: (value: StateUpdater<Module | null>) => void;
   formatDuration: (minutes: number) => string;
   handleEditModule: (module: Module) => void;
+  loadingCreateModule: boolean;
 };
 
 export const getDifficultyColor = (difficulty: string) => {
@@ -37,6 +38,7 @@ const ModulesTab = (
     setPreviewModule,
     formatDuration,
     handleEditModule,
+    loadingCreateModule,
   }: ModuleProps,
 ) => {
   return (
@@ -49,6 +51,7 @@ const ModulesTab = (
           isModuleCreated={isModuleCreated}
           courses={[newCourseObjectSelect]}
           isModuleError={isModuleError}
+          loadingCreateModule={loadingCreateModule}
         />
       </div>
 
