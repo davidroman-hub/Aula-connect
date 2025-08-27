@@ -1,5 +1,11 @@
 # Changelog
 
+**v1.4.0**
+
+- ADD loader in the curse creation
+- ADD loader in the user creation
+- ADD loader in the module creation (modal)
+
 **v1.3.0**
 
 - ADD translations

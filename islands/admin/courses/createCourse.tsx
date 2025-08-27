@@ -2,6 +2,8 @@ import { useState } from "preact/hooks";
 import { palette } from "../../../assets/colors.ts";
 import { axiod } from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { ErrorAlert, SuccessAlert } from "../../alerts/index.tsx";
+import L from "https://esm.sh/@editorjs/link@2.6.2";
+import Loader from "../loader/adminLoader.tsx";
 
 function CreateCourse({ getCourses, token, setView }: any) {
   const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
@@ -14,6 +16,7 @@ function CreateCourse({ getCourses, token, setView }: any) {
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -22,6 +25,7 @@ function CreateCourse({ getCourses, token, setView }: any) {
 
   async function createCourse(e: any) {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axiod.post(
         `/api/courses/course?adminOrg=${userInfo?.adminOrg}`,
@@ -43,6 +47,7 @@ function CreateCourse({ getCourses, token, setView }: any) {
 
       if (response.status === 201) {
         setSuccess(true);
+        setLoading(false);
         setFormData({
           name: "",
           modules: [],
@@ -54,6 +59,7 @@ function CreateCourse({ getCourses, token, setView }: any) {
         setError("Error creating course");
       }
     } catch (error: any) {
+      setLoading(false);
       setError(
         error.response?.data || error.message || "Unknown error occurred",
       );
@@ -70,6 +76,7 @@ function CreateCourse({ getCourses, token, setView }: any) {
       setError("");
     }, 3000);
   }
+
   return (
     <div>
       <div className="flex items-center mb-6">
@@ -92,81 +99,88 @@ function CreateCourse({ getCourses, token, setView }: any) {
           />
         )}
         <form onSubmit={createCourse}>
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2" htmlFor="name">
-              Nombre del Curso
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full text-gray-700 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Ingresa el nombre del curso"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2" htmlFor="description">
-              Descripción del Curso
-            </label>
-            <input
-              type="text"
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="w-full text-gray-700 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Ingresa la descripción del curso"
-              required
-            />
-          </div>
-
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2" htmlFor="modules">
-              Dificultad
-            </label>
-            <select
-              name="difficulty"
-              value={formData.difficulty}
-              onChange={(e) => {
-                const target = e.target as HTMLSelectElement;
-                if (target.value) {
-                  setFormData({ ...formData, difficulty: target.value });
-                  target.value = "";
-                }
-              }}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition pr-8 text-black"
-            >
-              <option value="0">Dificultad</option>
-              <option value="1">Fácil</option>
-              <option value="2">Intermedio</option>
-              <option value="3">Difícil</option>
-            </select>
-            <div className="text-gray-500 text-sm mt-1">
-              {formData.difficulty === "0"
-                ? "Por favor selecciona una dificultad."
-                : ""}
-            </div>
-          </div>
-
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={() => setView("courses")}
-              className="mr-3 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-            >
-              Cancelar
-            </button>
-            <button
-              disabled={formData.difficulty === "0"}
-              type="submit"
-              className="disabled:bg-gray-300 bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition"
-            >
-              Crear Curso
-            </button>
-          </div>
+          {!loading
+            ? (
+              <>
+                <div className="mb-6">
+                  <label className="block text-gray-700 mb-2" htmlFor="name">
+                    Nombre del Curso
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full text-gray-700 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    placeholder="Ingresa el nombre del curso"
+                    required
+                  />
+                </div>
+                <div className="mb-6">
+                  <label
+                    className="block text-gray-700 mb-2"
+                    htmlFor="description"
+                  >
+                    Descripción del Curso
+                  </label>
+                  <input
+                    type="text"
+                    id="description"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    className="w-full text-gray-700 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    placeholder="Ingresa la descripción del curso"
+                    required
+                  />
+                </div>
+                <div className="mb-6">
+                  <label className="block text-gray-700 mb-2" htmlFor="modules">
+                    Dificultad
+                  </label>
+                  <select
+                    name="difficulty"
+                    value={formData.difficulty}
+                    onChange={(e) => {
+                      const target = e.target as HTMLSelectElement;
+                      if (target.value) {
+                        setFormData({ ...formData, difficulty: target.value });
+                        target.value = "";
+                      }
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition pr-8 text-black"
+                  >
+                    <option value="0">Dificultad</option>
+                    <option value="1">Fácil</option>
+                    <option value="2">Intermedio</option>
+                    <option value="3">Difícil</option>
+                  </select>
+                  <div className="text-gray-500 text-sm mt-1">
+                    {formData.difficulty === "0"
+                      ? "Por favor selecciona una dificultad."
+                      : ""}
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setView("courses")}
+                    className="mr-3 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    disabled={formData.difficulty === "0"}
+                    type="submit"
+                    className="disabled:bg-gray-300 bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition"
+                  >
+                    Crear Curso
+                  </button>
+                </div>
+              </>
+            )
+            : <Loader loading={loading} />}
         </form>
       </div>
     </div>

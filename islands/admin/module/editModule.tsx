@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import type { Module } from "../../../routes/api/modules/module.tsx";
 import axiod from "https://deno.land/x/axiod@0.26.2/mod.ts";
 import { renderEditorJSContent } from "../../../lib/editorJSRenderer.tsx";
+import Loader from "../loader/adminLoader.tsx";
 
 interface EditorInstance {
   save: () => Promise<unknown>;
@@ -38,6 +39,7 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
   const [exercises, setExercises] = useState(module.content?.exercises || []);
   const [previewContent, setPreviewContent] = useState<unknown>(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [loadingPatch, setLoadingPatch] = useState(false);
 
   // Función para actualizar la vista previa
   const updatePreview = async () => {
@@ -107,6 +109,7 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
   };
 
   const handleSave = async () => {
+    setLoadingPatch(true);
     try {
       let editorContent = "";
 
@@ -140,10 +143,12 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
           "Authorization": `Bearer ${token}`,
         },
       });
+      setLoadingPatch(false);
 
       onSave(updatedModule);
     } catch (error) {
-      console.error("Error saving module:", error);
+      setLoadingPatch(false);
+
       alert("Error al guardar el módulo");
     }
   };
@@ -294,15 +299,19 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
         <div className="flex gap-2">
           <button
             type="button"
+            disabled={loadingPatch}
             onClick={onCancel}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+            className={"px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100" +
+              (loadingPatch ? " opacity-50 cursor-not-allowed" : "")}
           >
             Cancelar
           </button>
           <button
             type="button"
+            disabled={loadingPatch}
             onClick={handleSave}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className={"px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" +
+              (loadingPatch ? " opacity-50 cursor-not-allowed" : "")}
           >
             Guardar
           </button>
@@ -612,6 +621,8 @@ const EditModule = ({ module, onSave, onCancel, token }: EditModuleProps) => {
           </div>
         </div>
       )}
+
+      <Loader loading={loadingPatch} />
     </div>
   );
 };

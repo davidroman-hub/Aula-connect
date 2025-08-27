@@ -20,11 +20,19 @@ interface ModulesViewProps {
   userInfo: {
     adminOrg: string;
   };
+  loadingCreateModule: boolean;
 }
 
 const ModulesView = (
-  { token, courses, createModule, isModuleCreated, isModuleError, userInfo }:
-    ModulesViewProps,
+  {
+    token,
+    courses,
+    createModule,
+    isModuleCreated,
+    isModuleError,
+    userInfo,
+    loadingCreateModule,
+  }: ModulesViewProps,
 ) => {
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
@@ -137,6 +145,7 @@ const ModulesView = (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <ModuleModal
+          loadingCreateModule={loadingCreateModule}
           createModule={createModule}
           isModuleCreated={isModuleCreated}
           courses={courses}

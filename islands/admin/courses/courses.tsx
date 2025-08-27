@@ -16,6 +16,7 @@ export interface CoursesProps {
   getCourses: () => Promise<Course[]>;
   resetModuleCreated: () => void;
   students: Student[];
+  loadingCreateModule: boolean;
 }
 
 function Courses(
@@ -29,6 +30,7 @@ function Courses(
     getCourses,
     resetModuleCreated,
     students,
+    loadingCreateModule,
   }: CoursesProps,
 ) {
   const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
@@ -103,6 +105,7 @@ function Courses(
         )
         : (
           <CourseDetails
+            loadingCreateModule={loadingCreateModule}
             getCourses={getCourses}
             isModuleCreated={isModuleCreated}
             isModuleError={isModuleError}
