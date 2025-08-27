@@ -43,6 +43,7 @@ import * as $admin_dashboardAdmin from "./islands/admin/dashboardAdmin.tsx";
 import * as $admin_editModule from "./islands/admin/editModule.tsx";
 import * as $admin_header from "./islands/admin/header.tsx";
 import * as $admin_index from "./islands/admin/index.tsx";
+import * as $admin_loader_adminLoader from "./islands/admin/loader/adminLoader.tsx";
 import * as $admin_modalToCreateModule from "./islands/admin/modalToCreateModule.tsx";
 import * as $admin_module_editModule from "./islands/admin/module/editModule.tsx";
 import * as $admin_module_editorTools from "./islands/admin/module/editorTools.ts";
@@ -139,6 +140,7 @@ const manifest = {
     "./islands/admin/editModule.tsx": $admin_editModule,
     "./islands/admin/header.tsx": $admin_header,
     "./islands/admin/index.tsx": $admin_index,
+    "./islands/admin/loader/adminLoader.tsx": $admin_loader_adminLoader,
     "./islands/admin/modalToCreateModule.tsx": $admin_modalToCreateModule,
     "./islands/admin/module/editModule.tsx": $admin_module_editModule,
     "./islands/admin/module/editorTools.ts": $admin_module_editorTools,

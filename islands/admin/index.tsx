@@ -34,6 +34,7 @@ export function AdminDashboards() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isModuleCreated, setIsModuleCreated] = useState(false);
   const [isModuleError, setIsModuleError] = useState("");
+  const [loadingCreateModule, setLoadingCreateModule] = useState(false);
 
   useEffect(() => {
     getStudents();
@@ -89,6 +90,7 @@ export function AdminDashboards() {
   };
 
   const createModule = async (module: any) => {
+    setLoadingCreateModule(true);
     try {
       const response = await axiod.post(
         `/api/modules/module?adminOrg=${UserInfo.adminOrg}`,
@@ -105,10 +107,11 @@ export function AdminDashboards() {
       );
 
       await updateCourseModuleOptions(module.course, response.data.id);
-
+      setLoadingCreateModule(false);
       setIsModuleCreated(true);
       return response.data;
     } catch (error: any) {
+      setLoadingCreateModule(false);
       setIsModuleError(error.message || "Error creating module");
     }
   };
@@ -194,6 +197,7 @@ export function AdminDashboards() {
         )}
         {view === "modules" && (
           <ModulesView
+            loadingCreateModule={loadingCreateModule}
             token={token}
             courses={courses}
             userInfo={UserInfo}
