@@ -71,6 +71,7 @@ import * as $checkout_index_1 from "./islands/checkout/index.tsx";
 import * as $components_spinners_spinners from "./islands/components/spinners/spinners.tsx";
 import * as $helpers_TokenInitializer from "./islands/helpers/TokenInitializer.tsx";
 import * as $helpers_index from "./islands/helpers/index.tsx";
+import * as $helpers_renderVideo from "./islands/helpers/renderVideo.tsx";
 import * as $helpers_tokenRedirect from "./islands/helpers/tokenRedirect.tsx";
 import * as $login_index_1 from "./islands/login/index.tsx";
 import * as $main_aulaConnect_AllYouNeed from "./islands/main/aulaConnect/AllYouNeed.tsx";
@@ -180,6 +181,7 @@ const manifest = {
     "./islands/components/spinners/spinners.tsx": $components_spinners_spinners,
     "./islands/helpers/TokenInitializer.tsx": $helpers_TokenInitializer,
     "./islands/helpers/index.tsx": $helpers_index,
+    "./islands/helpers/renderVideo.tsx": $helpers_renderVideo,
     "./islands/helpers/tokenRedirect.tsx": $helpers_tokenRedirect,
     "./islands/login/index.tsx": $login_index_1,
     "./islands/main/aulaConnect/AllYouNeed.tsx": $main_aulaConnect_AllYouNeed,

@@ -1,14 +1,12 @@
-import mod from "https://deno.land/x/i18next_http_middleware@v3.3.2/index.js";
 import { renderEditorJSContent } from "../../../lib/editorJSRenderer.tsx";
 import { renderFormattedNotesPreview } from "../../../lib/notesRenderer.tsx";
-import { Module } from "../../../routes/api/modules/module.tsx";
 import {
   getDifficultyBadgeClass,
-  getDifficultyGradient,
 } from "../../admin/module/modulePreviewModal.tsx";
 import { ModuleData } from "./selectedCourse.tsx";
 import { palette } from "../../../assets/colors.ts";
 import ClickOk from "./clickOk.tsx";
+import { renderVideoPlayer } from "../../helpers/renderVideo.tsx";
 
 type ModuleContentViewProps = {
   module: ModuleData | undefined;
@@ -46,6 +44,7 @@ const ModuleContentView = (
       return renderFormattedNotesPreview(notes, "markdown");
     }
   };
+
   return (
     <div className="max-h-[calc(95vh-120px)]">
       <div className="p-6 bg-gray-50">
@@ -89,11 +88,8 @@ const ModuleContentView = (
                         Video del módulo
                       </h5>
                     </div>
-                    <div className="bg-gray-200 rounded-lg h-32 flex items-center justify-center">
-                      <div className="text-center text-gray-500">
-                        <i className="fas fa-play-circle text-3xl mb-2"></i>
-                        <p className="text-sm">Video disponible</p>
-                      </div>
+                    <div className="rounded-lg overflow-hidden">
+                      {renderVideoPlayer(module.content.videoUrl)}
                     </div>
                   </div>
                 )}
@@ -179,7 +175,7 @@ const ModuleContentView = (
 
               <div>
                 <div class="w-10 h-10 ml-2">
-                  <ClickOk isOk={isOk as boolean} />
+                  <ClickOk isOk={!!isOk} />
                 </div>
                 <button
                   type="button"
@@ -189,7 +185,7 @@ const ModuleContentView = (
                   } mt-4 items-center justify-center h-15 p-2 rounded-lg bg-[${[
                     isCompleted ? palette.backgroundSoft : palette.primary,
                   ]}] hover:bg-gray-200 transition-colors`}
-                  onClick={() => putModuleToDone(module?._id as string)}
+                  onClick={() => putModuleToDone(module?._id || "")}
                 >
                   {isCompleted ? "Módulo completado" : "Marcar como completado"}
                 </button>
