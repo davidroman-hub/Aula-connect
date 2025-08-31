@@ -128,24 +128,49 @@ const ModuleContentView = (
                         Materiales ({module.content.materials.length})
                       </h5>
                     </div>
-                    <ul className="space-y-1">
-                      {module.content.materials.slice(0, 3).map((
-                        _material,
-                        index,
-                      ) => (
+                    <ul className="space-y-2">
+                      {module.content.materials.map((material, index) => (
                         <li
-                          key={`material-${index}-${_material.title || index}`}
-                          className="text-sm text-gray-600 flex items-center"
+                          key={`material-${
+                            material.title || material.url || index
+                          }`}
+                          className="text-sm"
                         >
-                          <i className="fas fa-file text-xs mr-2"></i>
-                          Material {index + 1}
+                          {material.url
+                            ? (
+                              <a
+                                href={material.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center text-blue-600 hover:text-blue-800 hover:underline transition-colors p-2 rounded-lg hover:bg-blue-50"
+                              >
+                                <i className="fas fa-external-link-alt text-xs mr-2">
+                                </i>
+                                <span className="font-medium">
+                                  {material.title || `Material ${index + 1}`}
+                                </span>
+                                {material.description && (
+                                  <span className="text-gray-500 ml-2 text-xs">
+                                    - {material.description}
+                                  </span>
+                                )}
+                              </a>
+                            )
+                            : (
+                              <div className="flex items-center text-gray-600 p-2">
+                                <i className="fas fa-file text-xs mr-2"></i>
+                                <span>
+                                  {material.title || `Material ${index + 1}`}
+                                </span>
+                                {material.description && (
+                                  <span className="text-gray-500 ml-2 text-xs">
+                                    - {material.description}
+                                  </span>
+                                )}
+                              </div>
+                            )}
                         </li>
                       ))}
-                      {module.content.materials.length > 3 && (
-                        <li className="text-sm text-gray-500">
-                          +{module.content.materials.length - 3} más...
-                        </li>
-                      )}
                     </ul>
                   </div>
                 )}

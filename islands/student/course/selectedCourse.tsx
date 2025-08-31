@@ -344,67 +344,95 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                   )}
               </button>
             </li>
-            {course.modules?.map((module, index) => (
-              <li key={module._id || `module-${index}`} className="mb-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedModule(module._id || null);
-                    // Cerrar sidebar en móviles después de seleccionar
-                    if (globalThis.innerWidth && globalThis.innerWidth < 1024) {
-                      setSidebarOpen(false);
-                    }
-                  }}
-                  className={`w-full text-left flex items-center p-3 rounded-lg transition ${
-                    selectedModule === module._id
-                      ? "bg-primary text-white"
-                      : "hover:bg-gray-700"
-                  } ${
-                    !sidebarExpanded ? "justify-center relative group px-2" : ""
-                  }`}
-                  title={!sidebarExpanded
-                    ? module.name || `Módulo ${index + 1}`
-                    : ""}
-                >
-                  {!sidebarExpanded
-                    ? (
-                      <>
-                        <div className="relative">
-                          <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-sm font-bold">
+            {course.modules?.map((module, index) => {
+              const isModuleCompleted = newUserObject.currentLesson?.some((
+                lesson,
+              ) => lesson.moduleId === module._id && lesson.status === "done");
+
+              return (
+                <li key={module._id || `module-${index}`} className="mb-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedModule(module._id || null);
+                      // Cerrar sidebar en móviles después de seleccionar
+                      if (
+                        globalThis.innerWidth && globalThis.innerWidth < 1024
+                      ) {
+                        setSidebarOpen(false);
+                      }
+                    }}
+                    className={`w-full text-left flex items-center p-3 rounded-lg transition ${
+                      selectedModule === module._id
+                        ? "bg-primary text-white"
+                        : "hover:bg-gray-700"
+                    } ${
+                      !sidebarExpanded
+                        ? "justify-center relative group px-2"
+                        : ""
+                    }`}
+                    title={!sidebarExpanded
+                      ? module.name || `Módulo ${index + 1}`
+                      : ""}
+                  >
+                    {!sidebarExpanded
+                      ? (
+                        <>
+                          <div className="relative">
+                            <div
+                              className={`w-8 h-8 rounded-full  ${
+                                isModuleCompleted
+                                  ? "bg-green-600"
+                                  : "bg-gray-600"
+                              } flex items-center justify-center text-sm font-bold`}
+                            >
+                              {index + 1}
+                            </div>
+                          </div>
+                          {/* Tooltip */}
+                          <div
+                            className={`absolute left-full ml-2 px-2 py-1 ${
+                              isModuleCompleted ? "bg-green-600" : "bg-gray-600"
+                            } text-white text-sm rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50`}
+                          >
+                            {module.name || `Módulo ${index + 1}`}
+                            <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800">
+                            </div>
+                          </div>
+                        </>
+                      )
+                      : (
+                        <>
+                          <div
+                            className={`w-8 h-8 rounded-full ${
+                              isModuleCompleted ? "bg-green-600" : "bg-gray-600"
+                            } flex items-center justify-center mr-3 text-sm font-bold`}
+                          >
                             {index + 1}
                           </div>
-                        </div>
-                        {/* Tooltip */}
-                        <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                          {module.name || `Módulo ${index + 1}`}
-                          <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800">
+                          <div className="flex-1">
+                            <div className="font-medium">
+                              {module.name || `Módulo ${index + 1}`}
+                            </div>
+                            <div className="text-gray-300 text-sm truncate">
+                              {module.description}
+                            </div>
                           </div>
-                        </div>
-                      </>
-                    )
-                    : (
-                      <>
-                        <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center mr-3 text-sm font-bold">
-                          {index + 1}
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium">
-                            {module.name || `Módulo ${index + 1}`}
-                          </div>
-                          <div className="text-gray-300 text-sm truncate">
-                            {module.description}
-                          </div>
-                        </div>
-                      </>
-                    )}
-                </button>
-              </li>
-            ))}
+                        </>
+                      )}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
         {/* Footer del sidebar */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+        <div
+          className={` ${
+            sidebarExpanded ? "sticky" : "absolute"
+          } bg-[${palette.hover}] bottom-0 left-0 right-0 p-4 border-t border-gray-700`}
+        >
           {sidebarExpanded
             ? (
               <div className="flex items-center">
@@ -528,8 +556,7 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
                                 palette.backgroundSoft,
                               ]}] hover:bg-gray-200 transition-colors`}
                               onClick={() => setSelectedModule("intro")}
-                              onKeyDown={(e) =>
-                                e.key === "Escape" &&
+                              onKeyDown={(e) => e.key === "Escape" &&
                                 setSelectedModule("intro")}
                               aria-label="Close modal"
                             >
