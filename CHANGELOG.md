@@ -1,5 +1,9 @@
 # Changelog
 
+**v1.5.0**
+
+- ADD shopify products in the main page
+
 **v1.4.0**
 
 - ADD loader in the curse creation
