@@ -21,11 +21,13 @@ import * as $api_upload_image from "./routes/api/upload-image.ts";
 import * as $api_users_user from "./routes/api/users/user.tsx";
 import * as $auth_redirect_index from "./routes/auth-redirect/index.tsx";
 import * as $checkout_index from "./routes/checkout/index.tsx";
+import * as $checkout_success from "./routes/checkout/success.tsx";
 import * as $courses_id_ from "./routes/courses/[id].tsx";
 import * as $index from "./routes/index.tsx";
 import * as $login_index from "./routes/login/index.tsx";
 import * as $orders_index from "./routes/orders/index.tsx";
 import * as $products_index from "./routes/products/index.tsx";
+import * as $test_checkout_success from "./routes/test/checkout-success.tsx";
 import * as $user_dash_index from "./routes/user-dash/index.tsx";
 import * as $work_with_me_index from "./routes/work-with-me/index.tsx";
 import * as $Counter from "./islands/Counter.tsx";
@@ -64,6 +66,7 @@ import * as $cart_index from "./islands/cart/index.tsx";
 import * as $changeLanguage_index from "./islands/changeLanguage/index.tsx";
 import * as $checkout_CheckoutModal from "./islands/checkout/CheckoutModal.tsx";
 import * as $checkout_CheckoutModalSimple from "./islands/checkout/CheckoutModalSimple.tsx";
+import * as $checkout_CheckoutSuccessModal from "./islands/checkout/CheckoutSuccessModal.tsx";
 import * as $checkout_index_1 from "./islands/checkout/index.tsx";
 import * as $components_spinners_spinners from "./islands/components/spinners/spinners.tsx";
 import * as $helpers_TokenInitializer from "./islands/helpers/TokenInitializer.tsx";
@@ -76,7 +79,6 @@ import * as $main_aulaConnect_Footer from "./islands/main/aulaConnect/Footer.tsx
 import * as $main_aulaConnect_HeroAula from "./islands/main/aulaConnect/HeroAula.tsx";
 import * as $main_aulaConnect_HowItWorks from "./islands/main/aulaConnect/HowItWorks.tsx";
 import * as $main_aulaConnect_JoinAsAProfessor from "./islands/main/aulaConnect/JoinAsAProfessor.tsx";
-import * as $main_aulaConnect_Pricing from "./islands/main/aulaConnect/Pricing.tsx";
 import * as $main_aulaConnect_PricingNew from "./islands/main/aulaConnect/PricingNew.tsx";
 import * as $main_aulaConnect_Ready from "./islands/main/aulaConnect/Ready.tsx";
 import * as $main_courses from "./islands/main/courses.tsx";
@@ -118,11 +120,13 @@ const manifest = {
     "./routes/api/users/user.tsx": $api_users_user,
     "./routes/auth-redirect/index.tsx": $auth_redirect_index,
     "./routes/checkout/index.tsx": $checkout_index,
+    "./routes/checkout/success.tsx": $checkout_success,
     "./routes/courses/[id].tsx": $courses_id_,
     "./routes/index.tsx": $index,
     "./routes/login/index.tsx": $login_index,
     "./routes/orders/index.tsx": $orders_index,
     "./routes/products/index.tsx": $products_index,
+    "./routes/test/checkout-success.tsx": $test_checkout_success,
     "./routes/user-dash/index.tsx": $user_dash_index,
     "./routes/work-with-me/index.tsx": $work_with_me_index,
   },
@@ -170,6 +174,8 @@ const manifest = {
     "./islands/changeLanguage/index.tsx": $changeLanguage_index,
     "./islands/checkout/CheckoutModal.tsx": $checkout_CheckoutModal,
     "./islands/checkout/CheckoutModalSimple.tsx": $checkout_CheckoutModalSimple,
+    "./islands/checkout/CheckoutSuccessModal.tsx":
+      $checkout_CheckoutSuccessModal,
     "./islands/checkout/index.tsx": $checkout_index_1,
     "./islands/components/spinners/spinners.tsx": $components_spinners_spinners,
     "./islands/helpers/TokenInitializer.tsx": $helpers_TokenInitializer,
@@ -183,7 +189,6 @@ const manifest = {
     "./islands/main/aulaConnect/HowItWorks.tsx": $main_aulaConnect_HowItWorks,
     "./islands/main/aulaConnect/JoinAsAProfessor.tsx":
       $main_aulaConnect_JoinAsAProfessor,
-    "./islands/main/aulaConnect/Pricing.tsx": $main_aulaConnect_Pricing,
     "./islands/main/aulaConnect/PricingNew.tsx": $main_aulaConnect_PricingNew,
     "./islands/main/aulaConnect/Ready.tsx": $main_aulaConnect_Ready,
     "./islands/main/courses.tsx": $main_courses,

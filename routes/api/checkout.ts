@@ -77,6 +77,21 @@ export const handler: Handlers = {
           buyerIdentity: {
             email: checkoutData.email,
           },
+          // Agregar información adicional del comprador
+          attributes: [
+            {
+              key: "customer_first_name",
+              value: checkoutData.firstName,
+            },
+            {
+              key: "customer_last_name",
+              value: checkoutData.lastName,
+            },
+            {
+              key: "customer_phone",
+              value: checkoutData.phone || "",
+            },
+          ],
         },
       };
 
@@ -137,6 +152,12 @@ export const handler: Handlers = {
           checkoutUrl: cart.checkoutUrl,
           cartId: cart.id,
           total: cart.cost.totalAmount,
+          customerInfo: {
+            email: checkoutData.email,
+            firstName: checkoutData.firstName,
+            lastName: checkoutData.lastName,
+            phone: checkoutData.phone,
+          },
         }),
         {
           headers: { "Content-Type": "application/json" },

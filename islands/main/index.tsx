@@ -4,7 +4,6 @@ import HeroAula from "./aulaConnect/HeroAula.tsx";
 import HowItWorks from "./aulaConnect/HowItWorks.tsx";
 import JoinAsAProfessor from "./aulaConnect/JoinAsAProfessor.tsx";
 
-import Pricing from "./aulaConnect/Pricing.tsx";
 import Ready from "./aulaConnect/Ready.tsx";
 import Contact from "./aulaConnect/Contact.tsx";
 import Footer from "./aulaConnect/Footer.tsx";
