@@ -6,6 +6,8 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $admin_dash_index from "./routes/admin-dash/index.tsx";
 import * as $api_auth_set_cookie from "./routes/api/auth/set-cookie.tsx";
+import * as $api_checkout_simulate from "./routes/api/checkout-simulate.ts";
+import * as $api_checkout from "./routes/api/checkout.ts";
 import * as $api_courses_course from "./routes/api/courses/course.tsx";
 import * as $api_jwt_refresh from "./routes/api/jwt/refresh.tsx";
 import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
@@ -60,6 +62,8 @@ import * as $admin_students_students from "./islands/admin/students/students.tsx
 import * as $alerts_index from "./islands/alerts/index.tsx";
 import * as $cart_index from "./islands/cart/index.tsx";
 import * as $changeLanguage_index from "./islands/changeLanguage/index.tsx";
+import * as $checkout_CheckoutModal from "./islands/checkout/CheckoutModal.tsx";
+import * as $checkout_CheckoutModalSimple from "./islands/checkout/CheckoutModalSimple.tsx";
 import * as $checkout_index_1 from "./islands/checkout/index.tsx";
 import * as $components_spinners_spinners from "./islands/components/spinners/spinners.tsx";
 import * as $helpers_TokenInitializer from "./islands/helpers/TokenInitializer.tsx";
@@ -73,6 +77,7 @@ import * as $main_aulaConnect_HeroAula from "./islands/main/aulaConnect/HeroAula
 import * as $main_aulaConnect_HowItWorks from "./islands/main/aulaConnect/HowItWorks.tsx";
 import * as $main_aulaConnect_JoinAsAProfessor from "./islands/main/aulaConnect/JoinAsAProfessor.tsx";
 import * as $main_aulaConnect_Pricing from "./islands/main/aulaConnect/Pricing.tsx";
+import * as $main_aulaConnect_PricingNew from "./islands/main/aulaConnect/PricingNew.tsx";
 import * as $main_aulaConnect_Ready from "./islands/main/aulaConnect/Ready.tsx";
 import * as $main_courses from "./islands/main/courses.tsx";
 import * as $main_footer from "./islands/main/footer.tsx";
@@ -98,6 +103,8 @@ const manifest = {
     "./routes/_app.tsx": $_app,
     "./routes/admin-dash/index.tsx": $admin_dash_index,
     "./routes/api/auth/set-cookie.tsx": $api_auth_set_cookie,
+    "./routes/api/checkout-simulate.ts": $api_checkout_simulate,
+    "./routes/api/checkout.ts": $api_checkout,
     "./routes/api/courses/course.tsx": $api_courses_course,
     "./routes/api/jwt/refresh.tsx": $api_jwt_refresh,
     "./routes/api/jwt/token.tsx": $api_jwt_token,
@@ -161,6 +168,8 @@ const manifest = {
     "./islands/alerts/index.tsx": $alerts_index,
     "./islands/cart/index.tsx": $cart_index,
     "./islands/changeLanguage/index.tsx": $changeLanguage_index,
+    "./islands/checkout/CheckoutModal.tsx": $checkout_CheckoutModal,
+    "./islands/checkout/CheckoutModalSimple.tsx": $checkout_CheckoutModalSimple,
     "./islands/checkout/index.tsx": $checkout_index_1,
     "./islands/components/spinners/spinners.tsx": $components_spinners_spinners,
     "./islands/helpers/TokenInitializer.tsx": $helpers_TokenInitializer,
@@ -175,6 +184,7 @@ const manifest = {
     "./islands/main/aulaConnect/JoinAsAProfessor.tsx":
       $main_aulaConnect_JoinAsAProfessor,
     "./islands/main/aulaConnect/Pricing.tsx": $main_aulaConnect_Pricing,
+    "./islands/main/aulaConnect/PricingNew.tsx": $main_aulaConnect_PricingNew,
     "./islands/main/aulaConnect/Ready.tsx": $main_aulaConnect_Ready,
     "./islands/main/courses.tsx": $main_courses,
     "./islands/main/footer.tsx": $main_footer,

@@ -119,7 +119,11 @@ const Pricing = ({ t }: MainComponentsProps) => {
           result.checkoutUrl.includes("password") ||
           result.checkoutUrl.includes("unavailable")
         ) {
-          await handleDevelopmentStoreError(product, formData, "store protected");
+          await handleDevelopmentStoreError(
+            product,
+            formData,
+            "store protected",
+          );
           return;
         }
 
@@ -291,6 +295,9 @@ const Pricing = ({ t }: MainComponentsProps) => {
         )}
 
         <div className="mt-16 text-center">
+          <p className="text-gray-600 mb-4">
+            Powered by Shopify <i className="fab fa-shopify"></i>
+          </p>
           <p className="text-gray-600 mb-4">
             {t("main.billing.plans.needs")}
           </p>

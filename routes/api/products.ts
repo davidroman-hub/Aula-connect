@@ -122,6 +122,7 @@ export const handler: Handlers<Product[]> = {
 
         return {
           id: node.id,
+          variantId: variant?.id || "",
           title: node.title || "Sin título",
           description: node.description || "Sin descripción",
           handle: node.handle,
