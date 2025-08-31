@@ -12,6 +12,7 @@ import * as $api_jwt_token from "./routes/api/jwt/token.tsx";
 import * as $api_link_preview from "./routes/api/link-preview.ts";
 import * as $api_modules_module from "./routes/api/modules/module.tsx";
 import * as $api_orders_create from "./routes/api/orders/create.tsx";
+import * as $api_products from "./routes/api/products.ts";
 import * as $api_student_user from "./routes/api/student/user.ts";
 import * as $api_upload_image_by_url from "./routes/api/upload-image-by-url.ts";
 import * as $api_upload_image from "./routes/api/upload-image.ts";
@@ -103,6 +104,7 @@ const manifest = {
     "./routes/api/link-preview.ts": $api_link_preview,
     "./routes/api/modules/module.tsx": $api_modules_module,
     "./routes/api/orders/create.tsx": $api_orders_create,
+    "./routes/api/products.ts": $api_products,
     "./routes/api/student/user.ts": $api_student_user,
     "./routes/api/upload-image-by-url.ts": $api_upload_image_by_url,
     "./routes/api/upload-image.ts": $api_upload_image,
