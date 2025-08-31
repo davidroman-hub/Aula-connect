@@ -1,5 +1,12 @@
 # Changelog
 
+**v1.6.0**
+
+- ADD Render videos
+- ADD render Material
+- ADD render excercises
+- Some UIX fixes
+
 **v1.5.0**
 
 - ADD shopify products in the main page

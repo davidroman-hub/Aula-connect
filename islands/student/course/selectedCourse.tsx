@@ -464,7 +464,7 @@ const CourseView = ({ course, courseId: _courseId }: CoursePreviewProps) => {
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+            className={`p-2 rounded-md text-white hover:text-gray-900 bg-[${palette.primary}] hover:bg-gray-100`}
           >
             <i className="fas fa-bars text-xl"></i>
           </button>
